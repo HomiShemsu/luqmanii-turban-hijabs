@@ -2101,7 +2101,8 @@ function saveProducts(list){
    ========================================================= */
 
 let products = getProducts();
-
+  
+console.log("Supabase connected:", !!supabaseClient);
 let cart =
   JSON.parse(
     localStorage.getItem("luqmanii_cart") || "[]"
