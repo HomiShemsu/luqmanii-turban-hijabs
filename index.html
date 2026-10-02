@@ -1,940 +1,4079 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Luqmanii Turban Hijabs — Ethiopia</title>
-  <meta name="description" content="Luqmanii Turban Hijabs — Ethiopia">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luqmanii Turban Hijabs</title>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
-    :root{
-      --plum:#5b214d;--pink:#d96b9a;--cream:#fff9f4;--ink:#2c1d28;
-      --muted:#786c74;--border:#eadfe5;--white:#fff;--green:#277a52;
-      --shadow:0 14px 40px rgba(71,32,58,.10);--radius:22px;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream)}
-    button,input,textarea,select{font:inherit}
-    button{cursor:pointer}
-    img{max-width:100%;display:block}
-    a{text-decoration:none;color:inherit}
-    .container{width:min(1180px,92%);margin:auto}
-    header{position:sticky;top:0;z-index:50;background:rgba(255,249,244,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-    .nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:15px}
-    .brand{font-weight:900;color:var(--plum);font-size:1.15rem}
-    .navlinks{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-    .navlinks button,.icon-btn{border:0;background:transparent;color:var(--ink);padding:9px 11px;border-radius:12px}
-    .navlinks button:hover,.icon-btn:hover{background:#f3e8ee}
-    .bag-count{display:inline-flex;min-width:22px;height:22px;padding:0 6px;align-items:center;justify-content:center;border-radius:99px;background:var(--pink);color:#fff;font-size:.75rem;font-weight:800}
-    .page{display:none}.page.active{display:block}
-    .hero{padding:72px 0 55px;background:linear-gradient(135deg,#fff8f1,#f9e7ef)}
-    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
-    .eyebrow{color:var(--pink);font-weight:800;text-transform:uppercase;letter-spacing:.12em;font-size:.8rem}
-    h1{font-size:clamp(2.3rem,6vw,4.7rem);line-height:1.02;margin:12px 0 20px;color:var(--plum)}
-    h2{color:var(--plum);font-size:clamp(1.8rem,4vw,2.7rem);margin:0 0 12px}
-    h3{color:var(--plum);margin:0 0 8px}
-    p{line-height:1.65}
-    .hero p{font-size:1.08rem;color:var(--muted);max-width:650px}
-    .hero-card{border-radius:32px;overflow:hidden;box-shadow:var(--shadow);background:#fff}
-    .hero-card img{width:100%;height:460px;object-fit:cover}
-    .btn{border:0;border-radius:14px;padding:12px 16px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px}
-    .btn-primary{background:var(--plum);color:#fff}.btn-pink{background:var(--pink);color:#fff}.btn-light{background:#f2e8ed;color:var(--plum)}
-    .btn:disabled{opacity:.45;cursor:not-allowed}
-    .section{padding:55px 0}
-    .section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:25px}
-    .filters{display:flex;gap:8px;overflow:auto;padding-bottom:5px}
-    .filter-btn{white-space:nowrap;border:1px solid var(--border);background:#fff;color:var(--plum);padding:10px 15px;border-radius:99px;font-weight:750}
-    .filter-btn.active{background:var(--plum);color:#fff}
-    .search{width:min(340px,100%);padding:12px 15px;border:1px solid var(--border);border-radius:14px;background:#fff;outline:none}
-    .product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-    .product-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:0 7px 25px rgba(71,32,58,.05)}
-    .product-image{height:280px;background:#f2e9ed;position:relative;cursor:pointer}
-    .product-image img{width:100%;height:100%;object-fit:cover}
-    .badge,.sold-badge{position:absolute;top:12px;padding:7px 10px;border-radius:99px;font-size:.72rem;font-weight:850}
-    .badge{left:12px;background:#fff;color:var(--plum)}.sold-badge{right:12px;background:#2b2227;color:#fff}
-    .product-info{padding:16px}
-    .product-category{font-size:.72rem;text-transform:uppercase;letter-spacing:.09em;color:var(--pink);font-weight:850}
-    .product-description{font-size:.88rem;color:var(--muted);min-height:45px}
-    .price{font-weight:900;color:var(--plum);font-size:1.15rem;margin:12px 0}
-    .product-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    .empty,.panel,.card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:25px;box-shadow:var(--shadow)}
-    .detail-grid,.checkout-grid{display:grid;grid-template-columns:1fr 1fr;gap:35px}
-    .gallery-main{border-radius:25px;overflow:hidden;background:#f2e9ed}
-    .gallery-main img{width:100%;height:560px;object-fit:cover}
-    .thumbs{display:flex;gap:10px;margin-top:10px;overflow:auto}.thumbs img{width:72px;height:72px;object-fit:cover;border-radius:12px;border:2px solid transparent;cursor:pointer}.thumbs img.active{border-color:var(--pink)}
-    label{display:block;font-weight:750;color:var(--plum);margin:0 0 7px}
-    input,textarea,select{width:100%;padding:12px 13px;border:1px solid var(--border);border-radius:13px;background:#fff;outline:none}
-    textarea{min-height:100px;resize:vertical}
-    .field{margin-bottom:15px}
-    .choice-row{display:flex;gap:8px;flex-wrap:wrap}.choice{border:1px solid var(--border);background:#fff;border-radius:11px;padding:9px 13px}.choice.active{background:var(--plum);color:#fff}
-    .qty{display:flex;align-items:center;gap:12px}.qty button{width:38px;height:38px;border:1px solid var(--border);background:#fff;border-radius:10px}
-    .bag-row{display:grid;grid-template-columns:82px 1fr auto;gap:15px;align-items:center;border-bottom:1px solid var(--border);padding:15px 0}.bag-row img{width:82px;height:82px;border-radius:15px;object-fit:cover}
-    .summary{background:#fff;border:1px solid var(--border);border-radius:22px;padding:22px;position:sticky;top:95px}
-    .summary-line{display:flex;justify-content:space-between;gap:15px;padding:9px 0}.total{font-size:1.2rem;font-weight:900;border-top:1px solid var(--border);margin-top:8px;padding-top:14px}
-    .notice{padding:13px 15px;border-radius:13px;background:#f7eef3;color:var(--plum);margin:10px 0}
-    .success{padding:40px;text-align:center}.order-no{font-size:2rem;font-weight:950;color:var(--plum);margin:12px 0}
-    footer{padding:45px 0;background:var(--plum);color:#fff;margin-top:50px}
-    footer .muted{color:#eadde5}
-    .admin-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
-    .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-    .admin-product{display:grid;grid-template-columns:75px 1fr auto;gap:13px;align-items:center;border-bottom:1px solid var(--border);padding:13px 0}
-    .admin-product img{width:75px;height:75px;object-fit:cover;border-radius:13px}
-    .modal{position:fixed;inset:0;background:rgba(32,18,27,.55);display:none;align-items:center;justify-content:center;padding:15px;z-index:100}
-    .modal.open{display:flex}.modal-box{width:min(760px,100%);max-height:92vh;overflow:auto;background:var(--cream);border-radius:25px;padding:25px}
-    .modal-head{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:18px}
-    .tiny{font-size:.82rem;color:var(--muted)}
-    .hidden{display:none!important}
-    .loading{text-align:center;padding:50px;color:var(--muted)}
-    @media(max-width:900px){.product-grid{grid-template-columns:repeat(2,1fr)}.hero-grid,.detail-grid,.checkout-grid,.admin-grid{grid-template-columns:1fr}.gallery-main img{height:420px}}
-    @media(max-width:600px){.nav{align-items:flex-start;padding:12px 0}.navlinks{justify-content:flex-end}.product-grid{grid-template-columns:1fr 1fr}.product-image{height:230px}.product-actions{grid-template-columns:1fr}.section-head{display:block}.search{margin-top:12px}.bag-row{grid-template-columns:65px 1fr}.bag-row .bag-actions{grid-column:2}.bag-row img{width:65px;height:65px}}
+
+    :root {
+      --primary: #111111;
+      --secondary: #f5f1ea;
+      --accent: #b38b59;
+      --text: #222;
+      --muted: #777;
+      --white: #fff;
+      --danger: #c0392b;
+      --success: #218c4a;
+      --border: #e5e5e5;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: #fff;
+      line-height: 1.5;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* HEADER */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,.97);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: auto;
+      min-height: 72px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: .5px;
+      white-space: nowrap;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .desktop-nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .desktop-nav button,
+    .desktop-nav a {
+      border: 0;
+      background: none;
+      font-weight: 600;
+      color: #333;
+      padding: 8px;
+    }
+
+    .desktop-nav button:hover,
+    .desktop-nav a:hover {
+      color: var(--accent);
+    }
+
+    .bag-button {
+      position: relative;
+    }
+
+    .bag-count {
+      position: absolute;
+      top: -2px;
+      right: -5px;
+      min-width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hamburger {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 8px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .hamburger span {
+      width: 21px;
+      height: 2px;
+      background: #111;
+    }
+
+    /* MOBILE MENU */
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0,0,0,.45);
+      visibility: hidden;
+      opacity: 0;
+      transition: .2s;
+    }
+
+    .mobile-menu.open {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .mobile-panel {
+      width: min(330px, 88%);
+      height: 100%;
+      background: white;
+      padding: 25px;
+      transform: translateX(-100%);
+      transition: .25s;
+      overflow-y: auto;
+    }
+
+    .mobile-menu.open .mobile-panel {
+      transform: translateX(0);
+    }
+
+    .mobile-close {
+      border: 0;
+      background: none;
+      font-size: 28px;
+      float: right;
+    }
+
+    .mobile-panel h2 {
+      margin: 10px 0 30px;
+      clear: both;
+    }
+
+    .mobile-panel button,
+    .mobile-panel a {
+      width: 100%;
+      display: block;
+      text-align: left;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      background: white;
+      padding: 15px 4px;
+      font-weight: 600;
+    }
+
+    /* PAGES */
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 570px;
+      background:
+        linear-gradient(rgba(0,0,0,.38), rgba(0,0,0,.38)),
+        linear-gradient(135deg, #e9dfd1, #bca98f);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .hero-content {
+      max-width: 750px;
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 7vw, 76px);
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 20px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 7px;
+      padding: 13px 20px;
+      font-weight: 700;
+      transition: .2s;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-light {
+      background: white;
+      color: #111;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-outline {
+      background: white;
+      border: 1px solid #ccc;
+      color: #222;
+    }
+
+    .btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* SECTION */
+    .section {
+      max-width: 1200px;
+      margin: auto;
+      padding: 65px 20px;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .section-title h2 {
+      font-size: 34px;
+      margin-bottom: 8px;
+    }
+
+    .section-title p {
+      color: var(--muted);
+    }
+
+    /* HOW TO ORDER */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .step {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 25px;
+      text-align: center;
+      background: white;
+    }
+
+    .step-number {
+      width: 42px;
+      height: 42px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 800;
+    }
+
+    .step h3 {
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* SHOP */
+    .shop-controls {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .search-box:focus {
+      border-color: var(--accent);
+    }
+
+    .categories {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .category-btn {
+      border: 1px solid #ddd;
+      background: white;
+      padding: 9px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .category-btn.active {
+      background: #111;
+      color: white;
+      border-color: #111;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .product-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: white;
+      transition: .2s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,.08);
+    }
+
+    .product-image {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      background: #f4f4f4;
+    }
+
+    .product-info {
+      padding: 15px;
+    }
+
+    .product-category {
+      font-size: 12px;
+      color: var(--accent);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .product-name {
+      font-size: 17px;
+      margin: 5px 0;
+    }
+
+    .product-price {
+      font-weight: 800;
+      margin: 8px 0 13px;
+    }
+
+    .stock-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 7px;
+    }
+
+    .product-actions .btn {
+      flex: 1;
+      padding: 10px;
+      font-size: 13px;
+    }
+
+    /* PRODUCT */
+    .product-detail {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 45px;
+      align-items: start;
+    }
+
+    .detail-image {
+      width: 100%;
+      border-radius: 12px;
+      background: #f4f4f4;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+    }
+
+    .detail-info h1 {
+      font-size: 38px;
+      margin-bottom: 8px;
+    }
+
+    .detail-price {
+      font-size: 25px;
+      font-weight: 800;
+      margin: 15px 0;
+    }
+
+    .detail-description {
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .variant-group {
+      margin: 20px 0;
+    }
+
+    .variant-group label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .variant-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .variant-option {
+      border: 1px solid #ccc;
+      background: white;
+      padding: 9px 13px;
+      border-radius: 6px;
+    }
+
+    .variant-option.selected {
+      background: #111;
+      color: white;
+      border-color: #111;
+    }
+
+    .variant-option:disabled {
+      opacity: .35;
+      cursor: not-allowed;
+    }
+
+    .quantity-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .quantity-row input {
+      width: 80px;
+      padding: 11px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    /* BAG */
+    .bag-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .bag-item {
+      display: grid;
+      grid-template-columns: 90px 1fr auto;
+      gap: 15px;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .bag-item img {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 7px;
+    }
+
+    .bag-item h3 {
+      margin-bottom: 5px;
+    }
+
+    .bag-meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .bag-controls {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 8px;
+    }
+
+    .small-btn {
+      border: 1px solid #ccc;
+      background: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 5px;
+    }
+
+    .bag-summary {
+      margin-top: 25px;
+      border-top: 1px solid #ddd;
+      padding-top: 20px;
+      text-align: right;
+    }
+
+    .total {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 15px;
+    }
+
+    /* FORMS */
+    .form-card {
+      max-width: 700px;
+      margin: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 7px;
+      padding: 12px;
+      outline: none;
+    }
+
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    /* ADMIN */
+    .admin-toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .admin-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f8f8f8;
+    }
+
+    .admin-product-image {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .admin-actions .btn {
+      padding: 8px 11px;
+      font-size: 12px;
+    }
+
+    /* EMPTY */
+    .empty {
+      text-align: center;
+      padding: 50px 20px;
+      color: var(--muted);
+    }
+
+    /* MODAL */
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 5000;
+      background: rgba(0,0,0,.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-box {
+      width: min(480px, 100%);
+      background: white;
+      border-radius: 14px;
+      padding: 28px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.2);
+      text-align: center;
+    }
+
+    .modal-box h2 {
+      margin-bottom: 10px;
+    }
+
+    .modal-box p {
+      color: #666;
+      margin-bottom: 22px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 7000;
+      background: #111;
+      color: white;
+      padding: 13px 18px;
+      border-radius: 8px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.2);
+      max-width: 360px;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #111;
+      color: white;
+      margin-top: 50px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: auto;
+      padding: 45px 20px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 30px;
+    }
+
+    footer h3 {
+      margin-bottom: 12px;
+    }
+
+    footer p,
+    footer a {
+      color: #ccc;
+      font-size: 14px;
+    }
+
+    footer a {
+      display: block;
+      margin-bottom: 7px;
+    }
+
+    .copyright {
+      text-align: center;
+      border-top: 1px solid #333;
+      padding: 18px;
+      color: #aaa;
+      font-size: 13px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 950px) {
+      .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .steps {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .desktop-nav {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .header-inner {
+        min-height: 64px;
+      }
+
+      .logo {
+        font-size: 18px;
+      }
+
+      .hero {
+        min-height: 500px;
+      }
+
+      .shop-controls {
+        grid-template-columns: 1fr;
+      }
+
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .product-actions {
+        flex-direction: column;
+      }
+
+      .product-info {
+        padding: 11px;
+      }
+
+      .product-name {
+        font-size: 15px;
+      }
+
+      .product-price {
+        font-size: 14px;
+      }
+
+      .product-detail {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+
+      .detail-info h1 {
+        font-size: 30px;
+      }
+
+      .bag-item {
+        grid-template-columns: 70px 1fr;
+      }
+
+      .bag-item img {
+        width: 70px;
+        height: 70px;
+      }
+
+      .bag-item > div:last-child {
+        grid-column: 2;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 45px 15px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .products-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .btn {
+        padding: 11px 14px;
+      }
+    }
   </style>
 </head>
 
 <body>
+
 <header>
-  <div class="container nav">
-    <button class="brand icon-btn" onclick="showPage('home')">Luqmanii Turban Hijabs</button>
-    <nav class="navlinks">
+  <div class="header-inner">
+    <button class="hamburger" onclick="openMobileMenu()" aria-label="Open menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="logo" onclick="showPage('home')" style="cursor:pointer;">
+      Luqmanii <span>Turban Hijabs</span>
+    </div>
+
+    <nav class="desktop-nav">
       <button onclick="showPage('home')">Home</button>
       <button onclick="showPage('shop')">Shop</button>
-      <button onclick="showPage('bag')">Bag <span class="bag-count" id="bagCount">0</span></button>
-      <button onclick="showPage('admin')">Owner</button>
+      <button class="bag-button" onclick="showPage('bag')">
+        Bag
+        <span class="bag-count" id="bagCount">0</span>
+      </button>
+      <button onclick="showPage('howToOrder')">How to Order</button>
+      <button onclick="showPage('help')">Help</button>
+      <a href="https://www.tiktok.com/@luqmaniturkiyecollection"
+         target="_blank" rel="noopener">TikTok</a>
+      <button onclick="showPage('owner')">Owner</button>
     </nav>
+
+    <button class="btn btn-primary" onclick="showPage('bag')" style="padding:9px 13px;">
+      Bag <span id="desktopBagCount">0</span>
+    </button>
   </div>
 </header>
 
-<main>
-  <section id="homePage" class="page active">
-    <div class="hero">
-      <div class="container hero-grid">
-        <div>
-          <div class="eyebrow">Luqmanii — Ethiopia</div>
-          <h1>Elegant turban hijabs for everyday life.</h1>
-          <p>Comfortable, beautiful and easy to wear. Choose your style, add it to your bag and send your order through WhatsApp.</p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px">
-            <button class="btn btn-primary" onclick="showPage('shop')">Shop Turbans</button>
-            <button class="btn btn-pink" onclick="filterCollection('Premium')">View Premium</button>
-          </div>
-        </div>
-        <div class="hero-card">
-          <img src="https://images.pexels.com/photos/3764014/pexels-photo-3764014.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Turban hijab">
-        </div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="container">
-        <div class="section-head"><div><div class="eyebrow">Featured</div><h2>Popular styles</h2></div><button class="btn btn-light" onclick="showPage('shop')">See all</button></div>
-        <div id="featuredGrid" class="product-grid"><div class="loading">Loading products…</div></div>
-      </div>
-    </div>
-  </section>
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu" onclick="closeMobileMenu(event)">
+  <div class="mobile-panel" onclick="event.stopPropagation()">
+    <button class="mobile-close" onclick="closeMobileMenu()">×</button>
 
-  <section id="shopPage" class="page">
-    <div class="section">
-      <div class="container">
-        <div class="section-head">
-          <div><div class="eyebrow">Collection</div><h2>Shop Luqmanii</h2></div>
-          <input id="searchInput" class="search" placeholder="Search products…" oninput="renderProducts()">
-        </div>
-        <div class="filters" style="margin-bottom:22px">
-          <button class="filter-btn active" onclick="setCategory('All',this)">All</button>
-          <button class="filter-btn" onclick="setCategory('Everyday',this)">Everyday</button>
-          <button class="filter-btn" onclick="setCategory('Prayer',this)">Prayer</button>
-          <button class="filter-btn" onclick="setCategory('Work',this)">Work</button>
-          <button class="filter-btn" onclick="setCategory('Occasion',this)">Occasion</button>
-          <button class="filter-btn" onclick="setCategory('Premium',this)">Premium</button>
-          <button class="filter-btn" onclick="setCategory('Kids',this)">Kids</button>
-        </div>
-        <div id="shopGrid" class="product-grid"><div class="loading">Loading products…</div></div>
-      </div>
-    </div>
-  </section>
+    <h2>Luqmanii</h2>
 
-  <section id="productPage" class="page">
-    <div class="section">
-      <div class="container" id="productDetail"></div>
-    </div>
-  </section>
+    <button onclick="mobileNavigate('home')">Home</button>
+    <button onclick="mobileNavigate('shop')">Shop</button>
+    <button onclick="mobileNavigate('bag')">
+      Bag (<span id="mobileBagCount">0</span>)
+    </button>
+    <button onclick="mobileNavigate('howToOrder')">How to Order</button>
+    <button onclick="mobileNavigate('help')">Help</button>
 
-  <section id="bagPage" class="page">
-    <div class="section">
-      <div class="container">
-        <div class="section-head"><div><div class="eyebrow">Your selection</div><h2>Your Bag</h2></div></div>
-        <div id="bagContent"></div>
-      </div>
-    </div>
-  </section>
+    <a href="https://www.tiktok.com/@luqmaniturkiyecollection"
+       target="_blank" rel="noopener">
+      TikTok @luqmaniturkiyecollection
+    </a>
 
-  <section id="checkoutPage" class="page">
-    <div class="section">
-      <div class="container">
-        <div class="section-head"><div><div class="eyebrow">Almost done</div><h2>Checkout</h2></div></div>
-        <div id="checkoutContent"></div>
-      </div>
-    </div>
-  </section>
+    <a href="tel:+251933703209">
+      📞 +251 933 703 209
+    </a>
 
-  <section id="confirmationPage" class="page">
-    <div class="section">
-      <div class="container" id="confirmationContent"></div>
-    </div>
-  </section>
-
-  <section id="adminPage" class="page">
-    <div class="section">
-      <div class="container">
-        <div class="section-head"><div><div class="eyebrow">Private area</div><h2>Owner Dashboard</h2></div></div>
-        <div id="adminContent"></div>
-      </div>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <div class="container">
-    <h3 style="color:#fff">Luqmanii Turban Hijabs</h3>
-    <p class="muted">Ethiopia · Turban hijabs made for comfort and confidence.</p>
-  </div>
-</footer>
-
-<div id="productModal" class="modal">
-  <div class="modal-box">
-    <div class="modal-head"><h2 id="modalTitle">Product</h2><button class="icon-btn" onclick="closeModal()">✕</button></div>
-    <form id="productForm" onsubmit="saveProduct(event)">
-      <input type="hidden" id="editId">
-      <div class="field"><label>Product name</label><input id="productName" required></div>
-      <div class="field"><label>Description</label><textarea id="productDescription"></textarea></div>
-      <div class="admin-grid">
-        <div class="field"><label>Category</label><select id="productCategory" required></select></div>
-        <div class="field"><label>Base price (ETB)</label><input id="productPrice" type="number" min="0" step="1" required></div>
-      </div>
-      <div class="admin-grid">
-        <div class="field"><label>Colors (comma separated)</label><input id="productColors" placeholder="Black, Mocha, Blush"></div>
-        <div class="field"><label>Size</label><input id="productSize" value="One Size"></div>
-      </div>
-      <div class="admin-grid">
-        <div class="field"><label>Stock per color</label><input id="productStock" type="number" min="0" value="10"></div>
-        <div class="field"><label>Photo</label><input id="productPhoto" type="file" accept="image/*"></div>
-      </div>
-      <div class="field"><label>Or image URL</label><input id="productImageUrl" placeholder="https://…"></div>
-      <div class="tiny">If you upload a photo, the file is stored in Supabase Storage. The product-images bucket must be public for storefront images.</div>
-      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px">
-        <button type="button" class="btn btn-light" onclick="closeModal()">Cancel</button>
-        <button class="btn btn-primary" type="submit">Save product</button>
-      </div>
-    </form>
+    <button onclick="mobileNavigate('owner')">Owner</button>
   </div>
 </div>
 
+<!-- HOME -->
+<section id="home" class="page active">
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Luqmanii Turban Hijabs</h1>
+      <p>Elegant Turkish-inspired turbans and hijabs for your everyday style.</p>
+      <button class="btn btn-light" onclick="showPage('shop')">
+        Shop Now
+      </button>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-title">
+      <h2>How to Order</h2>
+      <p>Ordering from Luqmanii is simple.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Choose</h3>
+        <p>Browse our products and select your preferred color and size.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Add to Bag</h3>
+        <p>Select the quantity and add your chosen item to your bag.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Checkout</h3>
+        <p>Enter your name, phone number and delivery information.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <h3>Confirm</h3>
+        <p>Submit your order and contact us through WhatsApp if needed.</p>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- SHOP -->
+<section id="shop" class="page">
+  <div class="section">
+    <div class="section-title">
+      <h2>Shop</h2>
+      <p>Find your favorite Luqmanii style.</p>
+    </div>
+
+    <div class="shop-controls">
+      <input
+        id="searchInput"
+        class="search-box"
+        type="search"
+        placeholder="Search by name, category, color, size, description..."
+        oninput="renderProducts()"
+      />
+
+      <button class="btn btn-outline" onclick="clearSearch()">
+        Clear
+      </button>
+    </div>
+
+    <div id="categories" class="categories"></div>
+
+    <div id="productsGrid" class="products-grid"></div>
+  </div>
+</section>
+
+<!-- PRODUCT -->
+<section id="product" class="page">
+  <div class="section">
+    <button class="btn btn-outline" onclick="goBack()">← Go Back</button>
+
+    <div id="productDetail" style="margin-top:20px;"></div>
+  </div>
+</section>
+
+<!-- BAG -->
+<section id="bag" class="page">
+  <div class="section">
+    <button class="btn btn-outline" onclick="goBack()">← Go Back</button>
+
+    <div class="section-title" style="margin-top:25px;">
+      <h2>Your Bag</h2>
+    </div>
+
+    <div id="bagContent"></div>
+  </div>
+</section>
+
+<!-- CHECKOUT -->
+<section id="checkout" class="page">
+  <div class="section">
+    <button class="btn btn-outline" onclick="showPage('bag')">
+      ← Back to Bag
+    </button>
+
+    <div class="section-title" style="margin-top:25px;">
+      <h2>Checkout</h2>
+      <p>Enter your delivery information.</p>
+    </div>
+
+    <div class="form-card">
+      <form id="checkoutForm" onsubmit="placeOrder(event)">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input id="customerName" required />
+        </div>
+
+        <div class="form-group">
+          <label>Phone Number *</label>
+          <input id="customerPhone" type="tel" required />
+        </div>
+
+        <div class="form-group">
+          <label>City *</label>
+          <input id="customerCity" required />
+        </div>
+
+        <div class="form-group">
+          <label>Delivery Address *</label>
+          <textarea id="customerAddress" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Additional Note</label>
+          <textarea id="customerNote"></textarea>
+        </div>
+
+        <div id="checkoutSummary"></div>
+
+        <button
+          id="placeOrderButton"
+          class="btn btn-success"
+          type="submit"
+          style="width:100%; margin-top:10px;"
+        >
+          Place Order
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- CONFIRMATION -->
+<section id="confirmation" class="page">
+  <div class="section">
+    <div class="form-card" style="text-align:center;">
+      <h1>Thank You!</h1>
+      <p style="margin:15px 0;color:#666;">
+        Your order has been received successfully.
+      </p>
+
+      <p id="confirmationOrderNumber" style="font-weight:700;"></p>
+
+      <div style="margin-top:25px;">
+        <button class="btn btn-primary" onclick="showPage('home')">
+          Back to Home
+        </button>
+
+        <button class="btn btn-outline" onclick="showPage('shop')">
+          Continue Shopping
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO ORDER -->
+<section id="howToOrder" class="page">
+  <div class="section">
+    <button class="btn btn-outline" onclick="goBack()">← Go Back</button>
+
+    <div class="section-title" style="margin-top:25px;">
+      <h2>How to Order</h2>
+      <p>Follow these four simple steps.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Choose Your Product</h3>
+        <p>Select the hijab or turban you want.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Select Variant</h3>
+        <p>Choose the available color and size combination.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Checkout</h3>
+        <p>Enter your delivery details and review your order.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <h3>Order Received</h3>
+        <p>After submitting, your order is received by Luqmanii for processing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HELP -->
+<section id="help" class="page">
+  <div class="section">
+    <button class="btn btn-outline" onclick="goBack()">← Go Back</button>
+
+    <div class="section-title" style="margin-top:25px;">
+      <h2>Help</h2>
+      <p>Need assistance? Contact us directly.</p>
+    </div>
+
+    <div class="form-card">
+      <h3>Contact Luqmanii</h3>
+
+      <p style="margin:15px 0;color:#666;">
+        For questions about products, sizes, colors, delivery or your order,
+        please contact us.
+      </p>
+
+      <a
+        class="btn btn-success"
+        href="https://wa.me/251918940653"
+        target="_blank"
+        rel="noopener"
+      >
+        WhatsApp Us
+      </a>
+
+      <a
+        class="btn btn-outline"
+        href="tel:+251933703209"
+        style="margin-left:7px;"
+      >
+        Call +251 933 703 209
+      </a>
+
+      <a
+        class="btn btn-outline"
+        href="https://www.tiktok.com/@luqmaniturkiyecollection"
+        target="_blank"
+        rel="noopener"
+        style="margin-top:10px;"
+      >
+        TikTok
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- OWNER LOGIN -->
+<section id="owner" class="page">
+  <div class="section">
+    <button class="btn btn-outline" onclick="goBack()">← Go Back</button>
+
+    <div class="section-title" style="margin-top:25px;">
+      <h2>Owner</h2>
+      <p>Owner access</p>
+    </div>
+
+    <div class="form-card" id="loginCard">
+      <form onsubmit="ownerLogin(event)">
+        <div class="form-group">
+          <label>Email</label>
+          <input id="ownerEmail" type="email" required />
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input id="ownerPassword" type="password" required />
+        </div>
+
+        <button class="btn btn-primary" style="width:100%;">
+          Login
+        </button>
+      </form>
+    </div>
+
+    <div id="adminDashboard" class="hidden">
+      <div class="admin-toolbar">
+        <button class="btn btn-primary" onclick="showAdminProducts()">
+          Products
+        </button>
+
+        <button class="btn btn-outline" onclick="showAdminOrders()">
+          Orders
+        </button>
+
+        <button class="btn btn-danger" onclick="ownerLogout()">
+          Logout
+        </button>
+      </div>
+
+      <div id="adminContent"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h3>Luqmanii Turban Hijabs</h3>
+      <p>
+        Elegant Turkish-inspired turbans and hijabs.
+      </p>
+    </div>
+
+    <div>
+      <h3>Quick Links</h3>
+      <a href="#" onclick="showPage('home');return false;">Home</a>
+      <a href="#" onclick="showPage('shop');return false;">Shop</a>
+      <a href="#" onclick="showPage('howToOrder');return false;">How to Order</a>
+      <a href="#" onclick="showPage('help');return false;">Help</a>
+    </div>
+
+    <div>
+      <h3>Contact</h3>
+      <a href="tel:+251933703209">+251 933 703 209</a>
+      <a href="https://wa.me/251918940653" target="_blank" rel="noopener">
+        WhatsApp
+      </a>
+      <a href="https://www.tiktok.com/@luqmaniturkiyecollection"
+         target="_blank" rel="noopener">
+        TikTok
+      </a>
+    </div>
+  </div>
+
+  <div class="copyright">
+    © <span id="year"></span> Luqmanii Turban Hijabs. All rights reserved.
+  </div>
+</footer>
+
+<!-- GENERAL MODAL -->
+<div id="generalModal" class="modal hidden">
+  <div class="modal-box">
+    <h2 id="modalTitle">Message</h2>
+    <p id="modalMessage"></p>
+
+    <div class="modal-actions" id="modalActions">
+      <button class="btn btn-primary" onclick="closeModal()">
+        OK
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
 <script>
-const SUPABASE_URL = "https://nlqmmzixpzmgvwwiypbn.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_pdzlM72e-KRxaOL3sv8JTA_Iv89CYl5";
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+  /* =========================================================
+     SUPABASE
+     ========================================================= */
 
-const BUSINESS_SLUG = "luqmanii";
-const WHATSAPP_NUMBER = "251918940653";
-const IMAGE_BUCKET = "product-images";
-const DEFAULT_IMAGE = "https://images.pexels.com/photos/3764014/pexels-photo-3764014.jpeg?auto=compress&cs=tinysrgb&w=1000";
+  const SUPABASE_URL =
+    "https://nlqmmzixpzmgvwwiypbn.supabase.co";
 
-let products = [];
-let categories = [];
-let cart = JSON.parse(localStorage.getItem("luqmanii_cart") || "[]");
-let activeCategory = "All";
-let selectedProduct = null;
-let selectedColor = null;
-let selectedSize = null;
-let selectedQuantity = 1;
-let selectedPhoto = 0;
-let currentBusiness = null;
-let currentUser = null;
-let currentRole = null;
-let adminOrders = [];
+  const SUPABASE_KEY =
+    "sb_publishable_pdzlM72e-KRxaOL3sv8JTA_Iv89CYl5";
 
-function escapeHtml(value){
-  return String(value ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  }[c]));
-}
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
 
-function formatPrice(value){
-  return new Intl.NumberFormat("en-US").format(Number(value || 0)) + " ETB";
-}
+  const BUSINESS_SLUG = "luqmanii";
 
-function saveCart(){
-  localStorage.setItem("luqmanii_cart", JSON.stringify(cart));
-  updateCartCount();
-}
+  const WHATSAPP_NUMBER = "251918940653";
 
-function updateCartCount(){
-  const count = cart.reduce((n,item)=>n + Number(item.quantity || 0),0);
-  const el = document.getElementById("bagCount");
-  if(el) el.textContent = count;
-}
+  const PHONE_NUMBER = "+251933703209";
 
-function productImages(product){
-  const imgs = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
-  return imgs.length ? imgs : [DEFAULT_IMAGE];
-}
+  const STORAGE_BUCKET = "product-images";
 
-function mainImage(product){
-  return productImages(product)[0];
-}
+  const LAST_ORDER_SIGNATURE_KEY =
+    "luqmanii_last_order_signature";
 
-function normalizeCategory(row){
-  if(Array.isArray(row)) return row[0] || null;
-  return row || null;
-}
 
-async function getBusiness(){
-  if(currentBusiness) return currentBusiness;
-  const {data,error} = await supabaseClient.from("businesses").select("*").eq("slug",BUSINESS_SLUG).single();
-  if(error) throw error;
-  currentBusiness = data;
-  return data;
-}
+  /* =========================================================
+     STATE
+     ========================================================= */
 
-async function getCategories(){
-  const business = await getBusiness();
-  const {data,error} = await supabaseClient.from("categories").select("*").eq("business_id",business.id).eq("active",true).order("sort_order");
-  if(error){ console.error(error); return []; }
-  categories = data || [];
-  return categories;
-}
+  let products = [];
+  let currentProduct = null;
+  let currentProductVariants = [];
+  let selectedColor = "";
+  let selectedSize = "";
+  let selectedQuantity = 1;
+  let activeCategory = "All";
+  let previousPage = "home";
+  let currentPage = "home";
+  let isSubmittingOrder = false;
+  let currentAdminProducts = [];
 
-async function getProducts(){
-  const {data,error} = await supabaseClient
-    .from("products")
-    .select(`
-      id,name,description,base_price,category_id,active,created_at,
-      categories(name,slug),
-      product_variants(id,color,size,sku,price,stock,active),
-      product_images(storage_path,alt_text,sort_order)
-    `)
-    .eq("active",true)
-    .order("created_at",{ascending:false});
 
-  if(error){
-    console.error("Supabase products error:",error);
-    return [];
+  /* =========================================================
+     INITIALIZATION
+     ========================================================= */
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+
+    updateBagCount();
+
+    await getProducts();
+
+    supabaseClient.auth.onAuthStateChange(
+      async (event, session) => {
+        if (session) {
+          showAdminUI();
+        } else {
+          hideAdminUI();
+        }
+      }
+    );
+  });
+
+
+  /* =========================================================
+     NAVIGATION
+     ========================================================= */
+
+  function showPage(pageId) {
+    const target = document.getElementById(pageId);
+
+    if (!target) return;
+
+    if (currentPage !== pageId) {
+      previousPage = currentPage;
+    }
+
+    document.querySelectorAll(".page").forEach(page => {
+      page.classList.remove("active");
+    });
+
+    target.classList.add("active");
+
+    currentPage = pageId;
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+    if (pageId === "bag") {
+      renderBag();
+    }
+
+    if (pageId === "checkout") {
+      renderCheckoutSummary();
+    }
+
+    if (pageId === "shop") {
+      renderProducts();
+    }
   }
 
-  return (data || []).map(product=>{
-    const category = normalizeCategory(product.categories);
-    const variants = (product.product_variants || []).filter(v=>v.active !== false);
-    const images = (product.product_images || [])
-      .sort((a,b)=>(a.sort_order||0)-(b.sort_order||0))
-      .map(image=>{
-        if(String(image.storage_path || "").startsWith("http")) return image.storage_path;
-        if(!image.storage_path) return "";
-        return supabaseClient.storage.from(IMAGE_BUCKET).getPublicUrl(image.storage_path).data.publicUrl;
-      }).filter(Boolean);
+  function goBack() {
+    if (previousPage && previousPage !== currentPage) {
+      const page = previousPage;
+      previousPage = "home";
+      showPage(page);
+    } else {
+      showPage("home");
+    }
+  }
 
-    return {
-      id:product.id,
-      name:product.name,
-      description:product.description || "",
-      category:category?.name || "Everyday",
-      categoryId:product.category_id,
-      price:Number(product.base_price || 0),
-      stock:variants.reduce((total,v)=>total + Number(v.stock || 0),0),
-      colors:[...new Set(variants.map(v=>v.color).filter(Boolean))],
-      sizes:[...new Set(variants.map(v=>v.size).filter(Boolean))],
-      images,
-      variants
-    };
-  });
-}
 
-async function loadProducts(){
-  try{
-    products = await getProducts();
-    await getCategories();
-    renderFeatured();
+  /* =========================================================
+     MOBILE MENU
+     ========================================================= */
+
+  function openMobileMenu() {
+    document.getElementById("mobileMenu")
+      .classList.add("open");
+  }
+
+  function closeMobileMenu(event) {
+    if (
+      event &&
+      event.target !== document.getElementById("mobileMenu")
+    ) {
+      return;
+    }
+
+    document.getElementById("mobileMenu")
+      .classList.remove("open");
+  }
+
+  function mobileNavigate(page) {
+    closeMobileMenu();
+    showPage(page);
+  }
+
+
+  /* =========================================================
+     MODALS / TOASTS
+     ========================================================= */
+
+  function showModal(title, message, buttons) {
+    document.getElementById("modalTitle").textContent = title;
+    document.getElementById("modalMessage").textContent = message;
+
+    const actions =
+      document.getElementById("modalActions");
+
+    actions.innerHTML = "";
+
+    buttons.forEach(button => {
+      const btn = document.createElement("button");
+
+      btn.className =
+        "btn " +
+        (button.className || "btn-primary");
+
+      btn.textContent = button.text;
+
+      btn.onclick = () => {
+        if (button.action) {
+          button.action();
+        }
+      };
+
+      actions.appendChild(btn);
+    });
+
+    document.getElementById("generalModal")
+      .classList.remove("hidden");
+  }
+
+  function closeModal() {
+    document.getElementById("generalModal")
+      .classList.add("hidden");
+  }
+
+  function showAlert(title, message) {
+    showModal(title, message, [
+      {
+        text: "OK",
+        className: "btn-primary",
+        action: closeModal
+      }
+    ]);
+  }
+
+  function showToast(message) {
+    const toast = document.getElementById("toast");
+
+    toast.textContent = message;
+    toast.classList.remove("hidden");
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer = setTimeout(() => {
+      toast.classList.add("hidden");
+    }, 3000);
+  }
+
+
+  /* =========================================================
+     PRODUCTS
+     ========================================================= */
+
+  async function getProducts() {
+    try {
+      /*
+        SECURITY / ISOLATION:
+        We obtain the business first, then filter products
+        by business_id instead of loading products from every
+        business.
+      */
+
+      const { data: business, error: businessError } =
+        await supabaseClient
+          .from("businesses")
+          .select("id,name,slug")
+          .eq("slug", BUSINESS_SLUG)
+          .maybeSingle();
+
+      if (businessError) {
+        console.error(businessError);
+        showAlert(
+          "Error",
+          "Unable to load the store."
+        );
+        return;
+      }
+
+      if (!business) {
+        showAlert(
+          "Store Not Found",
+          "The Luqmanii business could not be found."
+        );
+        return;
+      }
+
+      window.currentBusiness = business;
+
+      const { data, error } =
+        await supabaseClient
+          .from("products")
+          .select(`
+            id,
+            business_id,
+            name,
+            slug,
+            description,
+            category,
+            base_price,
+            image_url,
+            colors,
+            sizes,
+            is_active,
+            created_at,
+            product_variants (
+              id,
+              product_id,
+              color,
+              size,
+              price,
+              stock,
+              sku
+            )
+          `)
+          .eq("business_id", business.id)
+          .eq("is_active", true)
+          .order("created_at", {
+            ascending: false
+          });
+
+      if (error) {
+        console.error(error);
+        showAlert(
+          "Error",
+          "Unable to load products."
+        );
+        return;
+      }
+
+      products = data || [];
+
+      renderCategories();
+      renderProducts();
+
+    } catch (error) {
+      console.error(error);
+      showAlert(
+        "Error",
+        "Something went wrong while loading products."
+      );
+    }
+  }
+
+
+  /* =========================================================
+     SEARCH
+     ========================================================= */
+
+  function getSearchTokens() {
+    const search =
+      (document.getElementById("searchInput")?.value || "")
+        .trim()
+        .toLowerCase();
+
+    if (!search) return [];
+
+    return search
+      .split(/\s+/)
+      .map(word => word.trim())
+      .filter(Boolean);
+  }
+
+  function productSearchText(product) {
+    const variants =
+      product.product_variants || [];
+
+    const variantText = variants
+      .map(v =>
+        [
+          v.color,
+          v.size,
+          v.sku,
+          v.price
+        ].join(" ")
+      )
+      .join(" ");
+
+    return [
+      product.name,
+      product.category,
+      product.description,
+      product.colors,
+      product.sizes,
+      variantText
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+  }
+
+  function productMatchesSearch(product) {
+    const tokens = getSearchTokens();
+
+    if (!tokens.length) {
+      return true;
+    }
+
+    const searchable =
+      productSearchText(product);
+
+    /*
+      OR SEARCH:
+      If at least one entered word matches
+      any searchable product field, show it.
+    */
+
+    return tokens.some(token =>
+      searchable.includes(token)
+    );
+  }
+
+  function clearSearch() {
+    const input =
+      document.getElementById("searchInput");
+
+    if (input) {
+      input.value = "";
+    }
+
     renderProducts();
-  }catch(error){
-    console.error(error);
-    document.getElementById("shopGrid").innerHTML =
-      '<div class="empty" style="grid-column:1/-1"><h3>Store connection problem</h3><p>Please refresh the page.</p></div>';
   }
-}
 
-function showPage(page){
-  document.querySelectorAll(".page").forEach(el=>el.classList.remove("active"));
-  const target = document.getElementById(page + "Page");
-  if(target) target.classList.add("active");
-  window.scrollTo({top:0,behavior:"smooth"});
-  if(page==="shop") renderProducts();
-  if(page==="bag") renderBag();
-  if(page==="checkout") renderCheckout();
-  if(page==="admin") renderAdmin();
-}
 
-function setCategory(category,button){
-  activeCategory = category;
-  document.querySelectorAll(".filter-btn").forEach(btn=>btn.classList.remove("active"));
-  if(button) button.classList.add("active");
-  showPage("shop");
-  renderProducts();
-}
+  /* =========================================================
+     CATEGORIES
+     ========================================================= */
 
-function filterCollection(category){
-  activeCategory = category;
-  showPage("shop");
-  document.querySelectorAll(".filter-btn").forEach(btn=>btn.classList.toggle("active",btn.textContent.trim()===category));
-  renderProducts();
-}
+  function renderCategories() {
+    const container =
+      document.getElementById("categories");
 
-function productCard(product){
-  const soldOut = Number(product.stock) <= 0;
-  return `
-    <article class="product-card">
-      <div class="product-image" onclick="openProduct('${product.id}')">
-        <img src="${escapeHtml(mainImage(product))}" alt="${escapeHtml(product.name)}" loading="lazy">
-        <div class="badge">${escapeHtml(product.category)}</div>
-        ${soldOut ? '<div class="sold-badge">SOLD OUT</div>' : ''}
-      </div>
-      <div class="product-info">
-        <div class="product-category">${escapeHtml(product.category)}</div>
-        <h3>${escapeHtml(product.name)}</h3>
-        <p class="product-description">${escapeHtml(product.description)}</p>
-        <div class="price">${formatPrice(product.price)}</div>
-        <div class="product-actions">
-          <button class="btn btn-pink" ${soldOut?"disabled":""} onclick="quickAddToBag('${product.id}')">🛍 Add to Bag</button>
-          <button class="btn btn-primary" onclick="openProduct('${product.id}')">${soldOut?"Sold Out":"Order"}</button>
-        </div>
-      </div>
-    </article>`;
-}
+    const categories = [
+      "All",
+      ...new Set(
+        products
+          .map(product => product.category)
+          .filter(Boolean)
+      )
+    ];
 
-function renderProducts(){
-  const search = (document.getElementById("searchInput")?.value || "").toLowerCase().trim();
-  const filtered = products.filter(product=>{
-    const categoryMatch = activeCategory==="All" || product.category===activeCategory;
-    const searchText = [
-      product.name,product.category,product.description,
-      ...(product.colors || []),...(product.sizes || [])
-    ].join(" ").toLowerCase();
-    return categoryMatch && searchText.includes(search);
-  });
-  const grid = document.getElementById("shopGrid");
-  if(!grid) return;
-  grid.innerHTML = filtered.length
-    ? filtered.map(productCard).join("")
-    : '<div class="empty" style="grid-column:1/-1"><h3>No products found</h3><p>Try another search or category.</p></div>';
-}
+    container.innerHTML = "";
 
-function renderFeatured(){
-  const grid = document.getElementById("featuredGrid");
-  if(!grid) return;
-  grid.innerHTML = products.filter(p=>Number(p.stock)>0).slice(0,4).map(productCard).join("")
-    || '<div class="empty" style="grid-column:1/-1"><h3>No products yet</h3><p>The owner can add products from the dashboard.</p></div>';
-}
+    categories.forEach(category => {
+      const button =
+        document.createElement("button");
 
-function findProduct(id){
-  return products.find(p=>String(p.id)===String(id));
-}
+      button.className =
+        "category-btn " +
+        (activeCategory === category
+          ? "active"
+          : "");
 
-function openProduct(id){
-  const product = findProduct(id);
-  if(!product) return;
-  selectedProduct = product;
-  selectedColor = product.colors?.[0] || null;
-  selectedSize = product.sizes?.[0] || null;
-  selectedQuantity = 1;
-  selectedPhoto = 0;
-  showPage("product");
-  renderProductDetail();
-}
+      button.textContent = category;
 
-function renderProductDetail(){
-  const product = selectedProduct;
-  if(!product) return;
-  const variants = product.variants || [];
-  const availableColors = [...new Set(variants.filter(v=>Number(v.stock)>0).map(v=>v.color).filter(Boolean))];
-  const availableSizes = [...new Set(variants.filter(v=>Number(v.stock)>0).map(v=>v.size).filter(Boolean))];
-  if(!availableColors.includes(selectedColor)) selectedColor = availableColors[0] || product.colors?.[0] || null;
-  if(!availableSizes.includes(selectedSize)) selectedSize = availableSizes[0] || product.sizes?.[0] || null;
+      button.onclick = () => {
+        activeCategory = category;
+        renderCategories();
+        renderProducts();
+      };
 
-  const selectedVariant = variants.find(v =>
-    (v.color || "")===(selectedColor || "") &&
-    (v.size || "")===(selectedSize || "")
-  ) || variants.find(v=>Number(v.stock)>0);
-
-  const maxStock = Number(selectedVariant?.stock || 0);
-  if(selectedQuantity > maxStock) selectedQuantity = Math.max(1,maxStock);
-
-  const images = productImages(product);
-  const box = document.getElementById("productDetail");
-  box.innerHTML = `
-    <div class="detail-grid">
-      <div>
-        <div class="gallery-main"><img src="${escapeHtml(images[selectedPhoto] || images[0])}" alt="${escapeHtml(product.name)}"></div>
-        <div class="thumbs">
-          ${images.map((src,i)=>`<img class="${i===selectedPhoto?"active":""}" src="${escapeHtml(src)}" onclick="selectedPhoto=${i};renderProductDetail()">`).join("")}
-        </div>
-      </div>
-      <div>
-        <div class="eyebrow">${escapeHtml(product.category)}</div>
-        <h2>${escapeHtml(product.name)}</h2>
-        <div class="price">${formatPrice(product.price)}</div>
-        <p>${escapeHtml(product.description)}</p>
-        <div class="field">
-          <label>Color</label>
-          <div class="choice-row">
-            ${(product.colors?.length ? product.colors : ["Standard"]).map(c=>`<button class="choice ${c===selectedColor?"active":""}" onclick="selectedColor='${escapeHtml(c).replace(/'/g,"\\'")}';renderProductDetail()">${escapeHtml(c)}</button>`).join("")}
-          </div>
-        </div>
-        <div class="field">
-          <label>Size</label>
-          <div class="choice-row">
-            ${(product.sizes?.length ? product.sizes : ["One Size"]).map(s=>`<button class="choice ${s===selectedSize?"active":""}" onclick="selectedSize='${escapeHtml(s).replace(/'/g,"\\'")}';renderProductDetail()">${escapeHtml(s)}</button>`).join("")}
-          </div>
-        </div>
-        <div class="field">
-          <label>Quantity</label>
-          <div class="qty">
-            <button onclick="selectedQuantity=Math.max(1,selectedQuantity-1);renderProductDetail()">−</button>
-            <strong>${selectedQuantity}</strong>
-            <button onclick="selectedQuantity=Math.min(${Math.max(1,maxStock)},selectedQuantity+1);renderProductDetail()" ${maxStock<=0?"disabled":""}>+</button>
-            <span class="tiny">${maxStock} available</span>
-          </div>
-        </div>
-        <div class="notice">${maxStock>0 ? "In stock — add it to your bag." : "This variant is sold out."}</div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn btn-pink" ${maxStock<=0?"disabled":""} onclick="addSelectedToBag()">🛍 Add to Bag</button>
-          <button class="btn btn-primary" ${maxStock<=0?"disabled":""} onclick="addSelectedToBag();showPage('checkout')">Order Now</button>
-        </div>
-      </div>
-    </div>`;
-}
-
-function addSelectedToBag(){
-  if(!selectedProduct) return;
-  const variant = (selectedProduct.variants || []).find(v =>
-    (v.color || "")===(selectedColor || "") &&
-    (v.size || "")===(selectedSize || "")
-  ) || (selectedProduct.variants || []).find(v=>Number(v.stock)>0);
-  if(!variant || Number(variant.stock)<=0){ alert("That variant is sold out."); return; }
-
-  const existing = cart.find(item=>String(item.productId)===String(selectedProduct.id) && String(item.variantId)===String(variant.id));
-  if(existing){
-    existing.quantity = Math.min(Number(variant.stock), existing.quantity + selectedQuantity);
-  }else{
-    cart.push({
-      productId:selectedProduct.id,
-      variantId:variant.id,
-      name:selectedProduct.name,
-      color:variant.color || "",
-      size:variant.size || "",
-      unitPrice:Number(variant.price ?? selectedProduct.price ?? 0),
-      quantity:selectedQuantity,
-      image:mainImage(selectedProduct)
+      container.appendChild(button);
     });
   }
-  saveCart();
-  showPage("bag");
-}
 
-function quickAddToBag(id){
-  const product = findProduct(id);
-  if(!product) return;
-  const variant = (product.variants || []).find(v=>Number(v.stock)>0);
-  if(!variant){ alert("Sold out."); return; }
-  const existing = cart.find(item=>String(item.productId)===String(product.id) && String(item.variantId)===String(variant.id));
-  if(existing) existing.quantity = Math.min(Number(variant.stock),existing.quantity+1);
-  else cart.push({
-    productId:product.id,variantId:variant.id,name:product.name,
-    color:variant.color || "",size:variant.size || "",
-    unitPrice:Number(variant.price ?? product.price ?? 0),quantity:1,image:mainImage(product)
-  });
-  saveCart();
-}
 
-function cartSubtotal(){
-  return cart.reduce((sum,item)=>sum + Number(item.unitPrice||0)*Number(item.quantity||0),0);
-}
+  /* =========================================================
+     PRODUCT PRICE / STOCK
+     ========================================================= */
 
-function renderBag(){
-  const box = document.getElementById("bagContent");
-  if(!cart.length){
-    box.innerHTML = '<div class="empty"><h3>Your bag is empty</h3><p>Add a turban from the shop.</p><button class="btn btn-primary" onclick="showPage(\'shop\')">Shop now</button></div>';
-    return;
+  function getProductVariants(product) {
+    return product.product_variants || [];
   }
-  box.innerHTML = `
-    <div class="checkout-grid">
-      <div class="panel">
-        ${cart.map((item,index)=>`
-          <div class="bag-row">
-            <img src="${escapeHtml(item.image || DEFAULT_IMAGE)}" alt="">
-            <div>
-              <h3>${escapeHtml(item.name)}</h3>
-              <div class="tiny">${escapeHtml(item.color)} · ${escapeHtml(item.size)}</div>
-              <strong>${formatPrice(item.unitPrice)}</strong>
-            </div>
-            <div class="bag-actions">
-              <div class="qty">
-                <button onclick="changeBagQuantity(${index},-1)">−</button>
-                <strong>${item.quantity}</strong>
-                <button onclick="changeBagQuantity(${index},1)">+</button>
-                <button class="btn btn-light" onclick="removeBagItem(${index})">Remove</button>
+
+  function getProductStock(product) {
+    const variants =
+      getProductVariants(product);
+
+    if (!variants.length) {
+      return null;
+    }
+
+    return variants.reduce(
+      (sum, variant) =>
+        sum + Number(variant.stock || 0),
+      0
+    );
+  }
+
+  function getStartingPrice(product) {
+    const variants =
+      getProductVariants(product)
+        .filter(v => Number(v.stock) > 0);
+
+    if (variants.length) {
+      return Math.min(
+        ...variants.map(v => Number(v.price))
+      );
+    }
+
+    return Number(product.base_price || 0);
+  }
+
+  function formatMoney(value) {
+    return Number(value || 0).toLocaleString(
+      undefined,
+      {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }
+    );
+  }
+
+
+  /* =========================================================
+     RENDER PRODUCTS
+     ========================================================= */
+
+  function renderProducts() {
+    const grid =
+      document.getElementById("productsGrid");
+
+    if (!grid) return;
+
+    let filtered = products.filter(product => {
+      const categoryMatches =
+        activeCategory === "All" ||
+        product.category === activeCategory;
+
+      return (
+        categoryMatches &&
+        productMatchesSearch(product)
+      );
+    });
+
+    if (!filtered.length) {
+      grid.innerHTML = `
+        <div class="empty" style="grid-column:1/-1;">
+          <h3>No products found</h3>
+          <p>Try another search or category.</p>
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = filtered
+      .map(product => {
+        const stock =
+          getProductStock(product);
+
+        const soldOut =
+          stock !== null && stock <= 0;
+
+        const image =
+          product.image_url ||
+          "https://via.placeholder.com/600x600?text=Luqmanii";
+
+        return `
+          <article class="product-card">
+            <img
+              class="product-image"
+              src="${escapeHtml(image)}"
+              alt="${escapeHtml(product.name)}"
+              onerror="this.src='https://via.placeholder.com/600x600?text=Luqmanii'"
+            >
+
+            <div class="product-info">
+              <div class="product-category">
+                ${escapeHtml(product.category || "Hijab")}
+              </div>
+
+              <h3 class="product-name">
+                ${escapeHtml(product.name)}
+              </h3>
+
+              <div class="product-price">
+                ${formatMoney(getStartingPrice(product))}
+              </div>
+
+              <div class="stock-label">
+                ${
+                  soldOut
+                    ? "Out of stock"
+                    : stock === null
+                      ? "Available"
+                      : `${stock} available`
+                }
+              </div>
+
+              <div class="product-actions">
+                <button
+                  class="btn btn-outline"
+                  onclick="openProduct('${product.id}')"
+                >
+                  View
+                </button>
+
+                <button
+                  class="btn btn-primary"
+                  ${soldOut ? "disabled" : ""}
+                  onclick="quickAdd('${product.id}')"
+                >
+                  Add
+                </button>
               </div>
             </div>
-          </div>`).join("")}
-      </div>
-      <div class="summary">
-        <h3>Order summary</h3>
-        <div class="summary-line"><span>Subtotal</span><strong>${formatPrice(cartSubtotal())}</strong></div>
-        <div class="summary-line"><span>Delivery</span><span>Confirmed later</span></div>
-        <div class="summary-line total"><span>Total before delivery</span><strong>${formatPrice(cartSubtotal())}</strong></div>
-        <button class="btn btn-primary" style="width:100%;margin-top:15px" onclick="showPage('checkout')">Continue to Checkout</button>
-      </div>
-    </div>`;
-}
-
-function changeBagQuantity(index,delta){
-  const item = cart[index];
-  if(!item) return;
-  const product = findProduct(item.productId);
-  const variant = product?.variants?.find(v=>String(v.id)===String(item.variantId));
-  const max = Number(variant?.stock || 999);
-  item.quantity = Math.max(0,Math.min(max,item.quantity+delta));
-  if(item.quantity===0) cart.splice(index,1);
-  saveCart();
-  renderBag();
-}
-
-function removeBagItem(index){
-  cart.splice(index,1);saveCart();renderBag();
-}
-
-function renderCheckout(){
-  const box = document.getElementById("checkoutContent");
-  if(!cart.length){
-    box.innerHTML='<div class="empty"><h3>Your bag is empty</h3><button class="btn btn-primary" onclick="showPage(\'shop\')">Shop now</button></div>';
-    return;
-  }
-  box.innerHTML = `
-    <div class="checkout-grid">
-      <form class="panel" onsubmit="placeOrder(event)">
-        <h3>Customer details</h3>
-        <div class="field"><label>Name</label><input id="customerName" required></div>
-        <div class="field"><label>Phone</label><input id="customerPhone" required placeholder="+251…"></div>
-        <div class="field"><label>Address</label><textarea id="customerAddress" required placeholder="City, area, house/shop details"></textarea></div>
-        <div class="field"><label>Order note</label><textarea id="customerNote" placeholder="Optional note"></textarea></div>
-        <div class="notice">After the order is saved, WhatsApp will open with your order summary.</div>
-        <button class="btn btn-primary" style="width:100%" type="submit">Place Order & WhatsApp</button>
-      </form>
-      <div class="summary">
-        <h3>Your order</h3>
-        ${cart.map(item=>`<div class="summary-line"><span>${escapeHtml(item.name)} × ${item.quantity}</span><strong>${formatPrice(item.unitPrice*item.quantity)}</strong></div>`).join("")}
-        <div class="summary-line total"><span>Subtotal</span><strong>${formatPrice(cartSubtotal())}</strong></div>
-        <p class="tiny">Delivery fee is handled by the business and can be updated from the owner settings later.</p>
-      </div>
-    </div>`;
-}
-
-async function placeOrder(event){
-  event.preventDefault();
-  if(!cart.length) return;
-
-  const payload = {
-    p_business_slug: BUSINESS_SLUG,
-    p_customer_name: document.getElementById("customerName").value.trim(),
-    p_customer_phone: document.getElementById("customerPhone").value.trim(),
-    p_customer_address: document.getElementById("customerAddress").value.trim(),
-    p_customer_note: document.getElementById("customerNote").value.trim(),
-    p_items: cart.map(item=>({variant_id:item.variantId,quantity:Number(item.quantity)}))
-  };
-
-  const {data,error} = await supabaseClient.rpc("create_public_order",payload);
-  if(error){
-    console.error(error);
-    alert("The order could not be saved: " + error.message);
-    return;
+          </article>
+        `;
+      })
+      .join("");
   }
 
-  const order = Array.isArray(data) ? data[0] : data;
-  const orderNumber = order?.order_number || "NEW";
-  const total = Number(order?.total || cartSubtotal());
-  const name = payload.p_customer_name;
-  const phone = payload.p_customer_phone;
-  const address = payload.p_customer_address;
 
-  let message = `Luqmanii Turban Hijabs Order\n\nOrder: ${orderNumber}\nCustomer: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n`;
-  cart.forEach(item=>{
-    message += `• ${item.name} — ${item.color || "Standard"} — ${item.size || "One Size"} × ${item.quantity} = ${formatPrice(item.unitPrice*item.quantity)}\n`;
-  });
-  message += `\nTotal: ${formatPrice(total)}`;
-  if(payload.p_customer_note) message += `\nNote: ${payload.p_customer_note}`;
+  /* =========================================================
+     PRODUCT DETAIL
+     ========================================================= */
 
-  lastOrder = {orderNumber,total,name};
-  cart = [];
-  saveCart();
-  window.open("https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(message),"_blank");
-  renderConfirmation();
-  showPage("confirmation");
-}
+  function openProduct(productId) {
+    const product =
+      products.find(p => p.id === productId);
 
-let lastOrder = null;
+    if (!product) return;
 
-function renderConfirmation(){
-  const box = document.getElementById("confirmationContent");
-  const o = lastOrder || {};
-  box.innerHTML = `
-    <div class="panel success">
-      <div class="eyebrow">Order received</div>
-      <h2>Thank you, ${escapeHtml(o.name || "customer")}.</h2>
-      <p>Your order has been saved.</p>
-      <div class="order-no">${escapeHtml(o.orderNumber || "")}</div>
-      <p>Total: <strong>${formatPrice(o.total || 0)}</strong></p>
-      <p class="tiny">WhatsApp should have opened with your order details. Send the message to complete the WhatsApp step.</p>
-      <button class="btn btn-primary" onclick="showPage('shop')">Continue shopping</button>
-    </div>`;
-}
+    currentProduct = product;
+    currentProductVariants =
+      getProductVariants(product);
 
-async function getOwnerState(){
-  const {data:{user}} = await supabaseClient.auth.getUser();
-  currentUser = user || null;
-  currentRole = null;
-  if(!user) return {user:null,role:null};
+    selectedColor = "";
+    selectedSize = "";
+    selectedQuantity = 1;
 
-  const business = await getBusiness();
-  const {data,error} = await supabaseClient
-    .from("business_members")
-    .select("role")
-    .eq("business_id",business.id)
-    .eq("user_id",user.id)
-    .single();
+    renderProductDetail();
 
-  if(!error) currentRole = data?.role || null;
-  return {user,role:currentRole};
-}
-
-async function renderAdmin(){
-  const box = document.getElementById("adminContent");
-  box.innerHTML='<div class="loading">Checking owner access…</div>';
-  const state = await getOwnerState();
-
-  if(!state.user){
-    box.innerHTML = `
-      <div class="panel" style="max-width:520px;margin:auto">
-        <h3>Owner login</h3>
-        <p class="tiny">Use the Supabase Auth email and password you created for the Luqmanii owner account.</p>
-        <form onsubmit="ownerLogin(event)">
-          <div class="field"><label>Email</label><input id="ownerEmail" type="email" required></div>
-          <div class="field"><label>Password</label><input id="ownerPassword" type="password" required></div>
-          <button class="btn btn-primary" style="width:100%">Sign in</button>
-        </form>
-      </div>`;
-    return;
+    showPage("product");
   }
 
-  if(!["owner","staff","developer"].includes(state.role)){
-    box.innerHTML='<div class="empty"><h3>No dashboard permission</h3><p>This account is not a member of the Luqmanii business.</p></div>';
-    return;
+  function renderProductDetail() {
+    const container =
+      document.getElementById("productDetail");
+
+    if (!currentProduct) return;
+
+    const product = currentProduct;
+    const variants = currentProductVariants;
+
+    const image =
+      product.image_url ||
+      "https://via.placeholder.com/800x800?text=Luqmanii";
+
+    const colors = [
+      ...new Set(
+        variants
+          .map(v => v.color)
+          .filter(Boolean)
+      )
+    ];
+
+    const sizes = [
+      ...new Set(
+        variants
+          .map(v => v.size)
+          .filter(Boolean)
+      )
+    ];
+
+    container.innerHTML = `
+      <div class="product-detail">
+        <div>
+          <img
+            id="detailImage"
+            class="detail-image"
+            src="${escapeHtml(image)}"
+            alt="${escapeHtml(product.name)}"
+          >
+        </div>
+
+        <div class="detail-info">
+          <div class="product-category">
+            ${escapeHtml(product.category || "Hijab")}
+          </div>
+
+          <h1>${escapeHtml(product.name)}</h1>
+
+          <div class="detail-price" id="detailPrice">
+            ${formatMoney(getStartingPrice(product))}
+          </div>
+
+          <p class="detail-description">
+            ${escapeHtml(product.description || "")}
+          </p>
+
+          ${
+            colors.length
+              ? `
+                <div class="variant-group">
+                  <label>Color</label>
+                  <div class="variant-options">
+                    ${colors.map(color => `
+                      <button
+                        class="variant-option"
+                        data-color="${escapeHtml(color)}"
+                        onclick="selectColor('${escapeJs(color)}')"
+                      >
+                        ${escapeHtml(color)}
+                      </button>
+                    `).join("")}
+                  </div>
+                </div>
+              `
+              : ""
+          }
+
+          ${
+            sizes.length
+              ? `
+                <div class="variant-group">
+                  <label>Size</label>
+                  <div class="variant-options">
+                    ${sizes.map(size => `
+                      <button
+                        class="variant-option"
+                        data-size="${escapeHtml(size)}"
+                        onclick="selectSize('${escapeJs(size)}')"
+                      >
+                        ${escapeHtml(size)}
+                      </button>
+                    `).join("")}
+                  </div>
+                </div>
+              `
+              : ""
+          }
+
+          <div class="quantity-row">
+            <label><strong>Quantity</strong></label>
+            <input
+              id="detailQuantity"
+              type="number"
+              min="1"
+              value="1"
+              onchange="selectedQuantity=Math.max(1,Number(this.value)||1)"
+            >
+          </div>
+
+          <button
+            class="btn btn-primary"
+            style="width:100%;"
+            onclick="addSelectedToBagAndStay()"
+          >
+            Add to Bag
+          </button>
+
+          <button
+            class="btn btn-accent"
+            style="width:100%;margin-top:8px;"
+            onclick="buyNow()"
+          >
+            Buy Now
+          </button>
+        </div>
+      </div>
+    `;
+
+    updateVariantUI();
   }
 
-  const canEdit = ["owner","staff","developer"].includes(state.role);
-  const isOwner = state.role==="owner";
-  const business = await getBusiness();
-  const {data:orders,error:ordersError} = await supabaseClient
-    .from("orders")
-    .select("id,order_number,status,subtotal,delivery_fee,discount,total,customer_note,created_at,customers(name,phone,address)")
-    .eq("business_id",business.id)
-    .order("created_at",{ascending:false})
-    .limit(50);
-  if(!ordersError) adminOrders = orders || [];
-
-  box.innerHTML = `
-    <div class="admin-toolbar">
-      <span class="notice" style="margin:0">Signed in as ${escapeHtml(state.user.email)} · role: ${escapeHtml(state.role)}</span>
-      <button class="btn btn-light" onclick="ownerLogout()">Sign out</button>
-      <button class="btn btn-primary" onclick="openProductEditor()">+ Add product</button>
-      <button class="btn btn-light" onclick="loadProducts();renderAdmin()">Refresh</button>
-    </div>
-    <div class="admin-grid">
-      <div class="panel">
-        <h3>Catalog</h3>
-        <div id="adminProducts"></div>
-      </div>
-      <div class="panel">
-        <h3>Recent orders</h3>
-        <div id="adminOrders"></div>
-      </div>
-    </div>`;
-  renderAdminProducts(canEdit);
-  renderAdminOrders();
-}
-
-function renderAdminProducts(canEdit){
-  const box = document.getElementById("adminProducts");
-  if(!box) return;
-  if(!products.length){box.innerHTML='<p class="tiny">No products yet.</p>';return;}
-  box.innerHTML = products.map(p=>`
-    <div class="admin-product">
-      <img src="${escapeHtml(mainImage(p))}" alt="">
-      <div>
-        <strong>${escapeHtml(p.name)}</strong>
-        <div class="tiny">${escapeHtml(p.category)} · ${formatPrice(p.price)} · stock ${p.stock}</div>
-      </div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <button class="btn btn-light" onclick="openProductEditor('${p.id}')">Edit</button>
-        ${canEdit?`<button class="btn btn-light" onclick="deleteProduct('${p.id}')">Delete</button>`:""}
-      </div>
-    </div>`).join("");
-}
-
-function renderAdminOrders(){
-  const box = document.getElementById("adminOrders");
-  if(!box) return;
-  if(!adminOrders.length){box.innerHTML='<p class="tiny">No orders yet.</p>';return;}
-  box.innerHTML = adminOrders.map(o=>`
-    <div style="padding:13px 0;border-bottom:1px solid var(--border)">
-      <div style="display:flex;justify-content:space-between;gap:10px">
-        <strong>${escapeHtml(o.order_number)}</strong>
-        <select onchange="updateOrderStatus('${o.id}',this.value)">
-          ${["NEW","CONFIRMED","PREPARING","READY","DELIVERED","CANCELLED"].map(s=>`<option ${s===o.status?"selected":""}>${s}</option>`).join("")}
-        </select>
-      </div>
-      <div class="tiny">${escapeHtml(o.customers?.name || "")} · ${escapeHtml(o.customers?.phone || "")}</div>
-      <div>${formatPrice(o.total)}</div>
-    </div>`).join("");
-}
-
-async function ownerLogin(event){
-  event.preventDefault();
-  const email = document.getElementById("ownerEmail").value.trim();
-  const password = document.getElementById("ownerPassword").value;
-  const {error} = await supabaseClient.auth.signInWithPassword({email,password});
-  if(error){alert(error.message);return;}
-  renderAdmin();
-}
-
-async function ownerLogout(){
-  await supabaseClient.auth.signOut();
-  currentUser=null;currentRole=null;
-  renderAdmin();
-}
-
-function openProductEditor(id=null){
-  const product = id ? findProduct(id) : null;
-  document.getElementById("modalTitle").textContent = product ? "Edit product" : "Add product";
-  document.getElementById("editId").value = product?.id || "";
-  document.getElementById("productName").value = product?.name || "";
-  document.getElementById("productDescription").value = product?.description || "";
-  const categorySelect = document.getElementById("productCategory");
-  categorySelect.innerHTML = categories.map(c=>`<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`).join("");
-  if(product) categorySelect.value = product.categoryId || "";
-  document.getElementById("productPrice").value = product?.price || "";
-  document.getElementById("productColors").value = product?.colors?.join(", ") || "Black, Mocha, Blush";
-  document.getElementById("productSize").value = product?.sizes?.[0] || "One Size";
-  const firstVariant = product?.variants?.[0];
-  document.getElementById("productStock").value = firstVariant?.stock ?? 10;
-  document.getElementById("productPhoto").value = "";
-  document.getElementById("productImageUrl").value = product?.images?.[0] || "";
-  document.getElementById("productModal").classList.add("open");
-}
-
-function closeModal(){
-  document.getElementById("productModal").classList.remove("open");
-}
-
-async function saveProduct(event){
-  event.preventDefault();
-  const state = await getOwnerState();
-  if(!state.user || !["owner","staff","developer"].includes(state.role)){
-    alert("Please sign in as an owner/staff/developer.");return;
+  function selectColor(color) {
+    selectedColor = color;
+    updateVariantUI();
   }
 
-  const business = await getBusiness();
-  const id = document.getElementById("editId").value.trim();
-  const name = document.getElementById("productName").value.trim();
-  const description = document.getElementById("productDescription").value.trim();
-  const categoryId = document.getElementById("productCategory").value;
-  const price = Number(document.getElementById("productPrice").value || 0);
-  const colors = document.getElementById("productColors").value.split(",").map(x=>x.trim()).filter(Boolean);
-  const size = document.getElementById("productSize").value.trim() || "One Size";
-  const stock = Number(document.getElementById("productStock").value || 0);
-  const file = document.getElementById("productPhoto").files[0];
-  const imageUrl = document.getElementById("productImageUrl").value.trim();
-
-  let productId = id;
-
-  if(id){
-    const {error} = await supabaseClient.from("products").update({
-      name,description,category_id:categoryId,base_price:price
-    }).eq("id",id).eq("business_id",business.id);
-    if(error){alert(error.message);return;}
-    await supabaseClient.from("product_variants").delete().eq("product_id",id);
-  }else{
-    const {data,error} = await supabaseClient.from("products").insert({
-      business_id:business.id,name,description,category_id:categoryId,base_price:price,active:true
-    }).select("id").single();
-    if(error){alert(error.message);return;}
-    productId = data.id;
+  function selectSize(size) {
+    selectedSize = size;
+    updateVariantUI();
   }
 
-  const variants = (colors.length ? colors : ["Standard"]).map((color,index)=>({
-    product_id:productId,color,size,sku:`LUQ-${String(productId).slice(0,8)}-${index+1}`,price,stock,active:true
-  }));
-  const {error:variantError} = await supabaseClient.from("product_variants").insert(variants);
-  if(variantError){alert(variantError.message);return;}
+  function getSelectedVariant() {
+    if (!currentProduct) return null;
 
-  if(file){
-    const safeName = file.name.toLowerCase().replace(/[^a-z0-9.-]+/g,"-");
-    const path = `${business.id}/${productId}/${Date.now()}-${safeName}`;
-    const {error:uploadError} = await supabaseClient.storage.from(IMAGE_BUCKET).upload(path,file,{upsert:false});
-    if(uploadError){
-      alert("Product saved, but image upload failed: " + uploadError.message + "\\nYou can edit the product and use an image URL.");
-    }else{
-      await supabaseClient.from("product_images").delete().eq("product_id",productId);
-      const {error:imageRowError} = await supabaseClient.from("product_images").insert({
-        product_id:productId,storage_path:path,alt_text:name,sort_order:0
-      });
-      if(imageRowError) alert(imageRowError.message);
+    const variants =
+      currentProductVariants;
+
+    if (!variants.length) {
+      return null;
     }
-  }else if(imageUrl){
-    await supabaseClient.from("product_images").delete().eq("product_id",productId);
-    const {error:imageRowError} = await supabaseClient.from("product_images").insert({
-      product_id:productId,storage_path:imageUrl,alt_text:name,sort_order:0
-    });
-    if(imageRowError) alert(imageRowError.message);
+
+    /*
+      If variants exist, require the exact selected
+      combination instead of silently choosing another
+      variant.
+    */
+
+    return variants.find(v => {
+      const colorMatches =
+        !selectedColor ||
+        v.color === selectedColor;
+
+      const sizeMatches =
+        !selectedSize ||
+        v.size === selectedSize;
+
+      return colorMatches && sizeMatches;
+    }) || null;
   }
 
-  closeModal();
-  await loadProducts();
-  renderAdmin();
-}
+  function updateVariantUI() {
+    document
+      .querySelectorAll(".variant-option")
+      .forEach(button => {
+        const color =
+          button.getAttribute("data-color");
 
-async function deleteProduct(id){
-  if(!confirm("Delete this product from the storefront?")) return;
-  const state = await getOwnerState();
-  if(!state.user || !["owner","staff","developer"].includes(state.role)) return;
-  const {error} = await supabaseClient.from("products").update({active:false}).eq("id",id);
-  if(error){alert(error.message);return;}
-  await loadProducts();
-  renderAdmin();
-}
+        const size =
+          button.getAttribute("data-size");
 
-async function updateOrderStatus(orderId,status){
-  const state = await getOwnerState();
-  if(!state.user || !["owner","staff","developer"].includes(state.role)) return;
-  const {error} = await supabaseClient.from("orders").update({status}).eq("id",orderId);
-  if(error){alert(error.message);return;}
-  renderAdmin();
-}
+        const selected =
+          (color && color === selectedColor) ||
+          (size && size === selectedSize);
 
-supabaseClient.auth.onAuthStateChange(()=>{
-  if(document.getElementById("adminPage")?.classList.contains("active")) renderAdmin();
-});
+        button.classList.toggle(
+          "selected",
+          !!selected
+        );
+      });
 
-function initialize(){
-  updateCartCount();
-  loadProducts();
-}
+    if (!currentProduct) return;
 
-initialize();
+    const variant =
+      getSelectedVariant();
+
+    const priceElement =
+      document.getElementById("detailPrice");
+
+    if (priceElement) {
+      if (variant) {
+        priceElement.textContent =
+          formatMoney(variant.price);
+      } else {
+        priceElement.textContent =
+          formatMoney(
+            getStartingPrice(currentProduct)
+          );
+      }
+    }
+
+    /*
+      Disable color/size choices that cannot produce
+      a valid combination.
+    */
+
+    document
+      .querySelectorAll(".variant-option[data-color]")
+      .forEach(button => {
+        const color =
+          button.getAttribute("data-color");
+
+        const possible =
+          currentProductVariants.some(v =>
+            v.color === color &&
+            (!selectedSize || v.size === selectedSize) &&
+            Number(v.stock) > 0
+          );
+
+        button.disabled = !possible;
+      });
+
+    document
+      .querySelectorAll(".variant-option[data-size]")
+      .forEach(button => {
+        const size =
+          button.getAttribute("data-size");
+
+        const possible =
+          currentProductVariants.some(v =>
+            v.size === size &&
+            (!selectedColor || v.color === selectedColor) &&
+            Number(v.stock) > 0
+          );
+
+        button.disabled = !possible;
+      });
+  }
+
+
+  /* =========================================================
+     CART
+     ========================================================= */
+
+  function getCart() {
+    try {
+      return JSON.parse(
+        localStorage.getItem("luqmanii_cart") || "[]"
+      );
+    } catch {
+      return [];
+    }
+  }
+
+  function saveCart(cart) {
+    localStorage.setItem(
+      "luqmanii_cart",
+      JSON.stringify(cart)
+    );
+
+    updateBagCount();
+  }
+
+  function updateBagCount() {
+    const cart = getCart();
+
+    const count =
+      cart.reduce(
+        (sum, item) =>
+          sum + Number(item.quantity || 0),
+        0
+      );
+
+    const ids = [
+      "bagCount",
+      "desktopBagCount",
+      "mobileBagCount"
+    ];
+
+    ids.forEach(id => {
+      const element =
+        document.getElementById(id);
+
+      if (element) {
+        element.textContent = count;
+      }
+    });
+  }
+
+  function addCartItem(item) {
+    const cart = getCart();
+
+    const existing =
+      cart.find(
+        x => x.variant_id === item.variant_id
+      );
+
+    if (existing) {
+      existing.quantity =
+        Number(existing.quantity) +
+        Number(item.quantity);
+    } else {
+      cart.push(item);
+    }
+
+    saveCart(cart);
+  }
+
+  function addSelectedToBag() {
+    if (!currentProduct) return false;
+
+    const variants =
+      currentProductVariants;
+
+    let variant = null;
+
+    if (variants.length) {
+      if (!selectedColor && variants.some(v => v.color)) {
+        showAlert(
+          "Choose a Color",
+          "Please select a color first."
+        );
+        return false;
+      }
+
+      if (!selectedSize && variants.some(v => v.size)) {
+        showAlert(
+          "Choose a Size",
+          "Please select a size first."
+        );
+        return false;
+      }
+
+      variant = getSelectedVariant();
+
+      if (!variant) {
+        showAlert(
+          "Unavailable Combination",
+          "That color and size combination is not available."
+        );
+        return false;
+      }
+
+      if (Number(variant.stock) <= 0) {
+        showAlert(
+          "Out of Stock",
+          "This variant is currently out of stock."
+        );
+        return false;
+      }
+    }
+
+    const quantity =
+      Math.max(
+        1,
+        Number(
+          document.getElementById("detailQuantity")?.value ||
+          selectedQuantity ||
+          1
+        )
+      );
+
+    if (
+      variant &&
+      quantity > Number(variant.stock)
+    ) {
+      showAlert(
+        "Not Enough Stock",
+        `Only ${variant.stock} item(s) are available.`
+      );
+      return false;
+    }
+
+    const price =
+      variant
+        ? Number(variant.price)
+        : Number(currentProduct.base_price);
+
+    addCartItem({
+      product_id: currentProduct.id,
+      variant_id: variant ? variant.id : null,
+      product_name: currentProduct.name,
+      color: variant?.color || selectedColor || "",
+      size: variant?.size || selectedSize || "",
+      price,
+      quantity,
+      image_url: currentProduct.image_url || ""
+    });
+
+    showToast("Added to your bag.");
+
+    return true;
+  }
+
+  function addSelectedToBagAndStay() {
+    addSelectedToBag();
+  }
+
+  function quickAdd(productId) {
+    openProduct(productId);
+
+    setTimeout(() => {
+      addSelectedToBagAndStay();
+    }, 50);
+  }
+
+  function buyNow() {
+    if (addSelectedToBag()) {
+      showPage("checkout");
+    }
+  }
+
+
+  /* =========================================================
+     BAG
+     ========================================================= */
+
+  function renderBag() {
+    const container =
+      document.getElementById("bagContent");
+
+    const cart = getCart();
+
+    if (!cart.length) {
+      container.innerHTML = `
+        <div class="empty">
+          <h3>Your bag is empty</h3>
+          <p>Add something beautiful to your bag.</p>
+          <button
+            class="btn btn-primary"
+            style="margin-top:15px;"
+            onclick="showPage('shop')"
+          >
+            Shop Now
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    let subtotal = 0;
+
+    const itemsHtml = cart.map((item, index) => {
+      const lineTotal =
+        Number(item.price) *
+        Number(item.quantity);
+
+      subtotal += lineTotal;
+
+      return `
+        <div class="bag-item">
+          <img
+            src="${escapeHtml(
+              item.image_url ||
+              "https://via.placeholder.com/200x200?text=Luqmanii"
+            )}"
+            alt="${escapeHtml(item.product_name)}"
+          >
+
+          <div>
+            <h3>${escapeHtml(item.product_name)}</h3>
+
+            <div class="bag-meta">
+              ${item.color ? `Color: ${escapeHtml(item.color)}` : ""}
+              ${item.size ? ` | Size: ${escapeHtml(item.size)}` : ""}
+            </div>
+
+            <div style="margin-top:5px;font-weight:700;">
+              ${formatMoney(item.price)}
+            </div>
+
+            <div class="bag-controls">
+              <button
+                class="small-btn"
+                onclick="changeCartQuantity(${index},-1)"
+              >
+                −
+              </button>
+
+              <strong>${item.quantity}</strong>
+
+              <button
+                class="small-btn"
+                onclick="changeCartQuantity(${index},1)"
+              >
+                +
+              </button>
+
+              <button
+                class="small-btn"
+                onclick="removeCartItem(${index})"
+                title="Remove"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+
+          <strong>
+            ${formatMoney(lineTotal)}
+          </strong>
+        </div>
+      `;
+    }).join("");
+
+    container.innerHTML = `
+      <div class="bag-list">
+        ${itemsHtml}
+      </div>
+
+      <div class="bag-summary">
+        <div class="total">
+          Subtotal: ${formatMoney(subtotal)}
+        </div>
+
+        <button
+          class="btn btn-primary"
+          onclick="showPage('checkout')"
+        >
+          Continue to Checkout
+        </button>
+      </div>
+    `;
+  }
+
+  function changeCartQuantity(index, change) {
+    const cart = getCart();
+
+    if (!cart[index]) return;
+
+    const newQuantity =
+      Number(cart[index].quantity) +
+      Number(change);
+
+    if (newQuantity <= 0) {
+      cart.splice(index, 1);
+    } else {
+      cart[index].quantity = newQuantity;
+    }
+
+    saveCart(cart);
+    renderBag();
+  }
+
+  function removeCartItem(index) {
+    const cart = getCart();
+
+    cart.splice(index, 1);
+
+    saveCart(cart);
+    renderBag();
+  }
+
+
+  /* =========================================================
+     CHECKOUT
+     ========================================================= */
+
+  function getCartSignature() {
+    const cart = getCart();
+
+    return cart
+      .map(item => ({
+        variant_id: item.variant_id,
+        product_id: item.product_id,
+        quantity: Number(item.quantity)
+      }))
+      .sort((a,b) => {
+        const aKey =
+          String(a.variant_id || a.product_id);
+
+        const bKey =
+          String(b.variant_id || b.product_id);
+
+        return aKey.localeCompare(bKey);
+      });
+  }
+
+  function renderCheckoutSummary() {
+    const container =
+      document.getElementById("checkoutSummary");
+
+    const cart = getCart();
+
+    if (!cart.length) {
+      container.innerHTML = `
+        <div class="empty">
+          Your bag is empty.
+        </div>
+      `;
+      return;
+    }
+
+    const subtotal =
+      cart.reduce(
+        (sum, item) =>
+          sum +
+          Number(item.price) *
+          Number(item.quantity),
+        0
+      );
+
+    container.innerHTML = `
+      <div style="
+        border-top:1px solid #ddd;
+        padding-top:18px;
+        margin-top:20px;
+        margin-bottom:10px;
+      ">
+        <strong>Order Summary</strong>
+
+        ${cart.map(item => `
+          <div style="
+            display:flex;
+            justify-content:space-between;
+            gap:15px;
+            margin-top:8px;
+            font-size:14px;
+          ">
+            <span>
+              ${escapeHtml(item.product_name)}
+              × ${item.quantity}
+            </span>
+
+            <span>
+              ${formatMoney(
+                Number(item.price) *
+                Number(item.quantity)
+              )}
+            </span>
+          </div>
+        `).join("")}
+
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          border-top:1px solid #ddd;
+          margin-top:12px;
+          padding-top:12px;
+          font-size:19px;
+          font-weight:800;
+        ">
+          <span>Subtotal</span>
+          <span>${formatMoney(subtotal)}</span>
+        </div>
+      </div>
+    `;
+  }
+
+
+  /* =========================================================
+     PLACE ORDER
+     ========================================================= */
+
+  async function placeOrder(event) {
+    event.preventDefault();
+
+    if (isSubmittingOrder) {
+      return;
+    }
+
+    const cart = getCart();
+
+    if (!cart.length) {
+      showAlert(
+        "Empty Bag",
+        "Please add a product before checkout."
+      );
+      showPage("bag");
+      return;
+    }
+
+    const customerName =
+      document.getElementById("customerName")
+        .value.trim();
+
+    const customerPhone =
+      document.getElementById("customerPhone")
+        .value.trim();
+
+    const customerCity =
+      document.getElementById("customerCity")
+        .value.trim();
+
+    const customerAddress =
+      document.getElementById("customerAddress")
+        .value.trim();
+
+    const customerNote =
+      document.getElementById("customerNote")
+        .value.trim();
+
+    if (
+      !customerName ||
+      !customerPhone ||
+      !customerCity ||
+      !customerAddress
+    ) {
+      showAlert(
+        "Missing Information",
+        "Please complete all required fields."
+      );
+      return;
+    }
+
+    /*
+      Duplicate consecutive order warning.
+    */
+
+    const signature =
+      JSON.stringify(getCartSignature());
+
+    const lastSignature =
+      localStorage.getItem(
+        LAST_ORDER_SIGNATURE_KEY
+      );
+
+    if (
+      lastSignature &&
+      lastSignature === signature
+    ) {
+      showModal(
+        "Order Again?",
+        "You already made this order. Do you want to order it again?",
+        [
+          {
+            text: "No",
+            className: "btn-outline",
+            action: () => {
+              closeModal();
+              showPage("bag");
+            }
+          },
+          {
+            text: "Yes",
+            className: "btn-primary",
+            action: () => {
+              closeModal();
+              submitOrder(
+                customerName,
+                customerPhone,
+                customerCity,
+                customerAddress,
+                customerNote,
+                signature
+              );
+            }
+          }
+        ]
+      );
+
+      return;
+    }
+
+    await submitOrder(
+      customerName,
+      customerPhone,
+      customerCity,
+      customerAddress,
+      customerNote,
+      signature
+    );
+  }
+
+
+  async function submitOrder(
+    customerName,
+    customerPhone,
+    customerCity,
+    customerAddress,
+    customerNote,
+    signature
+  ) {
+    if (isSubmittingOrder) return;
+
+    isSubmittingOrder = true;
+
+    const button =
+      document.getElementById("placeOrderButton");
+
+    if (button) {
+      button.disabled = true;
+      button.textContent = "Processing...";
+    }
+
+    try {
+      const cart = getCart();
+
+      const items = cart.map(item => ({
+        variant_id: item.variant_id,
+        quantity: Number(item.quantity)
+      }));
+
+      /*
+        IMPORTANT:
+        create_public_order calculates the actual prices,
+        stock and delivery fee on Supabase.
+      */
+
+      const { data, error } =
+        await supabaseClient.rpc(
+          "create_public_order",
+          {
+            p_business_slug: BUSINESS_SLUG,
+            p_customer_name: customerName,
+            p_customer_phone: customerPhone,
+            p_city: customerCity,
+            p_address: customerAddress,
+            p_note: customerNote,
+            p_items: items
+          }
+        );
+
+      if (error) {
+        console.error(error);
+
+        showAlert(
+          "Order Failed",
+          error.message ||
+          "We could not place your order. Please try again."
+        );
+
+        return;
+      }
+
+      const order =
+        Array.isArray(data)
+          ? data[0]
+          : data;
+
+      /*
+        Save signature only after successful order.
+      */
+
+      localStorage.setItem(
+        LAST_ORDER_SIGNATURE_KEY,
+        signature
+      );
+
+      /*
+        Create WhatsApp message from the current cart.
+        Supabase remains the source of truth for actual
+        database price and inventory.
+      */
+
+      const whatsappMessage =
+        buildWhatsAppMessage(
+          order,
+          customerName,
+          customerPhone,
+          customerCity,
+          customerAddress,
+          customerNote,
+          cart
+        );
+
+      /*
+        Clear cart after successful database order.
+      */
+
+      localStorage.removeItem(
+        "luqmanii_cart"
+      );
+
+      updateBagCount();
+
+      document.getElementById("confirmationOrderNumber")
+        .textContent =
+        order?.order_number
+          ? `Order #${order.order_number}`
+          : "Your order has been received.";
+
+      showPage("confirmation");
+
+      /*
+        Successful-order popup.
+      */
+
+      setTimeout(() => {
+        showModal(
+          "Order Received Successfully",
+          "Thank you for choosing Luqmanii. Your order has been received and will be processed.",
+          [
+            {
+              text: "OK",
+              className: "btn-primary",
+              action: closeModal
+            },
+            {
+              text: "Back to Home",
+              className: "btn-outline",
+              action: () => {
+                closeModal();
+                showPage("home");
+              }
+            }
+          ]
+        );
+      }, 250);
+
+      /*
+        Open WhatsApp after order creation.
+      */
+
+      setTimeout(() => {
+        if (whatsappMessage) {
+          window.open(
+            "https://wa.me/" +
+            WHATSAPP_NUMBER +
+            "?text=" +
+            encodeURIComponent(whatsappMessage),
+            "_blank",
+            "noopener"
+          );
+        }
+      }, 700);
+
+    } catch (error) {
+      console.error(error);
+
+      showAlert(
+        "Order Failed",
+        "Something went wrong. Please try again."
+      );
+
+    } finally {
+      isSubmittingOrder = false;
+
+      if (button) {
+        button.disabled = false;
+        button.textContent = "Place Order";
+      }
+    }
+  }
+
+
+  function buildWhatsAppMessage(
+    order,
+    customerName,
+    customerPhone,
+    city,
+    address,
+    note,
+    cart
+  ) {
+    const orderNumber =
+      order?.order_number ||
+      order?.id ||
+      "";
+
+    let message =
+      "Hello Luqmanii Turban Hijabs!\n\n" +
+      "New Order" +
+      (orderNumber
+        ? ` #${orderNumber}`
+        : "") +
+      "\n\n";
+
+    message +=
+      `Customer: ${customerName}\n` +
+      `Phone: ${customerPhone}\n` +
+      `City: ${city}\n` +
+      `Address: ${address}\n`;
+
+    if (note) {
+      message += `Note: ${note}\n`;
+    }
+
+    message += "\nItems:\n";
+
+    cart.forEach(item => {
+      message +=
+        `• ${item.product_name}` +
+        (item.color
+          ? ` - ${item.color}`
+          : "") +
+        (item.size
+          ? ` / ${item.size}`
+          : "") +
+        ` × ${item.quantity}` +
+        ` = ${formatMoney(
+          Number(item.price) *
+          Number(item.quantity)
+        )}\n`;
+    });
+
+    const subtotal =
+      cart.reduce(
+        (sum, item) =>
+          sum +
+          Number(item.price) *
+          Number(item.quantity),
+        0
+      );
+
+    message +=
+      `\nSubtotal: ${formatMoney(subtotal)}\n\n` +
+      "Thank you.";
+
+    return message;
+  }
+
+
+  /* =========================================================
+     OWNER AUTH
+     ========================================================= */
+
+  async function ownerLogin(event) {
+    event.preventDefault();
+
+    const email =
+      document.getElementById("ownerEmail")
+        .value.trim();
+
+    const password =
+      document.getElementById("ownerPassword")
+        .value;
+
+    try {
+      const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+          email,
+          password
+        });
+
+      if (error) {
+        showAlert(
+          "Login Failed",
+          error.message
+        );
+        return;
+      }
+
+      showAdminUI();
+
+      showToast("Logged in successfully.");
+
+    } catch (error) {
+      console.error(error);
+
+      showAlert(
+        "Login Failed",
+        "Unable to sign in."
+      );
+    }
+  }
+
+  async function ownerLogout() {
+    await supabaseClient.auth.signOut();
+
+    hideAdminUI();
+
+    showToast("Logged out.");
+  }
+
+  function showAdminUI() {
+    document
+      .getElementById("loginCard")
+      .classList.add("hidden");
+
+    document
+      .getElementById("adminDashboard")
+      .classList.remove("hidden");
+
+    showAdminProducts();
+  }
+
+  function hideAdminUI() {
+    document
+      .getElementById("loginCard")
+      .classList.remove("hidden");
+
+    document
+      .getElementById("adminDashboard")
+      .classList.add("hidden");
+  }
+
+
+  /* =========================================================
+     ADMIN PRODUCTS
+     ========================================================= */
+
+  async function showAdminProducts() {
+    const container =
+      document.getElementById("adminContent");
+
+    container.innerHTML =
+      "<p>Loading products...</p>";
+
+    try {
+      const userResult =
+        await supabaseClient.auth.getUser();
+
+      if (!userResult.data.user) {
+        hideAdminUI();
+        return;
+      }
+
+      const business =
+        window.currentBusiness;
+
+      if (!business) {
+        await getProducts();
+      }
+
+      /*
+        Business-specific filter.
+      */
+
+      const { data, error } =
+        await supabaseClient
+          .from("products")
+          .select(`
+            *,
+            product_variants (
+              id,
+              product_id,
+              color,
+              size,
+              price,
+              stock,
+              sku
+            )
+          `)
+          .eq(
+            "business_id",
+            window.currentBusiness.id
+          )
+          .order("created_at", {
+            ascending: false
+          });
+
+      if (error) {
+        console.error(error);
+
+        container.innerHTML =
+          `<p>${escapeHtml(error.message)}</p>`;
+
+        return;
+      }
+
+      currentAdminProducts =
+        data || [];
+
+      renderAdminProducts();
+
+    } catch (error) {
+      console.error(error);
+
+      container.innerHTML =
+        "<p>Unable to load products.</p>";
+    }
+  }
+
+  function renderAdminProducts() {
+    const container =
+      document.getElementById("adminContent");
+
+    container.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px;flex-wrap:wrap;">
+        <h2>Products</h2>
+
+        <button
+          class="btn btn-accent"
+          onclick="openProductEditor()"
+        >
+          + Add Product
+        </button>
+      </div>
+
+      <div class="admin-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${
+              currentAdminProducts.length
+                ? currentAdminProducts.map(product => {
+                    const stock =
+                      getProductStock(product);
+
+                    return `
+                      <tr>
+                        <td>
+                          ${
+                            product.image_url
+                              ? `
+                                <img
+                                  class="admin-product-image"
+                                  src="${escapeHtml(product.image_url)}"
+                                >
+                              `
+                              : "-"
+                          }
+                        </td>
+
+                        <td>
+                          <strong>
+                            ${escapeHtml(product.name)}
+                          </strong>
+                        </td>
+
+                        <td>
+                          ${escapeHtml(
+                            product.category || ""
+                          )}
+                        </td>
+
+                        <td>
+                          ${formatMoney(
+                            product.base_price
+                          )}
+                        </td>
+
+                        <td>
+                          ${
+                            stock === null
+                              ? "—"
+                              : stock
+                          }
+                        </td>
+
+                        <td>
+                          <div class="admin-actions">
+                            <button
+                              class="btn btn-outline"
+                              onclick="openProductEditor('${product.id}')"
+                            >
+                              Edit
+                            </button>
+
+                            <button
+                              class="btn btn-danger"
+                              onclick="deleteProduct('${product.id}')"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    `;
+                  }).join("")
+                : `
+                  <tr>
+                    <td colspan="6">
+                      No products found.
+                    </td>
+                  </tr>
+                `
+            }
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+
+  /* =========================================================
+     PRODUCT EDITOR
+     ========================================================= */
+
+  function openProductEditor(productId = null) {
+    const product =
+      productId
+        ? currentAdminProducts.find(
+            p => p.id === productId
+          )
+        : null;
+
+    const container =
+      document.getElementById("adminContent");
+
+    const variants =
+      product?.product_variants || [];
+
+    container.innerHTML = `
+      <button
+        class="btn btn-outline"
+        onclick="showAdminProducts()"
+      >
+        ← Back to Products
+      </button>
+
+      <div class="form-card" style="margin-top:20px;">
+        <h2 style="margin-bottom:20px;">
+          ${product ? "Edit Product" : "Add Product"}
+        </h2>
+
+        <input
+          type="hidden"
+          id="editProductId"
+          value="${product?.id || ""}"
+        >
+
+        <div class="form-group">
+          <label>Name *</label>
+          <input
+            id="productName"
+            required
+            value="${escapeHtml(product?.name || "")}"
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Category</label>
+          <input
+            id="productCategory"
+            value="${escapeHtml(product?.category || "")}"
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="productDescription">${escapeHtml(
+            product?.description || ""
+          )}</textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Base Price *</label>
+          <input
+            id="productBasePrice"
+            type="number"
+            min="0"
+            step="0.01"
+            value="${product?.base_price ?? ""}"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Product Image</label>
+          <input
+            id="productImage"
+            type="file"
+            accept="image/*"
+          >
+
+          ${
+            product?.image_url
+              ? `
+                <img
+                  src="${escapeHtml(product.image_url)}"
+                  style="width:120px;height:120px;object-fit:cover;border-radius:8px;margin-top:10px;"
+                >
+              `
+              : ""
+          }
+        </div>
+
+        <h3 style="margin:25px 0 10px;">
+          Variants
+        </h3>
+
+        <p style="font-size:13px;color:#777;margin-bottom:15px;">
+          Existing variants are preserved. Edit or add variants below.
+        </p>
+
+        <div id="variantEditor">
+          ${
+            variants.length
+              ? variants.map((v, i) =>
+                  variantEditorRow(v, i)
+                ).join("")
+              : variantEditorRow(null, 0)
+          }
+        </div>
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          onclick="addVariantEditorRow()"
+          style="margin-bottom:20px;"
+        >
+          + Add Variant
+        </button>
+
+        <div>
+          <button
+            class="btn btn-success"
+            onclick="saveProduct(event)"
+          >
+            Save Product
+          </button>
+
+          <button
+            class="btn btn-outline"
+            onclick="showAdminProducts()"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  function variantEditorRow(variant, index) {
+    return `
+      <div
+        class="variant-editor-row"
+        style="
+          border:1px solid #ddd;
+          padding:12px;
+          border-radius:8px;
+          margin-bottom:10px;
+        "
+      >
+        <input
+          type="hidden"
+          class="variant-id"
+          value="${variant?.id || ""}"
+        >
+
+        <div style="
+          display:grid;
+          grid-template-columns:repeat(5,1fr);
+          gap:8px;
+        ">
+          <input
+            class="variant-color"
+            placeholder="Color"
+            value="${escapeHtml(variant?.color || "")}"
+          >
+
+          <input
+            class="variant-size"
+            placeholder="Size"
+            value="${escapeHtml(variant?.size || "")}"
+          >
+
+          <input
+            class="variant-price"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="Price"
+            value="${variant?.price ?? ""}"
+          >
+
+          <input
+            class="variant-stock"
+            type="number"
+            min="0"
+            placeholder="Stock"
+            value="${variant?.stock ?? 0}"
+          >
+
+          <input
+            class="variant-sku"
+            placeholder="SKU"
+            value="${escapeHtml(variant?.sku || "")}"
+          >
+        </div>
+
+        <button
+          type="button"
+          class="btn btn-danger"
+          style="margin-top:8px;padding:7px 10px;"
+          onclick="this.closest('.variant-editor-row').remove()"
+        >
+          Remove
+        </button>
+      </div>
+    `;
+  }
+
+  function addVariantEditorRow() {
+    const container =
+      document.getElementById("variantEditor");
+
+    const wrapper =
+      document.createElement("div");
+
+    wrapper.innerHTML =
+      variantEditorRow(null, Date.now());
+
+    container.appendChild(
+      wrapper.firstElementChild
+    );
+  }
+
+
+  /* =========================================================
+     SAVE PRODUCT
+     ========================================================= */
+
+  async function saveProduct(event) {
+    if (event) {
+      event.preventDefault();
+    }
+
+    const productId =
+      document.getElementById("editProductId")
+        .value || null;
+
+    const name =
+      document.getElementById("productName")
+        .value.trim();
+
+    const category =
+      document.getElementById("productCategory")
+        .value.trim();
+
+    const description =
+      document.getElementById("productDescription")
+        .value.trim();
+
+    const basePrice =
+      Number(
+        document.getElementById("productBasePrice")
+          .value
+      );
+
+    const imageInput =
+      document.getElementById("productImage");
+
+    if (!name || !Number.isFinite(basePrice)) {
+      showAlert(
+        "Missing Information",
+        "Product name and valid price are required."
+      );
+      return;
+    }
+
+    const business =
+      window.currentBusiness;
+
+    if (!business) {
+      showAlert(
+        "Error",
+        "Business information is unavailable."
+      );
+      return;
+    }
+
+    try {
+      let imageUrl =
+        productId
+          ? currentAdminProducts.find(
+              p => p.id === productId
+            )?.image_url || null
+          : null;
+
+      /*
+        Upload image if selected.
+      */
+
+      if (
+        imageInput &&
+        imageInput.files &&
+        imageInput.files[0]
+      ) {
+        const file =
+          imageInput.files[0];
+
+        const extension =
+          file.name.split(".").pop() || "jpg";
+
+        const filename =
+          `${business.id}/${crypto.randomUUID()}.${extension}`;
+
+        const { error: uploadError } =
+          await supabaseClient.storage
+            .from(STORAGE_BUCKET)
+            .upload(filename, file, {
+              upsert: false
+            });
+
+        if (uploadError) {
+          throw uploadError;
+        }
+
+        const { data: publicData } =
+          supabaseClient.storage
+            .from(STORAGE_BUCKET)
+            .getPublicUrl(filename);
+
+        imageUrl =
+          publicData.publicUrl;
+      }
+
+      const productPayload = {
+        business_id: business.id,
+        name,
+        category,
+        description,
+        base_price: basePrice,
+        image_url: imageUrl,
+        is_active: true
+      };
+
+      let savedProduct;
+
+      if (productId) {
+        /*
+          SECURITY:
+          Update by BOTH id and business_id.
+        */
+
+        const { data, error } =
+          await supabaseClient
+            .from("products")
+            .update(productPayload)
+            .eq("id", productId)
+            .eq("business_id", business.id)
+            .select()
+            .single();
+
+        if (error) throw error;
+
+        savedProduct = data;
+
+      } else {
+        const { data, error } =
+          await supabaseClient
+            .from("products")
+            .insert(productPayload)
+            .select()
+            .single();
+
+        if (error) throw error;
+
+        savedProduct = data;
+      }
+
+      /*
+        IMPORTANT:
+        We DO NOT delete all existing variants.
+        This avoids breaking old orders/cart references.
+
+        Existing variant IDs are updated in place.
+        New variants are inserted.
+      */
+
+      const rows =
+        [...document.querySelectorAll(
+          ".variant-editor-row"
+        )];
+
+      const submittedVariantIds = [];
+
+      for (const row of rows) {
+        const variantId =
+          row.querySelector(".variant-id")
+            ?.value || null;
+
+        const color =
+          row.querySelector(".variant-color")
+            ?.value.trim() || null;
+
+        const size =
+          row.querySelector(".variant-size")
+            ?.value.trim() || null;
+
+        const price =
+          Number(
+            row.querySelector(".variant-price")
+              ?.value
+          );
+
+        const stock =
+          Number(
+            row.querySelector(".variant-stock")
+              ?.value
+          );
+
+        const sku =
+          row.querySelector(".variant-sku")
+            ?.value.trim() || null;
+
+        if (
+          !Number.isFinite(price) ||
+          !Number.isFinite(stock)
+        ) {
+          continue;
+        }
+
+        const payload = {
+          product_id: savedProduct.id,
+          color,
+          size,
+          price,
+          stock: Math.max(0, stock),
+          sku
+        };
+
+        if (variantId) {
+          const { error } =
+            await supabaseClient
+              .from("product_variants")
+              .update(payload)
+              .eq("id", variantId)
+              .eq("product_id", savedProduct.id);
+
+          if (error) throw error;
+
+          submittedVariantIds.push(variantId);
+
+        } else {
+          const { data, error } =
+            await supabaseClient
+              .from("product_variants")
+              .insert(payload)
+              .select("id")
+              .single();
+
+          if (error) throw error;
+
+          if (data?.id) {
+            submittedVariantIds.push(data.id);
+          }
+        }
+      }
+
+      await getProducts();
+
+      showToast(
+        productId
+          ? "Product updated."
+          : "Product created."
+      );
+
+      showAdminProducts();
+
+    } catch (error) {
+      console.error(error);
+
+      showAlert(
+        "Save Failed",
+        error.message ||
+        "Unable to save the product."
+      );
+    }
+  }
+
+
+  /* =========================================================
+     DELETE PRODUCT
+     ========================================================= */
+
+  async function deleteProduct(productId) {
+    if (!productId) return;
+
+    const confirmed =
+      await new Promise(resolve => {
+        showModal(
+          "Delete Product?",
+          "Are you sure you want to delete this product?",
+          [
+            {
+              text: "Cancel",
+              className: "btn-outline",
+              action: () => {
+                closeModal();
+                resolve(false);
+              }
+            },
+            {
+              text: "Delete",
+              className: "btn-danger",
+              action: () => {
+                closeModal();
+                resolve(true);
+              }
+            }
+          ]
+        );
+      });
+
+    if (!confirmed) return;
+
+    try {
+      /*
+        SECURITY:
+        Delete only from the current business.
+      */
+
+      const { error } =
+        await supabaseClient
+          .from("products")
+          .update({
+            is_active: false
+          })
+          .eq("id", productId)
+          .eq(
+            "business_id",
+            window.currentBusiness.id
+          );
+
+      if (error) throw error;
+
+      await getProducts();
+      await showAdminProducts();
+
+      showToast("Product removed.");
+
+    } catch (error) {
+      console.error(error);
+
+      showAlert(
+        "Delete Failed",
+        error.message ||
+        "Unable to remove product."
+      );
+    }
+  }
+
+
+  /* =========================================================
+     ADMIN ORDERS
+     ========================================================= */
+
+  async function showAdminOrders() {
+    const container =
+      document.getElementById("adminContent");
+
+    container.innerHTML =
+      "<p>Loading orders...</p>";
+
+    try {
+      const business =
+        window.currentBusiness;
+
+      if (!business) {
+        await getProducts();
+      }
+
+      /*
+        Business-specific order filter.
+      */
+
+      const { data, error } =
+        await supabaseClient
+          .from("orders")
+          .select(`
+            id,
+            business_id,
+            order_number,
+            status,
+            subtotal,
+            delivery_fee,
+            total,
+            created_at,
+            customers (
+              name,
+              phone,
+              city,
+              address,
+              note
+            ),
+            order_items (
+              id,
+              quantity,
+              unit_price,
+              product_variants (
+                color,
+                size,
+                products (
+                  name
+                )
+              )
+            )
+          `)
+          .eq(
+            "business_id",
+            window.currentBusiness.id
+          )
+          .order("created_at", {
+            ascending: false
+          });
+
+      if (error) {
+        console.error(error);
+
+        container.innerHTML =
+          `<p>${escapeHtml(error.message)}</p>`;
+
+        return;
+      }
+
+      renderAdminOrders(data || []);
+
+    } catch (error) {
+      console.error(error);
+
+      container.innerHTML =
+        "<p>Unable to load orders.</p>";
+    }
+  }
+
+  function renderAdminOrders(orders) {
+    const container =
+      document.getElementById("adminContent");
+
+    container.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
+        <h2>Orders</h2>
+
+        <button
+          class="btn btn-outline"
+          onclick="showAdminOrders()"
+        >
+          Refresh
+        </button>
+      </div>
+
+      <div class="admin-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Customer</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${
+              orders.length
+                ? orders.map(order => {
+                    const customer =
+                      Array.isArray(order.customers)
+                        ? order.customers[0]
+                        : order.customers;
+
+                    const items =
+                      order.order_items || [];
+
+                    return `
+                      <tr>
+                        <td>
+                          <strong>
+                            ${escapeHtml(
+                              order.order_number ||
+                              order.id
+                            )}
+                          </strong>
+
+                          <div style="font-size:12px;color:#777;">
+                            ${new Date(
+                              order.created_at
+                            ).toLocaleString()}
+                          </div>
+                        </td>
+
+                        <td>
+                          <strong>
+                            ${escapeHtml(
+                              customer?.name || ""
+                            )}
+                          </strong>
+
+                          <div>
+                            ${escapeHtml(
+                              customer?.phone || ""
+                            )}
+                          </div>
+
+                          <div>
+                            ${escapeHtml(
+                              customer?.city || ""
+                            )}
+                          </div>
+
+                          <div>
+                            ${escapeHtml(
+                              customer?.address || ""
+                            )}
+                          </div>
+                        </td>
+
+                        <td>
+                          ${
+                            items.map(item => {
+                              const variant =
+                                Array.isArray(
+                                  item.product_variants
+                                )
+                                  ? item.product_variants[0]
+                                  : item.product_variants;
+
+                              const product =
+                                Array.isArray(
+                                  variant?.products
+                                )
+                                  ? variant.products[0]
+                                  : variant?.products;
+
+                              return `
+                                <div style="margin-bottom:6px;">
+                                  ${escapeHtml(
+                                    product?.name || "Product"
+                                  )}
+                                  × ${item.quantity}
+                                  ${
+                                    variant?.color
+                                      ? ` (${escapeHtml(variant.color)}`
+                                      : ""
+                                  }
+                                  ${
+                                    variant?.size
+                                      ? ` / ${escapeHtml(variant.size)})`
+                                      : variant?.color
+                                        ? ")"
+                                        : ""
+                                  }
+                                </div>
+                              `;
+                            }).join("")
+                          }
+                        </td>
+
+                        <td>
+                          <strong>
+                            ${formatMoney(order.total)}
+                          </strong>
+                        </td>
+
+                        <td>
+                          <select
+                            onchange="updateOrderStatus('${order.id}',this.value)"
+                          >
+                            ${[
+                              "pending",
+                              "confirmed",
+                              "processing",
+                              "ready",
+                              "shipped",
+                              "delivered",
+                              "cancelled"
+                            ].map(status => `
+                              <option
+                                value="${status}"
+                                ${order.status === status ? "selected" : ""}
+                              >
+                                ${status}
+                              </option>
+                            `).join("")}
+                          </select>
+                        </td>
+
+                        <td>
+                          <a
+                            class="btn btn-success"
+                            href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                              `Hello ${customer?.name || ""}, this is Luqmanii regarding your order ${order.order_number || order.id}.`
+                            )}"
+                            target="_blank"
+                            rel="noopener"
+                          >
+                            WhatsApp
+                          </a>
+                        </td>
+                      </tr>
+                    `;
+                  }).join("")
+                : `
+                  <tr>
+                    <td colspan="6">
+                      No orders found.
+                    </td>
+                  </tr>
+                `
+            }
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+
+  /* =========================================================
+     UPDATE ORDER STATUS
+     ========================================================= */
+
+  async function updateOrderStatus(orderId, status) {
+    try {
+      /*
+        SECURITY:
+        Update only an order belonging to this business.
+      */
+
+      const { error } =
+        await supabaseClient
+          .from("orders")
+          .update({
+            status
+          })
+          .eq("id", orderId)
+          .eq(
+            "business_id",
+            window.currentBusiness.id
+          );
+
+      if (error) {
+        throw error;
+      }
+
+      showToast("Order status updated.");
+
+    } catch (error) {
+      console.error(error);
+
+      showAlert(
+        "Update Failed",
+        error.message ||
+        "Unable to update order status."
+      );
+
+      showAdminOrders();
+    }
+  }
+
+
+  /* =========================================================
+     SECURITY / OUTPUT HELPERS
+     ========================================================= */
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function escapeJs(value) {
+    return String(value ?? "")
+      .replace(/\\/g, "\\\\")
+      .replace(/'/g, "\\'")
+      .replace(/\n/g, "\\n")
+      .replace(/\r/g, "\\r");
+  }
+
+
+  /* =========================================================
+     SESSION CHECK
+     ========================================================= */
+
+  (async function checkExistingSession() {
+    try {
+      const {
+        data: { session }
+      } = await supabaseClient.auth.getSession();
+
+      if (session) {
+        showAdminUI();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  })();
+
 </script>
+
 </body>
-</html>
+  </html>
