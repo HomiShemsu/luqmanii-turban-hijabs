@@ -2180,12 +2180,13 @@ let products = [];
 
 async function loadProducts(){
 
-  products = await getProducts();
-  console.log("SUPABASE PRODUCTS:", products);
+  const loadedProducts = await getProducts();
 
-  renderProducts();
+  products = loadedProducts;
+
+  updateCartCount();
   renderFeatured();
-  renderAdmin();
+  renderProducts();
 }
   
 console.log("Supabase connected:", !!supabaseClient);
