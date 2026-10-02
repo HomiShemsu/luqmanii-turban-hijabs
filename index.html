@@ -2178,6 +2178,7 @@ let products = [];
 async function loadProducts(){
 
   products = await getProducts();
+  console.log("SUPABASE PRODUCTS:", products);
 
   renderProducts();
   renderFeatured();
