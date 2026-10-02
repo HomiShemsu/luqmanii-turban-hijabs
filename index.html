@@ -2096,10 +2096,13 @@ async function getProducts(){
     .order("created_at", { ascending: false });
 
   if(error){
-    console.error("Supabase products error:", error);
 
-    return DEFAULT_PRODUCTS;
-  }
+  console.error("Supabase products error:", error);
+
+  alert("Supabase error: " + error.message);
+
+  return DEFAULT_PRODUCTS;
+}
 
   return data.map(product => ({
 
