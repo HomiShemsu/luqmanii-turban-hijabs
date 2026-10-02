@@ -2184,6 +2184,8 @@ async function loadProducts(){
 
   products = loadedProducts;
 
+  console.log("Loaded products:", loadedProducts);
+
   updateCartCount();
   renderFeatured();
   renderProducts();
