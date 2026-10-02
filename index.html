@@ -3,945 +3,898 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#9b6680">
-
+  <meta name="theme-color" content="#c77d8d">
+  <meta name="description" content="Luqmanii Turban Hijabs - elegant hijabs and turbans.">
   <title>Luqmanii Turban Hijabs</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    :root {
-      --rose: #9b6680;
-      --rose-dark: #74485e;
-      --rose-light: #f8e9f0;
-      --cream: #fffaf7;
-      --white: #ffffff;
-      --brown: #49363e;
-      --muted: #806e75;
-      --gold: #c8a46a;
-      --border: #eadce2;
-      --shadow: 0 12px 35px rgba(91, 55, 70, .10);
-      --danger: #b44f63;
-      --success: #3d8766;
+    :root{
+      --rose:#b96778;
+      --rose-dark:#8f4d5c;
+      --blush:#f8e7ea;
+      --cream:#fffaf7;
+      --soft:#fdf1f3;
+      --mauve:#d7a4af;
+      --brown:#49353a;
+      --muted:#806d72;
+      --white:#ffffff;
+      --line:#ead9dc;
+      --shadow:0 12px 35px rgba(117,75,83,.12);
+      --radius:20px;
     }
 
-    * {
-      box-sizing: border-box;
+    *{box-sizing:border-box}
+
+    html{
+      scroll-behavior:smooth;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      font-family: Inter, Arial, sans-serif;
-      color: var(--brown);
-      background: var(--cream);
-    }
-
-    button,
-    input,
-    select,
-    textarea {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    /* HEADER */
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(255, 250, 247, .96);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .header-inner {
-      max-width: 1200px;
-      margin: auto;
-      min-height: 74px;
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      min-width: 0;
-    }
-
-    .brand-mark {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: var(--rose-light);
-      display: grid;
-      place-items: center;
-      font-size: 22px;
-      flex-shrink: 0;
-    }
-
-    .brand-text {
-      min-width: 0;
-    }
-
-    .brand-title {
-      margin: 0;
-      font-family: Georgia, serif;
-      color: var(--rose-dark);
-      font-size: 21px;
-      line-height: 1.1;
-    }
-
-    .brand-subtitle {
-      margin: 4px 0 0;
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: .8px;
-      text-transform: uppercase;
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    nav button {
-      border: 0;
-      background: transparent;
-      color: var(--brown);
-      padding: 9px 11px;
-      border-radius: 10px;
-    }
-
-    nav button:hover {
-      background: var(--rose-light);
-      color: var(--rose-dark);
-    }
-
-    .bag-button {
-      background: var(--rose) !important;
-      color: white !important;
-      padding: 10px 15px !important;
-    }
-
-    .bag-count {
-      display: inline-grid;
-      place-items: center;
-      min-width: 20px;
-      height: 20px;
-      padding: 0 5px;
-      margin-left: 5px;
-      border-radius: 50px;
-      background: white;
-      color: var(--rose-dark);
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .menu-toggle {
-      display: none;
-      border: 0;
-      background: var(--rose-light);
-      color: var(--rose-dark);
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      font-size: 22px;
-    }
-
-    /* MOBILE MENU */
-
-    .mobile-menu {
-      display: none;
-      padding: 10px 20px 20px;
-      border-top: 1px solid var(--border);
-      background: var(--cream);
-    }
-
-    .mobile-menu.open {
-      display: block;
-    }
-
-    .mobile-menu button,
-    .mobile-menu a {
-      display: block;
-      width: 100%;
-      text-align: left;
-      border: 0;
-      background: transparent;
-      padding: 14px 8px;
-      color: var(--brown);
-      border-bottom: 1px solid var(--border);
-    }
-
-    /* HERO */
-
-    .hero {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 30px 20px 25px;
-    }
-
-    .hero-card {
-      min-height: 500px;
-      border-radius: 30px;
-      overflow: hidden;
-      position: relative;
-      display: flex;
-      align-items: center;
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--brown);
       background:
-        linear-gradient(
-          90deg,
-          rgba(255, 250, 247, .97) 0%,
-          rgba(255, 250, 247, .88) 43%,
-          rgba(255, 250, 247, .20) 100%
-        ),
+        radial-gradient(circle at 10% 10%,rgba(255,255,255,.9),transparent 28%),
+        linear-gradient(135deg,#fffaf7 0%,#fdf0f2 48%,#f8e5e9 100%);
+      min-height:100vh;
+    }
+
+    button,input,select,textarea{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    img{
+      max-width:100%;
+      display:block;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .topbar{
+      background:var(--rose-dark);
+      color:white;
+      text-align:center;
+      padding:8px 14px;
+      font-size:13px;
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:100;
+      background:rgba(255,250,247,.94);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(234,217,220,.8);
+    }
+
+    .nav{
+      max-width:1200px;
+      margin:auto;
+      padding:14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:11px;
+      font-weight:900;
+      color:var(--rose-dark);
+      letter-spacing:.2px;
+    }
+
+    .brand-mark{
+      width:44px;
+      height:44px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,#f4cbd2,#b96778);
+      color:white;
+      box-shadow:var(--shadow);
+      font-size:21px;
+    }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .nav-links button,
+    .menu-button{
+      border:0;
+      background:transparent;
+      color:var(--brown);
+      padding:10px 12px;
+      border-radius:12px;
+      font-weight:700;
+    }
+
+    .nav-links button:hover,
+    .menu-button:hover{
+      background:var(--blush);
+    }
+
+    .bag-button{
+      background:var(--rose) !important;
+      color:white !important;
+    }
+
+    .hamburger{
+      display:none;
+      border:0;
+      background:var(--blush);
+      width:44px;
+      height:44px;
+      border-radius:12px;
+      font-size:22px;
+    }
+
+    .mobile-menu{
+      display:none;
+      padding:10px 18px 18px;
+      border-top:1px solid var(--line);
+      background:var(--cream);
+    }
+
+    .mobile-menu.open{
+      display:grid;
+      gap:7px;
+    }
+
+    .mobile-menu button{
+      border:0;
+      padding:13px;
+      border-radius:12px;
+      text-align:left;
+      background:var(--soft);
+      color:var(--brown);
+      font-weight:700;
+    }
+
+    main{
+      min-height:70vh;
+    }
+
+    .container{
+      width:min(1200px,calc(100% - 32px));
+      margin:auto;
+    }
+
+    .hero{
+      margin:22px auto 30px;
+      min-height:470px;
+      border-radius:30px;
+      overflow:hidden;
+      position:relative;
+      display:flex;
+      align-items:flex-end;
+      background:
+        linear-gradient(90deg,rgba(55,31,37,.68),rgba(55,31,37,.12)),
         url("https://images.unsplash.com/photo-1773188536669-17275a1c200c?auto=format&fit=crop&fm=jpg&q=85&w=1800")
-        center/cover no-repeat;
-      box-shadow: var(--shadow);
+        center/cover;
+      box-shadow:var(--shadow);
     }
 
-    .hero-content {
-      width: min(580px, 100%);
-      padding: 55px;
+    .hero-content{
+      padding:44px;
+      color:white;
+      max-width:650px;
     }
 
-    .eyebrow {
-      color: var(--rose);
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 12px;
+    .eyebrow{
+      display:inline-block;
+      padding:7px 12px;
+      background:rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.35);
+      border-radius:999px;
+      font-size:13px;
+      margin-bottom:12px;
     }
 
-    .hero h1 {
-      font-family: Georgia, serif;
-      color: var(--rose-dark);
-      font-size: clamp(42px, 6vw, 72px);
-      line-height: .98;
-      margin: 0 0 20px;
+    .hero h1{
+      margin:0 0 13px;
+      font-size:clamp(38px,6vw,68px);
+      line-height:1;
+      letter-spacing:-2px;
     }
 
-    .hero p {
-      color: var(--muted);
-      font-size: 17px;
-      line-height: 1.7;
-      max-width: 520px;
-      margin: 0 0 28px;
+    .hero p{
+      margin:0 0 22px;
+      font-size:17px;
+      line-height:1.7;
+      max-width:560px;
     }
 
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
+    .btn{
+      border:0;
+      border-radius:14px;
+      padding:13px 18px;
+      font-weight:800;
+      transition:.18s ease;
     }
 
-    /* BUTTONS */
-
-    .btn {
-      border: 0;
-      border-radius: 13px;
-      padding: 13px 19px;
-      font-weight: 700;
-      transition: .2s ease;
+    .btn:hover{
+      transform:translateY(-1px);
     }
 
-    .btn-primary {
-      background: var(--rose);
-      color: white;
+    .btn-primary{
+      background:var(--rose);
+      color:white;
     }
 
-    .btn-primary:hover {
-      background: var(--rose-dark);
-      transform: translateY(-1px);
+    .btn-dark{
+      background:var(--brown);
+      color:white;
     }
 
-    .btn-soft {
-      background: var(--rose-light);
-      color: var(--rose-dark);
+    .btn-soft{
+      background:var(--blush);
+      color:var(--rose-dark);
     }
 
-    .btn-outline {
-      background: white;
-      color: var(--rose-dark);
-      border: 1px solid var(--border);
+    .btn-white{
+      background:white;
+      color:var(--rose-dark);
     }
 
-    .btn-danger {
-      background: #f9e3e8;
-      color: var(--danger);
+    .btn-danger{
+      background:#8f4d5c;
+      color:white;
     }
 
-    /* MAIN */
-
-    main {
-      min-height: 500px;
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:end;
+      gap:15px;
+      margin:35px 0 18px;
     }
 
-    .page {
-      display: none;
-      max-width: 1200px;
-      margin: auto;
-      padding: 40px 20px 70px;
+    .section-head h2{
+      margin:0;
+      font-size:28px;
     }
 
-    .page.active {
-      display: block;
+    .section-head p{
+      margin:5px 0 0;
+      color:var(--muted);
     }
 
-    .section-title {
-      text-align: center;
-      margin-bottom: 28px;
+    .search-row{
+      display:flex;
+      gap:10px;
+      margin:20px 0;
     }
 
-    .section-title h2 {
-      margin: 0 0 8px;
-      color: var(--rose-dark);
-      font-family: Georgia, serif;
-      font-size: 38px;
+    .search{
+      flex:1;
+      border:1px solid var(--line);
+      background:white;
+      border-radius:15px;
+      padding:14px 16px;
+      outline:none;
     }
 
-    .section-title p {
-      color: var(--muted);
-      margin: 0;
+    .search:focus,
+    input:focus,
+    textarea:focus,
+    select:focus{
+      border-color:var(--rose);
+      box-shadow:0 0 0 3px rgba(185,103,120,.1);
     }
-
-    /* SEARCH */
 
-    .shop-tools {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 25px;
+    .products-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
     }
 
-    .search-box {
-      width: min(600px, 100%);
-      position: relative;
+    .product-card{
+      background:rgba(255,255,255,.92);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      overflow:hidden;
+      box-shadow:0 8px 24px rgba(117,75,83,.08);
+      transition:.2s ease;
+      position:relative;
     }
 
-    .search-box input {
-      width: 100%;
-      border: 1px solid var(--border);
-      background: white;
-      border-radius: 16px;
-      padding: 15px 18px;
-      outline: none;
-      box-shadow: 0 5px 20px rgba(80, 50, 60, .04);
+    .product-card:hover{
+      transform:translateY(-4px);
+      box-shadow:var(--shadow);
     }
 
-    .search-box input:focus {
-      border-color: var(--rose);
+    .product-image-wrap{
+      position:relative;
+      aspect-ratio:4/4.7;
+      overflow:hidden;
+      background:#f4e4e7;
     }
 
-    /* PRODUCTS */
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
+    .product-image{
+      width:100%;
+      height:100%;
+      object-fit:cover;
     }
 
-    .product-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 7px 25px rgba(80, 50, 60, .06);
-      transition: .2s ease;
+    .heart{
+      position:absolute;
+      top:12px;
+      right:12px;
+      width:40px;
+      height:40px;
+      border:0;
+      border-radius:50%;
+      background:rgba(255,255,255,.9);
+      color:#a45a6b;
+      font-size:20px;
+      box-shadow:0 4px 15px rgba(0,0,0,.08);
     }
 
-    .product-card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow);
+    .sample-label{
+      position:absolute;
+      left:12px;
+      top:12px;
+      padding:6px 9px;
+      border-radius:999px;
+      background:rgba(255,250,247,.92);
+      color:var(--rose-dark);
+      font-size:11px;
+      font-weight:900;
     }
 
-    .product-image {
-      aspect-ratio: 1 / 1.05;
-      background: var(--rose-light);
-      overflow: hidden;
+    .product-body{
+      padding:15px;
     }
 
-    .product-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .product-body h3{
+      margin:0 0 7px;
+      font-size:17px;
     }
 
-    .placeholder-image {
-      width: 100%;
-      height: 100%;
-      display: grid;
-      place-items: center;
-      color: var(--rose);
-      font-size: 46px;
+    .product-description{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+      min-height:39px;
     }
 
-    .product-info {
-      padding: 16px;
+    .price{
+      font-size:20px;
+      font-weight:900;
+      color:var(--rose-dark);
+      margin:12px 0;
     }
 
-    .product-category {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--rose);
-      font-weight: 700;
+    .stock{
+      font-size:12px;
+      font-weight:800;
+      margin-bottom:11px;
     }
 
-    .product-name {
-      margin: 6px 0;
-      font-family: Georgia, serif;
-      font-size: 20px;
-      color: var(--rose-dark);
+    .stock.ok{
+      color:#487b5c;
     }
 
-    .product-description {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
-      min-height: 39px;
+    .stock.low{
+      color:#a26a31;
     }
 
-    .product-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-top: 14px;
+    .stock.out{
+      color:#a44f5f;
     }
 
-    .price {
-      font-weight: 800;
-      color: var(--rose-dark);
+    .card-actions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
     }
-
-    /* PRODUCT DETAIL */
 
-    .detail-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 25px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 35px;
-      box-shadow: var(--shadow);
+    .empty{
+      padding:45px 20px;
+      background:white;
+      border:1px dashed var(--line);
+      border-radius:20px;
+      text-align:center;
+      color:var(--muted);
     }
 
-    .detail-image {
-      border-radius: 18px;
-      overflow: hidden;
-      background: var(--rose-light);
-      aspect-ratio: 1 / 1;
+    .recent-row{
+      display:flex;
+      gap:12px;
+      overflow:auto;
+      padding-bottom:8px;
     }
 
-    .detail-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .recent-card{
+      flex:0 0 125px;
+      background:white;
+      border:1px solid var(--line);
+      border-radius:15px;
+      overflow:hidden;
     }
 
-    .detail-info h2 {
-      font-family: Georgia, serif;
-      color: var(--rose-dark);
-      font-size: 40px;
-      margin: 5px 0 12px;
+    .recent-card img{
+      width:100%;
+      aspect-ratio:1;
+      object-fit:cover;
     }
 
-    .detail-description {
-      color: var(--muted);
-      line-height: 1.7;
+    .recent-card div{
+      padding:9px;
+      font-size:12px;
+      font-weight:800;
     }
 
-    .variant-section {
-      margin: 24px 0;
+    .detail{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:30px;
+      padding:28px 0 50px;
     }
 
-    .variant-section label {
-      display: block;
-      font-weight: 700;
-      margin-bottom: 8px;
+    .detail-image{
+      border-radius:25px;
+      overflow:hidden;
+      background:#f2dfe3;
+      box-shadow:var(--shadow);
     }
 
-    .variant-select {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: white;
+    .detail-image img{
+      width:100%;
+      max-height:680px;
+      object-fit:cover;
     }
 
-    .quantity {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 18px 0;
+    .detail-info{
+      padding:12px 0;
     }
 
-    .quantity input {
-      width: 80px;
-      padding: 12px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      text-align: center;
+    .detail-info h1{
+      font-size:42px;
+      line-height:1.05;
+      margin:5px 0 12px;
     }
 
-    /* BAG */
-
-    .bag-list {
-      display: grid;
-      gap: 14px;
+    .detail-description{
+      color:var(--muted);
+      line-height:1.7;
+      margin-bottom:20px;
     }
 
-    .bag-item {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
+    .option-group{
+      margin:20px 0;
     }
 
-    .bag-thumb {
-      width: 80px;
-      height: 80px;
-      border-radius: 14px;
-      background: var(--rose-light);
-      object-fit: cover;
-      flex-shrink: 0;
+    .option-title{
+      font-weight:900;
+      margin-bottom:9px;
+      display:flex;
+      justify-content:space-between;
     }
 
-    .bag-item-main {
-      flex: 1;
+    .options{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
     }
 
-    .bag-item-name {
-      font-weight: 800;
-      color: var(--rose-dark);
+    .option{
+      border:1px solid var(--line);
+      background:white;
+      padding:10px 14px;
+      border-radius:12px;
+      font-weight:700;
+      color:var(--brown);
     }
 
-    .bag-meta {
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 5px;
+    .option.selected{
+      border-color:var(--rose);
+      background:var(--blush);
+      color:var(--rose-dark);
     }
 
-    .bag-quantity {
-      width: 75px;
-      padding: 9px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
+    .color-dot{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
     }
 
-    .bag-summary {
-      margin-top: 25px;
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 22px;
+    .dot{
+      width:18px;
+      height:18px;
+      border-radius:50%;
+      border:1px solid rgba(0,0,0,.12);
     }
 
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 8px 0;
+    .quantity{
+      display:flex;
+      align-items:center;
+      width:max-content;
+      border:1px solid var(--line);
+      border-radius:13px;
+      overflow:hidden;
+      background:white;
     }
 
-    .summary-total {
-      border-top: 1px solid var(--border);
-      margin-top: 8px;
-      padding-top: 14px;
-      font-size: 20px;
-      font-weight: 800;
-      color: var(--rose-dark);
+    .quantity button{
+      width:42px;
+      height:42px;
+      border:0;
+      background:var(--soft);
+      font-size:19px;
     }
 
-    /* CHECKOUT */
+    .quantity span{
+      width:48px;
+      text-align:center;
+      font-weight:900;
+    }
 
-    .checkout-grid {
-      display: grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 25px;
+    .sticky-actions{
+      position:sticky;
+      bottom:12px;
+      z-index:20;
+      background:rgba(255,250,247,.94);
+      backdrop-filter:blur(12px);
+      padding:10px;
+      border-radius:17px;
+      box-shadow:var(--shadow);
+      margin-top:25px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:9px;
     }
 
-    .form-card,
-    .order-summary-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 24px;
+    .bag-layout{
+      display:grid;
+      grid-template-columns:1.5fr .8fr;
+      gap:22px;
+      padding:28px 0 50px;
     }
 
-    .form-card h3,
-    .order-summary-card h3 {
-      margin-top: 0;
-      color: var(--rose-dark);
-      font-family: Georgia, serif;
-      font-size: 25px;
+    .bag-list,
+    .summary,
+    .checkout-card,
+    .owner-card{
+      background:white;
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:20px;
+      box-shadow:0 8px 25px rgba(117,75,83,.07);
     }
 
-    .form-group {
-      margin-bottom: 15px;
+    .bag-item{
+      display:grid;
+      grid-template-columns:100px 1fr auto;
+      gap:15px;
+      padding:15px 0;
+      border-bottom:1px solid var(--line);
     }
 
-    .form-group label {
-      display: block;
-      font-weight: 700;
-      font-size: 13px;
-      margin-bottom: 7px;
+    .bag-item:last-child{
+      border-bottom:0;
     }
 
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      outline: none;
-      background: white;
+    .bag-item img{
+      width:100px;
+      height:120px;
+      object-fit:cover;
+      border-radius:15px;
     }
 
-    .form-group textarea {
-      min-height: 100px;
-      resize: vertical;
+    .bag-item h3{
+      margin:0 0 5px;
     }
 
-    .form-group input:focus,
-    .form-group textarea:focus,
-    .form-group select:focus {
-      border-color: var(--rose);
+    .bag-meta{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.7;
     }
 
-    /* HOW TO ORDER */
+    .summary{
+      position:sticky;
+      top:90px;
+      height:max-content;
+    }
 
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
+    .summary-row{
+      display:flex;
+      justify-content:space-between;
+      gap:15px;
+      padding:9px 0;
     }
 
-    .step {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 25px;
-      text-align: center;
+    .summary-total{
+      border-top:1px solid var(--line);
+      margin-top:8px;
+      padding-top:15px;
+      font-size:23px;
+      font-weight:900;
+      color:var(--rose-dark);
     }
 
-    .step-number {
-      width: 48px;
-      height: 48px;
-      margin: 0 auto 14px;
-      border-radius: 50%;
-      background: var(--rose-light);
-      color: var(--rose-dark);
-      display: grid;
-      place-items: center;
-      font-weight: 800;
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:15px;
     }
 
-    .step h3 {
-      color: var(--rose-dark);
-      margin: 0 0 8px;
+    .field{
+      margin-bottom:15px;
     }
 
-    .step p {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
+    .field.full{
+      grid-column:1/-1;
     }
 
-    /* HELP */
+    .field label{
+      display:block;
+      margin-bottom:7px;
+      font-weight:800;
+      font-size:14px;
+    }
 
-    .help-card {
-      max-width: 700px;
-      margin: auto;
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 30px;
+    .field input,
+    .field textarea,
+    .field select{
+      width:100%;
+      padding:13px;
+      border:1px solid var(--line);
+      border-radius:13px;
+      outline:none;
+      background:#fffdfc;
     }
 
-    .contact-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 20px;
+    textarea{
+      min-height:110px;
+      resize:vertical;
     }
 
-    /* OWNER */
+    .checkout-layout{
+      max-width:950px;
+      margin:auto;
+      padding:30px 0 60px;
+    }
 
-    .owner-panel {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 25px;
+    .checkout-summary{
+      background:var(--soft);
+      padding:18px;
+      border-radius:16px;
+      margin-bottom:20px;
     }
 
-    .owner-products {
-      display: grid;
-      gap: 12px;
-      margin-top: 20px;
+    .order-success{
+      text-align:center;
+      padding:55px 20px;
+      max-width:650px;
+      margin:40px auto;
+      background:white;
+      border:1px solid var(--line);
+      border-radius:25px;
+      box-shadow:var(--shadow);
     }
 
-    .owner-product {
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px;
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      align-items: center;
+    .success-icon{
+      width:72px;
+      height:72px;
+      border-radius:50%;
+      margin:auto auto 18px;
+      display:grid;
+      place-items:center;
+      background:#e7f3ea;
+      color:#4d825e;
+      font-size:35px;
     }
 
-    /* MODAL */
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:24px;
+      transform:translate(-50%,120px);
+      background:var(--brown);
+      color:white;
+      padding:13px 18px;
+      border-radius:13px;
+      z-index:500;
+      opacity:0;
+      transition:.25s;
+      box-shadow:var(--shadow);
+      max-width:90%;
+      text-align:center;
+    }
 
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(54, 35, 43, .52);
-      z-index: 3000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+    .toast.show{
+      transform:translate(-50%,0);
+      opacity:1;
     }
 
-    .modal.show {
-      display: flex;
+    .loading{
+      padding:50px;
+      text-align:center;
+      color:var(--muted);
     }
 
-    .modal-card {
-      width: min(520px, 100%);
-      background: white;
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: 0 25px 80px rgba(0, 0, 0, .18);
-      text-align: center;
+    .spinner{
+      width:35px;
+      height:35px;
+      border:4px solid var(--line);
+      border-top-color:var(--rose);
+      border-radius:50%;
+      animation:spin .8s linear infinite;
+      margin:0 auto 12px;
     }
 
-    .modal-icon {
-      width: 60px;
-      height: 60px;
-      margin: 0 auto 15px;
-      border-radius: 50%;
-      background: var(--rose-light);
-      display: grid;
-      place-items: center;
-      font-size: 27px;
+    @keyframes spin{
+      to{transform:rotate(360deg)}
     }
 
-    .modal-card h3 {
-      font-family: Georgia, serif;
-      color: var(--rose-dark);
-      font-size: 28px;
-      margin: 0 0 10px;
+    footer{
+      margin-top:50px;
+      background:#4a353b;
+      color:white;
+      padding:40px 0;
     }
 
-    .modal-card p {
-      color: var(--muted);
-      line-height: 1.6;
+    .footer-grid{
+      display:grid;
+      grid-template-columns:2fr 1fr 1fr;
+      gap:30px;
     }
 
-    .modal-actions {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 20px;
+    .footer-title{
+      font-weight:900;
+      font-size:18px;
+      margin-bottom:12px;
     }
 
-    /* LOADING */
+    .footer-grid p{
+      color:#eadde0;
+      line-height:1.7;
+    }
 
-    .loading {
-      text-align: center;
-      padding: 60px 20px;
-      color: var(--muted);
+    .footer-grid button{
+      border:0;
+      background:transparent;
+      color:#eadde0;
+      padding:5px 0;
+      display:block;
     }
 
-    .spinner {
-      width: 38px;
-      height: 38px;
-      margin: 0 auto 15px;
-      border: 4px solid var(--rose-light);
-      border-top-color: var(--rose);
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
+    .hidden{
+      display:none !important;
     }
+
+    @media(max-width:950px){
+      .products-grid{
+        grid-template-columns:repeat(3,1fr);
+      }
+
+      .bag-layout{
+        grid-template-columns:1fr;
+      }
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
+      .summary{
+        position:static;
       }
     }
 
-    .empty {
-      text-align: center;
-      padding: 50px 20px;
-      color: var(--muted);
-    }
-
-    .error-box {
-      background: #fff0f2;
-      border: 1px solid #f0c8d0;
-      color: #8d4051;
-      border-radius: 16px;
-      padding: 18px;
-      margin: 20px 0;
-      line-height: 1.6;
-    }
-
-    /* FOOTER */
-
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 30px 20px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    footer strong {
-      color: var(--rose-dark);
-    }
-
-    /* RESPONSIVE */
-
-    @media (max-width: 950px) {
-      .product-grid {
-        grid-template-columns: repeat(3, 1fr);
+    @media(max-width:720px){
+      .nav-links{
+        display:none;
       }
 
-      .steps {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 760px) {
-      nav {
-        display: none;
+      .hamburger{
+        display:block;
       }
 
-      .menu-toggle {
-        display: block;
+      .hero{
+        min-height:530px;
+        margin-top:12px;
       }
 
-      .hero-card {
-        min-height: 620px;
-        align-items: flex-end;
-        background:
-          linear-gradient(
-            0deg,
-            rgba(255, 250, 247, .98) 0%,
-            rgba(255, 250, 247, .90) 42%,
-            rgba(255, 250, 247, .05) 100%
-          ),
-          url("https://images.unsplash.com/photo-1773188536669-17275a1c200c?auto=format&fit=crop&fm=jpg&q=85&w=1400")
-          center/cover no-repeat;
+      .hero-content{
+        padding:25px;
       }
 
-      .hero-content {
-        padding: 30px 24px;
+      .hero h1{
+        font-size:43px;
       }
 
-      .hero h1 {
-        font-size: 46px;
+      .products-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:12px;
       }
 
-      .product-grid {
-        grid-template-columns: repeat(2, 1fr);
+      .product-body{
+        padding:12px;
       }
 
-      .detail-card,
-      .checkout-grid {
-        grid-template-columns: 1fr;
+      .product-description{
+        min-height:auto;
       }
 
-      .steps {
-        grid-template-columns: 1fr;
+      .card-actions{
+        grid-template-columns:1fr;
+      }
+
+      .detail{
+        grid-template-columns:1fr;
+        gap:18px;
+      }
+
+      .detail-info h1{
+        font-size:34px;
+      }
+
+      .bag-item{
+        grid-template-columns:75px 1fr;
+      }
+
+      .bag-item > :last-child{
+        grid-column:2;
+      }
+
+      .bag-item img{
+        width:75px;
+        height:95px;
+      }
+
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+
+      .field.full{
+        grid-column:auto;
+      }
+
+      .footer-grid{
+        grid-template-columns:1fr;
+      }
+
+      .section-head{
+        display:block;
+      }
+
+      .search-row{
+        flex-direction:column;
       }
     }
 
-    @media (max-width: 480px) {
-      .header-inner {
-        padding: 10px 14px;
+    @media(max-width:430px){
+      .products-grid{
+        grid-template-columns:1fr 1fr;
       }
 
-      .brand-title {
-        font-size: 17px;
+      .product-image-wrap{
+        aspect-ratio:4/5;
       }
 
-      .brand-subtitle {
-        font-size: 9px;
+      .price{
+        font-size:17px;
       }
 
-      .hero {
-        padding: 15px 12px;
+      .product-body h3{
+        font-size:15px;
       }
 
-      .hero-card {
-        min-height: 610px;
-        border-radius: 22px;
-      }
-
-      .product-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-      }
-
-      .product-info {
-        padding: 12px;
-      }
-
-      .product-name {
-        font-size: 17px;
-      }
-
-      .product-description {
-        font-size: 12px;
-      }
-
-      .detail-card {
-        padding: 14px;
-      }
-
-      .detail-info h2 {
-        font-size: 32px;
-      }
-
-      .bag-item {
-        align-items: flex-start;
-        flex-wrap: wrap;
-      }
-
-      .bag-item-main {
-        min-width: calc(100% - 100px);
+      .hero{
+        border-radius:20px;
       }
     }
   </style>
@@ -949,2595 +902,1997 @@
 
 <body>
 
-<header>
-  <div class="header-inner">
+  <div class="topbar">
+    🌸 Elegant Turbans & Hijabs • Temporary sample collection — owner can replace products later
+  </div>
 
-    <button class="brand" onclick="goHome()" style="border:0;background:transparent;text-align:left;padding:0;">
-      <div class="brand-mark">🌸</div>
-      <div class="brand-text">
-        <h1 class="brand-title">Luqmanii Turban Hijabs</h1>
-        <p class="brand-subtitle">Elegant • Modest • Beautiful</p>
-      </div>
-    </button>
-
-    <nav>
-      <button onclick="goHome()">Home</button>
-      <button onclick="showPage('shop')">Shop</button>
-      <button onclick="showPage('howto')">How to Order</button>
-      <button onclick="showPage('help')">Help</button>
-      <button onclick="showPage('owner')">Owner</button>
-      <button class="bag-button" onclick="showPage('bag')">
-        Bag <span id="bagCount" class="bag-count">0</span>
+  <header>
+    <nav class="nav">
+      <button class="brand" onclick="goHome()" style="border:0;background:none;cursor:pointer;">
+        <span class="brand-mark">L</span>
+        <span>Luqmanii Turban Hijabs</span>
       </button>
+
+      <div class="nav-links">
+        <button onclick="goHome()">Home</button>
+        <button onclick="showShop()">Shop</button>
+        <button onclick="showPage('recent')">Recently Viewed</button>
+        <button onclick="showPage('wishlist')">❤️ Wishlist</button>
+        <button class="bag-button btn" onclick="showBag()">🎒 Bag (<span id="bagCount">0</span>)</button>
+      </div>
+
+      <button class="hamburger" onclick="toggleMobileMenu()">☰</button>
     </nav>
 
-    <button class="menu-toggle" onclick="toggleMobileMenu()">☰</button>
-  </div>
-
-  <div id="mobileMenu" class="mobile-menu">
-    <button onclick="goHome(); closeMobileMenu()">🏠 Home</button>
-    <button onclick="showPage('shop'); closeMobileMenu()">🛍️ Shop</button>
-    <button onclick="showPage('bag'); closeMobileMenu()">🛒 Bag <span id="mobileBagCount">0</span></button>
-    <button onclick="showPage('howto'); closeMobileMenu()">📦 How to Order</button>
-    <button onclick="showPage('help'); closeMobileMenu()">💬 Help</button>
-    <a href="https://www.tiktok.com/@luqmaniturkiyecollection" target="_blank">🎵 TikTok</a>
-    <a href="tel:+251933703209">📞 +251 933 703 209</a>
-    <button onclick="showPage('owner'); closeMobileMenu()">👑 Owner</button>
-  </div>
-</header>
-
-<main>
-
-  <!-- HOME -->
-  <section id="homePage" class="page active">
-
-    <div class="hero">
-      <div class="hero-card">
-        <div class="hero-content">
-          <div class="eyebrow">Luqmanii Collection</div>
-
-          <h1>Grace in Every Wrap.</h1>
-
-          <p>
-            Discover elegant Turkish-inspired turban hijabs designed
-            to bring beauty, comfort and confidence to your everyday style.
-          </p>
-
-          <div class="hero-actions">
-            <button class="btn btn-primary" onclick="showPage('shop')">
-              Shop Collection
-            </button>
-
-            <button class="btn btn-soft" onclick="showPage('help')">
-              Contact Us
-            </button>
-          </div>
-        </div>
-      </div>
+    <div id="mobileMenu" class="mobile-menu">
+      <button onclick="goHome();closeMobileMenu()">🏠 Home</button>
+      <button onclick="showShop();closeMobileMenu()">🛍️ Shop</button>
+      <button onclick="showPage('recent');closeMobileMenu()">👀 Recently Viewed</button>
+      <button onclick="showPage('wishlist');closeMobileMenu()">❤️ Wishlist</button>
+      <button onclick="showBag();closeMobileMenu()">🎒 Bag (<span id="mobileBagCount">0</span>)</button>
+      <button onclick="showPage('owner');closeMobileMenu()">👑 Owner</button>
     </div>
+  </header>
 
-    <!-- HOW TO ORDER IS INTENTIONALLY NOT HERE -->
+  <main id="app"></main>
 
-    <div class="section-title" style="margin-top:35px;">
-      <div class="eyebrow">Featured</div>
-      <h2>Our Collection</h2>
-      <p>Beautiful pieces for your modest wardrobe.</p>
-    </div>
-
-    <div id="homeProducts" class="product-grid"></div>
-
-  </section>
-
-
-  <!-- SHOP -->
-  <section id="shopPage" class="page">
-
-    <div class="section-title">
-      <div class="eyebrow">Collection</div>
-      <h2>Shop Hijabs</h2>
-      <p>Find a style that feels like you.</p>
-    </div>
-
-    <div class="shop-tools">
-      <div class="search-box">
-        <input
-          id="searchInput"
-          type="search"
-          placeholder="Search hijabs, colors, styles..."
-          oninput="renderProducts()"
-        >
-      </div>
-    </div>
-
-    <div id="productsContainer"></div>
-
-  </section>
-
-
-  <!-- PRODUCT DETAIL -->
-  <section id="productPage" class="page">
-    <button class="btn btn-soft" onclick="goBack()" style="margin-bottom:18px;">
-      ← Back
-    </button>
-
-    <div id="productDetail"></div>
-  </section>
-
-
-  <!-- BAG -->
-  <section id="bagPage" class="page">
-
-    <div class="section-title">
-      <div class="eyebrow">Your Selection</div>
-      <h2>Your Bag</h2>
-      <p>Review your selected hijabs before checkout.</p>
-    </div>
-
-    <div id="bagContainer"></div>
-
-  </section>
-
-
-  <!-- CHECKOUT -->
-  <section id="checkoutPage" class="page">
-
-    <button class="btn btn-soft" onclick="goBack()" style="margin-bottom:18px;">
-      ← Back
-    </button>
-
-    <div class="section-title">
-      <div class="eyebrow">Almost Done</div>
-      <h2>Checkout</h2>
-      <p>Enter your details and send your order.</p>
-    </div>
-
-    <div class="checkout-grid">
-
-      <div class="form-card">
-        <h3>Your Information</h3>
-
-        <form id="checkoutForm" onsubmit="submitOrder(event)">
-
-          <div class="form-group">
-            <label>Full Name *</label>
-            <input id="customerName" required>
-          </div>
-
-          <div class="form-group">
-            <label>Phone Number *</label>
-            <input id="customerPhone" type="tel" required>
-          </div>
-
-          <div class="form-group">
-            <label>City *</label>
-            <input id="customerCity" required>
-          </div>
-
-          <div class="form-group">
-            <label>Address *</label>
-            <textarea id="customerAddress" required></textarea>
-          </div>
-
-          <div class="form-group">
-            <label>Additional Note</label>
-            <textarea id="customerNote"></textarea>
-          </div>
-
-          <button id="submitOrderButton" class="btn btn-primary" type="submit" style="width:100%;">
-            Place Order
-          </button>
-
-        </form>
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <div class="footer-title">Luqmanii Turban Hijabs</div>
+        <p>
+          Elegant turban and hijab styles with a soft feminine shopping
+          experience. Sample products are temporary and can be replaced later.
+        </p>
       </div>
 
-      <div class="order-summary-card">
-        <h3>Your Order</h3>
-        <div id="checkoutSummary"></div>
+      <div>
+        <div class="footer-title">Shop</div>
+        <button onclick="goHome()">Home</button>
+        <button onclick="showShop()">All Products</button>
+        <button onclick="showBag()">Shopping Bag</button>
+        <button onclick="showPage('wishlist')">Wishlist</button>
       </div>
 
-    </div>
-
-  </section>
-
-
-  <!-- CONFIRMATION -->
-  <section id="confirmationPage" class="page">
-    <div class="help-card" style="text-align:center;">
-      <div class="modal-icon">✓</div>
-
-      <h2 style="font-family:Georgia,serif;color:var(--rose-dark);">
-        Order received successfully
-      </h2>
-
-      <p>
-        Thank you for choosing Luqmanii Turban Hijabs.
-        Your order has been received.
-      </p>
-
-      <div class="modal-actions">
-        <button class="btn btn-primary" onclick="goHome()">
-          Back to Home
-        </button>
+      <div>
+        <div class="footer-title">Contact</div>
+        <p>WhatsApp: +251 918 940 653</p>
+        <p>Phone: +251 933 703 209</p>
+        <p>TikTok: @luqmaniturkiyecollection</p>
       </div>
     </div>
-  </section>
+  </footer>
 
-
-  <!-- HOW TO ORDER -->
-  <section id="howtoPage" class="page">
-
-    <button class="btn btn-soft" onclick="goBack()" style="margin-bottom:18px;">
-      ← Back
-    </button>
-
-    <div class="section-title">
-      <div class="eyebrow">Simple & Easy</div>
-      <h2>How to Order</h2>
-      <p>Ordering your Luqmanii hijab takes only a few steps.</p>
-    </div>
-
-    <div class="steps">
-
-      <div class="step">
-        <div class="step-number">1</div>
-        <h3>Choose</h3>
-        <p>Browse our collection and choose your favorite hijab.</p>
-      </div>
-
-      <div class="step">
-        <div class="step-number">2</div>
-        <h3>Select</h3>
-        <p>Select the available color, size or style and add it to your bag.</p>
-      </div>
-
-      <div class="step">
-        <div class="step-number">3</div>
-        <h3>Checkout</h3>
-        <p>Enter your name, phone number and delivery address.</p>
-      </div>
-
-      <div class="step">
-        <div class="step-number">4</div>
-        <h3>Confirm</h3>
-        <p>Your order will be received and we will contact you for confirmation.</p>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- HELP -->
-  <section id="helpPage" class="page">
-
-    <button class="btn btn-soft" onclick="goBack()" style="margin-bottom:18px;">
-      ← Back
-    </button>
-
-    <div class="section-title">
-      <div class="eyebrow">We're Here For You</div>
-      <h2>Help & Contact</h2>
-      <p>Have a question? Contact Luqmanii directly.</p>
-    </div>
-
-    <div class="help-card">
-
-      <h3 style="font-family:Georgia,serif;color:var(--rose-dark);">
-        Luqmanii Turban Hijabs
-      </h3>
-
-      <p style="color:var(--muted);line-height:1.7;">
-        For questions about products, colors, sizes, delivery or your order,
-        please contact us directly.
-      </p>
-
-      <div class="contact-row">
-
-        <a class="btn btn-primary"
-           href="https://wa.me/251918940653"
-           target="_blank">
-          WhatsApp
-        </a>
-
-        <a class="btn btn-soft"
-           href="tel:+251933703209">
-          Call Us
-        </a>
-
-        <a class="btn btn-outline"
-           href="https://www.tiktok.com/@luqmaniturkiyecollection"
-           target="_blank">
-          TikTok
-        </a>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- OWNER -->
-  <section id="ownerPage" class="page">
-
-    <button class="btn btn-soft" onclick="goBack()" style="margin-bottom:18px;">
-      ← Back
-    </button>
-
-    <div class="section-title">
-      <div class="eyebrow">Management</div>
-      <h2>Owner</h2>
-      <p>Manage Luqmanii products and orders.</p>
-    </div>
-
-    <div class="owner-panel">
-
-      <h3 style="font-family:Georgia,serif;color:var(--rose-dark);">
-        Products
-      </h3>
-
-      <div id="ownerProducts" class="owner-products">
-        <div class="loading">
-          <div class="spinner"></div>
-          Loading...
-        </div>
-      </div>
-
-      <h3 style="font-family:Georgia,serif;color:var(--rose-dark);margin-top:35px;">
-        Recent Orders
-      </h3>
-
-      <div id="ownerOrders">
-        <div class="loading">
-          Loading orders...
-        </div>
-      </div>
-
-    </div>
-
-  </section>
-
-</main>
-
-
-<footer>
-  <strong>Luqmanii Turban Hijabs</strong>
-  <br>
-  Elegant • Modest • Beautiful
-  <br><br>
-  © <span id="year"></span> Luqmanii
-</footer>
-
-
-<!-- GENERAL MODAL -->
-<div id="modal" class="modal">
-  <div class="modal-card">
-
-    <div id="modalIcon" class="modal-icon">🌸</div>
-
-    <h3 id="modalTitle">Luqmanii</h3>
-
-    <p id="modalMessage"></p>
-
-    <div id="modalActions" class="modal-actions"></div>
-
-  </div>
-</div>
-
+  <div id="toast" class="toast"></div>
 
 <script>
-/* ============================================================
-   LUQMANII SUPABASE CONFIGURATION
-   ============================================================ */
+/* =========================================================
+   LUQMANII CONFIGURATION
+========================================================= */
 
-const SUPABASE_URL =
-  "https://nlqmmzixpzmgvwwiypbn.supabase.co";
-
-const SUPABASE_KEY =
-  "sb_publishable_pdzlM72e-KRxaOL3sv8JTA_Iv89CYl5";
-
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+const SUPABASE_URL = "https://nlqmmzixpzmgvwwiypbn.supabase.co";
+const SUPABASE_KEY = "sb_publishable_pdzlM72e-KRxaOL3sv8JTA_Iv89CYl5";
 
 const BUSINESS_SLUG = "luqmanii";
-
 const WHATSAPP_NUMBER = "251918940653";
-
 const PHONE_NUMBER = "+251933703209";
 
-const STORAGE_BUCKET = "product-images";
+const supabaseClient =
+  window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 
-/* ============================================================
+/* =========================================================
+   TEMPORARY SAMPLE PHOTOS
+   Owner can replace these later.
+========================================================= */
+
+const SAMPLE_IMAGES = {
+  "Premium Turkish Turban":
+    "https://images.unsplash.com/photo-1552113125-81af17f36b57?auto=format&fit=crop&q=85&w=1200",
+
+  "Soft Everyday Turban":
+    "https://images.unsplash.com/photo-1558250023-7ed8825fd7e1?auto=format&fit=crop&q=85&w=1200",
+
+  "Royal Wrap Hijab":
+    "https://images.unsplash.com/photo-1519595043383-305cce424288?auto=format&fit=crop&q=85&w=1200",
+
+  "Classic Jersey Turban":
+    "https://images.unsplash.com/photo-1770891478565-4f8770c1e3bc?auto=format&fit=crop&q=85&w=1200",
+
+  "Pearl Elegant Turban":
+    "https://images.unsplash.com/photo-1724881361391-ccad5b376d62?auto=format&fit=crop&q=85&w=1200",
+
+  "Turkish Knot Hijab":
+    "https://images.unsplash.com/photo-1587383649829-d5d4494edd0b?auto=format&fit=crop&q=85&w=1200",
+
+  "Soft Modal Wrap":
+    "https://images.unsplash.com/photo-1592155300558-37af55df2bb6?auto=format&fit=crop&q=85&w=1200",
+
+  "Elegant Bow Turban":
+    "https://images.unsplash.com/photo-1569307948382-33705a1d23ec?auto=format&fit=crop&q=85&w=1200",
+
+  "Premium Cross Turban":
+    "https://images.unsplash.com/photo-1603057002062-b929edcd7027?auto=format&fit=crop&q=85&w=1200",
+
+  "Grace Stretch Hijab":
+    "https://images.unsplash.com/photo-1629112721284-3c325b975de2?auto=format&fit=crop&q=85&w=1200"
+};
+
+
+/* =========================================================
    STATE
-   ============================================================ */
+========================================================= */
 
 let business = null;
 let products = [];
-let cart = [];
-let selectedProduct = null;
-let lastPage = "home";
-let currentPage = "home";
-let isSubmittingOrder = false;
+let variants = [];
+let currentProduct = null;
+let selected = {
+  color:null,
+  style:null,
+  size:null,
+  quantity:1
+};
 
-const CART_KEY = "luqmanii_cart_v3";
-const LAST_ORDER_KEY = "luqmanii_last_order_signature";
+let cart = JSON.parse(localStorage.getItem("luqmanii_cart") || "[]");
+let wishlist = JSON.parse(localStorage.getItem("luqmanii_wishlist") || "[]");
+let recentlyViewed = JSON.parse(localStorage.getItem("luqmanii_recent") || "[]");
+
+let submittingOrder = false;
 
 
-/* ============================================================
-   INITIALIZATION
-   ============================================================ */
+/* =========================================================
+   HELPERS
+========================================================= */
 
-document.addEventListener("DOMContentLoaded", async () => {
+function $(id){
+  return document.getElementById(id);
+}
 
-  document.getElementById("year").textContent =
-    new Date().getFullYear();
+function escapeHtml(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
 
-  loadCart();
+function money(value){
+  return `${Number(value || 0).toLocaleString()} ETB`;
+}
 
+function toast(message){
+  const el = $("toast");
+  el.textContent = message;
+  el.classList.add("show");
+
+  clearTimeout(window.__toastTimer);
+
+  window.__toastTimer = setTimeout(()=>{
+    el.classList.remove("show");
+  },2600);
+}
+
+function saveCart(){
+  localStorage.setItem("luqmanii_cart",JSON.stringify(cart));
   updateBagCount();
+}
 
-  await loadBusiness();
+function saveWishlist(){
+  localStorage.setItem("luqmanii_wishlist",JSON.stringify(wishlist));
+}
 
-  if (business) {
-    await loadProducts();
+function saveRecent(){
+  localStorage.setItem("luqmanii_recent",JSON.stringify(recentlyViewed));
+}
+
+function updateBagCount(){
+  const count = cart.reduce((sum,item)=>sum + Number(item.quantity || 0),0);
+
+  $("bagCount").textContent = count;
+
+  if($("mobileBagCount")){
+    $("mobileBagCount").textContent = count;
+  }
+}
+
+function productImage(product){
+  return SAMPLE_IMAGES[product.name] ||
+    "https://images.unsplash.com/photo-1558250023-7ed8825fd7e1?auto=format&fit=crop&q=85&w=1200";
+}
+
+function productVariants(productId){
+  return variants.filter(v =>
+    String(v.product_id) === String(productId) &&
+    v.active !== false
+  );
+}
+
+function uniqueValues(items,key){
+  return [...new Set(
+    items.map(x => x[key]).filter(Boolean)
+  )];
+}
+
+function findVariant(product,color,style,size){
+  return productVariants(product.id).find(v =>
+    String(v.color || "") === String(color || "") &&
+    String(v.style || "") === String(style || "") &&
+    String(v.size || "") === String(size || "")
+  );
+}
+
+function getProductById(id){
+  return products.find(p => String(p.id) === String(id));
+}
+
+function getCartTotal(){
+  return cart.reduce((sum,item)=>{
+    return sum + Number(item.price || 0) * Number(item.quantity || 0);
+  },0);
+}
+
+
+/* =========================================================
+   BUSINESS + PRODUCTS
+========================================================= */
+
+async function loadBusiness(){
+  const {data,error} = await supabaseClient
+    .from("businesses")
+    .select("*")
+    .eq("slug",BUSINESS_SLUG)
+    .maybeSingle();
+
+  if(error){
+    throw new Error(error.message);
   }
 
-});
+  if(!data){
+    throw new Error("Luqmanii business was not found.");
+  }
 
+  business = data;
+}
 
-/* ============================================================
-   BUSINESS
-   ============================================================ */
+async function loadProducts(){
+  const {data,error} = await supabaseClient
+    .from("products")
+    .select("*")
+    .eq("business_id",business.id)
+    .eq("active",true)
+    .order("created_at",{ascending:false});
 
-async function loadBusiness() {
+  if(error){
+    throw new Error(error.message);
+  }
 
-  try {
+  products = data || [];
 
-    const { data, error } =
-      await supabaseClient
-        .from("businesses")
-        .select("id,name,slug")
-        .eq("slug", BUSINESS_SLUG)
-        .maybeSingle();
+  const ids = products.map(p => p.id);
 
-    if (error) {
-      console.error("Business error:", error);
-      showStoreError(error.message);
-      return;
+  if(ids.length){
+    const variantResult = await supabaseClient
+      .from("product_variants")
+      .select("*")
+      .in("product_id",ids)
+      .eq("active",true);
+
+    if(!variantResult.error){
+      variants = variantResult.data || [];
     }
+  }
+}
 
-    if (!data) {
-      showStoreError(
-        "The Luqmanii business record could not be found."
-      );
-      return;
-    }
 
-    business = data;
+/* =========================================================
+   APP START
+========================================================= */
 
-  } catch (error) {
+async function start(){
+  $("app").innerHTML = `
+    <div class="loading">
+      <div class="spinner"></div>
+      <strong>Loading Luqmanii...</strong>
+    </div>
+  `;
 
+  try{
+    await loadBusiness();
+    await loadProducts();
+
+    updateBagCount();
+    renderHome();
+  }catch(error){
     console.error(error);
 
-    showStoreError(
-      error.message || "Unable to connect to the store."
-    );
-
+    $("app").innerHTML = `
+      <div class="container">
+        <div class="empty" style="margin:45px 0;">
+          <h2>Unable to load the shop</h2>
+          <p>${escapeHtml(error.message)}</p>
+          <button class="btn btn-primary" onclick="start()">Try Again</button>
+        </div>
+      </div>
+    `;
   }
-
 }
 
 
-/* ============================================================
-   PRODUCTS
-   ============================================================ */
+/* =========================================================
+   NAVIGATION
+========================================================= */
 
-async function loadProducts() {
+function goHome(){
+  renderHome();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
 
-  showProductsLoading();
+function showShop(){
+  renderShop(products);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
 
-  try {
-
-    /*
-      IMPORTANT FIX:
-
-      Your actual database uses:
-
-        products.active
-
-      not:
-
-        products.is_active
-
-      We also use select("*") so the page does not fail because
-      the HTML asks for a column that your table does not have.
-    */
-
-    const { data, error } =
-      await supabaseClient
-        .from("products")
-        .select("*")
-        .eq("business_id", business.id)
-        .eq("active", true)
-        .order("created_at", { ascending: false });
-
-    if (error) {
-
-      console.error("PRODUCT LOAD ERROR:", error);
-
-      showProductError(error.message);
-
-      return;
-    }
-
-    products = Array.isArray(data)
-      ? data
-      : [];
-
-    await attachVariants();
-
-    renderProducts();
-    renderHomeProducts();
-
-  } catch (error) {
-
-    console.error("PRODUCT LOAD EXCEPTION:", error);
-
-    showProductError(
-      error.message || "Unable to load products."
-    );
-
+function showPage(page){
+  if(page === "recent"){
+    renderRecent();
   }
 
+  if(page === "wishlist"){
+    renderWishlist();
+  }
+
+  if(page === "owner"){
+    renderOwner();
+  }
+
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function showBag(){
+  renderBag();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function toggleMobileMenu(){
+  $("mobileMenu").classList.toggle("open");
+}
+
+function closeMobileMenu(){
+  $("mobileMenu").classList.remove("open");
 }
 
 
-/* ============================================================
-   VARIANTS
-   ============================================================ */
+/* =========================================================
+   HOME
+========================================================= */
 
-async function attachVariants() {
+function renderHome(){
+  $("app").innerHTML = `
+    <div class="container">
 
-  if (!products.length) {
+      <section class="hero">
+        <div class="hero-content">
+          <span class="eyebrow">LUQMANII • TURBAN HIJABS</span>
+
+          <h1>Soft. Elegant. Beautiful.</h1>
+
+          <p>
+            Discover feminine turban and hijab styles in beautiful colors
+            and comfortable fits.
+          </p>
+
+          <button class="btn btn-white" onclick="showShop()">
+            Shop the Collection →
+          </button>
+        </div>
+      </section>
+
+      <div class="section-head">
+        <div>
+          <h2>New Collection</h2>
+          <p>Temporary sample collection — choose your favorite style.</p>
+        </div>
+
+        <button class="btn btn-soft" onclick="showShop()">
+          View All
+        </button>
+      </div>
+
+      <div id="homeProducts"></div>
+
+      <div class="section-head">
+        <div>
+          <h2>Recently Viewed</h2>
+          <p>Products you've looked at recently.</p>
+        </div>
+      </div>
+
+      <div id="homeRecent"></div>
+
+    </div>
+  `;
+
+  renderProductGrid(products.slice(0,8),"homeProducts");
+  renderRecentMini("homeRecent");
+}
+
+
+/* =========================================================
+   SHOP
+========================================================= */
+
+function renderShop(list){
+  $("app").innerHTML = `
+    <div class="container" style="padding-top:25px;">
+
+      <div class="section-head">
+        <div>
+          <h2>Shop Hijabs & Turbans</h2>
+          <p>${products.length} products available</p>
+        </div>
+      </div>
+
+      <div class="search-row">
+        <input
+          id="shopSearch"
+          class="search"
+          placeholder="Search hijab, turban, color, style..."
+          oninput="filterShop(this.value)"
+        >
+
+        <button class="btn btn-soft" onclick="clearShopSearch()">
+          Clear
+        </button>
+      </div>
+
+      <div id="shopProducts"></div>
+    </div>
+  `;
+
+  renderProductGrid(list,"shopProducts");
+}
+
+function filterShop(query){
+  const q = query.toLowerCase().trim();
+
+  if(!q){
+    renderProductGrid(products,"shopProducts");
     return;
   }
 
-  /*
-    We try to load product_variants if your database has it.
-
-    If it doesn't, products still load normally.
-    This prevents variants from breaking the entire shop.
-  */
-
-  try {
-
-    const productIds =
-      products
-        .map(p => p.id)
-        .filter(Boolean);
-
-    if (!productIds.length) {
-      return;
-    }
-
-    const { data, error } =
-      await supabaseClient
-        .from("product_variants")
-        .select("*")
-        .in("product_id", productIds);
-
-    if (error) {
-
-      console.warn(
-        "Variants were not loaded. Products will still display.",
-        error.message
-      );
-
-      products = products.map(p => ({
-        ...p,
-        variants: []
-      }));
-
-      return;
-    }
-
-    const variantMap = {};
-
-    (data || []).forEach(variant => {
-
-      if (!variantMap[variant.product_id]) {
-        variantMap[variant.product_id] = [];
-      }
-
-      variantMap[variant.product_id].push(variant);
-
-    });
-
-    products = products.map(product => ({
-      ...product,
-      variants: variantMap[product.id] || []
-    }));
-
-  } catch (error) {
-
-    console.warn(
-      "Optional variant loading failed:",
-      error
-    );
-
-    products = products.map(p => ({
-      ...p,
-      variants: []
-    }));
-
-  }
-
-}
-
-
-/* ============================================================
-   PRODUCT HELPERS
-   ============================================================ */
-
-function productName(product) {
-
-  return product.name ||
-         product.title ||
-         product.product_name ||
-         "Luqmanii Hijab";
-
-}
-
-
-function productDescription(product) {
-
-  return product.description ||
-         product.short_description ||
-         product.details ||
-         "Elegant and comfortable hijab from Luqmanii.";
-
-}
-
-
-function productCategory(product) {
-
-  return product.category ||
-         product.category_name ||
-         "Hijab";
-
-}
-
-
-function productImage(product) {
-
-  return (
-    product.image_url ||
-    product.image ||
-    product.photo_url ||
-    product.thumbnail_url ||
-    ""
-  );
-
-}
-
-
-function productPrice(product) {
-
-  const value =
-    product.price ??
-    product.selling_price ??
-    product.sale_price ??
-    product.unit_price ??
-    0;
-
-  return Number(value) || 0;
-
-}
-
-
-function productStock(product) {
-
-  const value =
-    product.stock ??
-    product.quantity ??
-    product.inventory ??
-    999;
-
-  return Number(value) || 0;
-
-}
-
-
-function variantPrice(variant, fallback) {
-
-  const value =
-    variant.price ??
-    variant.selling_price ??
-    variant.sale_price ??
-    fallback;
-
-  return Number(value) || 0;
-
-}
-
-
-function formatPrice(amount) {
-
-  return new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2
-  }).format(Number(amount) || 0) + " ETB";
-
-}
-
-
-/* ============================================================
-   IMAGE URL
-   ============================================================ */
-
-function getImageUrl(product) {
-
-  const image = productImage(product);
-
-  if (!image) {
-    return "";
-  }
-
-  if (
-    image.startsWith("http://") ||
-    image.startsWith("https://")
-  ) {
-    return image;
-  }
-
-  const {
-    data
-  } =
-    supabaseClient
-      .storage
-      .from(STORAGE_BUCKET)
-      .getPublicUrl(image);
-
-  return data?.publicUrl || "";
-
-}
-
-
-/* ============================================================
-   SEARCH
-   ============================================================ */
-
-function searchableText(product) {
-
-  const values = [
-
-    productName(product),
-
-    productDescription(product),
-
-    productCategory(product),
-
-    product.color,
-    product.colors,
-
-    product.size,
-    product.sizes,
-
-    product.style,
-
-    ...(product.variants || [])
-      .flatMap(v => [
-        v.name,
+  const tokens = q.split(/\s+/);
+
+  const result = products.filter(product=>{
+    const pv = productVariants(product.id);
+
+    const text = [
+      product.name,
+      product.description,
+      ...pv.flatMap(v => [
         v.color,
-        v.size,
-        v.style
+        v.style,
+        v.size
       ])
-
-  ];
-
-  return values
+    ]
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
 
+    return tokens.every(token => text.includes(token));
+  });
+
+  renderProductGrid(result,"shopProducts");
+}
+
+function clearShopSearch(){
+  const input = $("shopSearch");
+  if(input) input.value = "";
+
+  renderProductGrid(products,"shopProducts");
 }
 
 
-function matchesSearch(product, search) {
-
-  if (!search.trim()) {
-    return true;
-  }
-
-  const words =
-    search
-      .toLowerCase()
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean);
-
-  const text =
-    searchableText(product);
-
-  /*
-    OR search:
-    Any search word can match.
-  */
-
-  return words.some(word =>
-    text.includes(word)
-  );
-
-}
-
-
-/* ============================================================
+/* =========================================================
    PRODUCT CARDS
-   ============================================================ */
+========================================================= */
 
-function productCard(product) {
+function renderProductGrid(list,targetId){
+  const target = $(targetId);
 
-  const image = getImageUrl(product);
+  if(!target) return;
 
-  const price = productPrice(product);
-
-  return `
-    <article class="product-card">
-
-      <button
-        onclick="openProduct('${escapeJs(product.id)}')"
-        style="border:0;background:transparent;padding:0;width:100%;text-align:left;"
-      >
-
-        <div class="product-image">
-
-          ${
-            image
-              ? `<img src="${escapeHtml(image)}"
-                       alt="${escapeHtml(productName(product))}"
-                       loading="lazy"
-                       onerror="this.style.display='none';this.nextElementSibling.style.display='grid';">
-                 <div class="placeholder-image" style="display:none;">🌸</div>`
-              : `<div class="placeholder-image">🌸</div>`
-          }
-
-        </div>
-
-        <div class="product-info">
-
-          <div class="product-category">
-            ${escapeHtml(productCategory(product))}
-          </div>
-
-          <div class="product-name">
-            ${escapeHtml(productName(product))}
-          </div>
-
-          <div class="product-description">
-            ${escapeHtml(productDescription(product)).slice(0, 100)}
-          </div>
-
-          <div class="product-bottom">
-
-            <div class="price">
-              ${formatPrice(price)}
-            </div>
-
-            <span class="btn btn-soft" style="padding:8px 11px;">
-              View
-            </span>
-
-          </div>
-
-        </div>
-
-      </button>
-
-    </article>
-  `;
-
-}
-
-
-/* ============================================================
-   RENDER PRODUCTS
-   ============================================================ */
-
-function renderProducts() {
-
-  const container =
-    document.getElementById("productsContainer");
-
-  if (!container) {
-    return;
-  }
-
-  const search =
-    document.getElementById("searchInput")?.value || "";
-
-  const filtered =
-    products.filter(product =>
-      matchesSearch(product, search)
-    );
-
-  if (!filtered.length) {
-
-    container.innerHTML = `
+  if(!list.length){
+    target.innerHTML = `
       <div class="empty">
-        <div style="font-size:42px;">🌸</div>
         <h3>No products found</h3>
         <p>Try another search.</p>
       </div>
     `;
-
     return;
   }
 
-  container.innerHTML = `
-    <div class="product-grid">
-      ${filtered.map(productCard).join("")}
+  target.innerHTML = `
+    <div class="products-grid">
+      ${list.map(productCard).join("")}
     </div>
   `;
-
 }
 
+function productCard(product){
+  const pv = productVariants(product.id);
 
-function renderHomeProducts() {
+  const totalStock = pv.reduce(
+    (sum,v)=>sum + Number(v.stock || 0),
+    0
+  );
 
-  const container =
-    document.getElementById("homeProducts");
+  let stockClass = "ok";
+  let stockText = "In Stock";
 
-  if (!container) {
-    return;
+  if(totalStock <= 0){
+    stockClass = "out";
+    stockText = "Out of Stock";
+  }else if(totalStock <= 5){
+    stockClass = "low";
+    stockText = `Only ${totalStock} left`;
   }
 
-  const featured =
-    products.slice(0, 4);
+  const liked = wishlist.includes(String(product.id));
 
-  if (!featured.length) {
+  const price =
+    pv.length
+      ? Math.min(...pv.map(v=>Number(v.price || product.base_price || 0)))
+      : Number(product.base_price || 0);
 
-    container.innerHTML = `
-      <div class="empty" style="grid-column:1/-1;">
-        Products will appear here.
-      </div>
-    `;
+  return `
+    <article class="product-card">
 
-    return;
-  }
-
-  container.innerHTML =
-    featured.map(productCard).join("");
-
-}
-
-
-function showProductsLoading() {
-
-  const html = `
-    <div class="loading">
-      <div class="spinner"></div>
-      <p>Loading Luqmanii collection...</p>
-    </div>
-  `;
-
-  const shop =
-    document.getElementById("productsContainer");
-
-  const home =
-    document.getElementById("homeProducts");
-
-  if (shop) {
-    shop.innerHTML = html;
-  }
-
-  if (home) {
-    home.innerHTML = html;
-  }
-
-}
-
-
-function showProductError(message) {
-
-  const html = `
-    <div class="error-box">
-
-      <strong>Unable to load products.</strong>
-
-      <br><br>
-
-      Please refresh the page.
-
-      <details style="margin-top:12px;">
-        <summary>Technical details</summary>
-        <div style="margin-top:8px;">
-          ${escapeHtml(message || "Unknown error")}
-        </div>
-      </details>
-
-    </div>
-  `;
-
-  const shop =
-    document.getElementById("productsContainer");
-
-  const home =
-    document.getElementById("homeProducts");
-
-  if (shop) {
-    shop.innerHTML = html;
-  }
-
-  if (home) {
-    home.innerHTML = html;
-  }
-
-}
-
-
-/* ============================================================
-   PRODUCT DETAIL
-   ============================================================ */
-
-function openProduct(productId) {
-
-  const product =
-    products.find(p =>
-      String(p.id) === String(productId)
-    );
-
-  if (!product) {
-    return;
-  }
-
-  selectedProduct = product;
-
-  lastPage = currentPage;
-
-  showPage("product");
-
-  renderProductDetail();
-
-}
-
-
-function renderProductDetail() {
-
-  const product =
-    selectedProduct;
-
-  if (!product) {
-    return;
-  }
-
-  const container =
-    document.getElementById("productDetail");
-
-  const image =
-    getImageUrl(product);
-
-  const variants =
-    product.variants || [];
-
-  let variantOptions = "";
-
-  if (variants.length) {
-
-    variantOptions = `
-      <div class="variant-section">
-
-        <label for="variantSelect">
-          Choose your style
-        </label>
-
-        <select
-          id="variantSelect"
-          class="variant-select"
-          onchange="updateDetailPrice()"
+      <div class="product-image-wrap">
+        <img
+          class="product-image"
+          src="${productImage(product)}"
+          alt="${escapeHtml(product.name)}"
+          loading="lazy"
+          onerror="this.src='https://images.unsplash.com/photo-1558250023-7ed8825fd7e1?auto=format&fit=crop&q=85&w=1200'"
         >
 
-          <option value="">
-            Select an option
-          </option>
-
-          ${variants.map((variant, index) => `
-            <option value="${index}">
-              ${escapeHtml(
-                variant.name ||
-                [
-                  variant.color,
-                  variant.size,
-                  variant.style
-                ].filter(Boolean).join(" / ") ||
-                "Option " + (index + 1)
-              )}
-              — ${formatPrice(
-                variantPrice(
-                  variant,
-                  productPrice(product)
-                )
-              )}
-            </option>
-          `).join("")}
-
-        </select>
-
-      </div>
-    `;
-
-  }
-
-  container.innerHTML = `
-
-    <div class="detail-card">
-
-      <div>
-
-        <div class="detail-image">
-
-          ${
-            image
-              ? `<img
-                    src="${escapeHtml(image)}"
-                    alt="${escapeHtml(productName(product))}"
-                 >`
-              : `<div class="placeholder-image">🌸</div>`
-          }
-
-        </div>
-
-      </div>
-
-      <div class="detail-info">
-
-        <div class="eyebrow">
-          ${escapeHtml(productCategory(product))}
-        </div>
-
-        <h2>
-          ${escapeHtml(productName(product))}
-        </h2>
-
-        <div class="price" id="detailPrice"
-             style="font-size:24px;margin-bottom:15px;">
-          ${formatPrice(productPrice(product))}
-        </div>
-
-        <p class="detail-description">
-          ${escapeHtml(productDescription(product))}
-        </p>
-
-        ${variantOptions}
-
-        <div class="quantity">
-
-          <label for="detailQuantity">
-            Quantity
-          </label>
-
-          <input
-            id="detailQuantity"
-            type="number"
-            min="1"
-            max="${Math.max(productStock(product), 1)}"
-            value="1"
-          >
-
-        </div>
+        <span class="sample-label">SAMPLE</span>
 
         <button
-          class="btn btn-primary"
-          onclick="addSelectedToBag()"
-          style="width:100%;"
+          class="heart"
+          onclick="event.stopPropagation();toggleWishlist('${product.id}')"
+          title="Wishlist"
         >
-          Add to Bag
+          ${liked ? "♥" : "♡"}
         </button>
-
       </div>
 
-    </div>
+      <div class="product-body">
 
+        <h3>${escapeHtml(product.name)}</h3>
+
+        <div class="product-description">
+          ${escapeHtml(product.description || "Elegant Luqmanii hijab style.")}
+        </div>
+
+        <div class="price">
+          From ${money(price)}
+        </div>
+
+        <div class="stock ${stockClass}">
+          ${stockText}
+        </div>
+
+        <div class="card-actions">
+          <button
+            class="btn btn-soft"
+            onclick="openProduct('${product.id}')"
+          >
+            View & Choose
+          </button>
+
+          <button
+            class="btn btn-primary"
+            onclick="quickOrder('${product.id}')"
+            ${totalStock <= 0 ? "disabled" : ""}
+          >
+            Order Now
+          </button>
+        </div>
+
+      </div>
+    </article>
+  `;
+}
+
+
+/* =========================================================
+   PRODUCT DETAIL
+========================================================= */
+
+function openProduct(id){
+  const product = getProductById(id);
+
+  if(!product) return;
+
+  currentProduct = product;
+
+  selected = {
+    color:null,
+    style:null,
+    size:null,
+    quantity:1
+  };
+
+  addRecentlyViewed(product.id);
+
+  const pv = productVariants(product.id);
+
+  const colors = uniqueValues(pv,"color");
+  const styles = uniqueValues(pv,"style");
+  const sizes = uniqueValues(pv,"size");
+
+  const firstPrice =
+    pv.length
+      ? Math.min(...pv.map(v=>Number(v.price || 0)))
+      : Number(product.base_price || 0);
+
+  $("app").innerHTML = `
+    <div class="container">
+
+      <div class="detail">
+
+        <div class="detail-image">
+          <img
+            src="${productImage(product)}"
+            alt="${escapeHtml(product.name)}"
+            onerror="this.src='https://images.unsplash.com/photo-1558250023-7ed8825fd7e1?auto=format&fit=crop&q=85&w=1200'"
+          >
+        </div>
+
+        <div class="detail-info">
+
+          <button class="btn btn-soft" onclick="showShop()">
+            ← Back to Shop
+          </button>
+
+          <div style="margin-top:22px;">
+            <span class="eyebrow" style="background:var(--blush);color:var(--rose-dark);">
+              TEMPORARY SAMPLE
+            </span>
+
+            <h1>${escapeHtml(product.name)}</h1>
+
+            <div id="detailPrice" class="price">
+              ${money(firstPrice)}
+            </div>
+
+            <p class="detail-description">
+              ${escapeHtml(product.description || "")}
+            </p>
+          </div>
+
+          <div class="option-group">
+            <div class="option-title">
+              <span>1. Color</span>
+              <span id="selectedColorText"></span>
+            </div>
+
+            <div class="options" id="colorOptions">
+              ${colors.map(color => `
+                <button
+                  class="option"
+                  onclick="chooseColor('${escapeHtml(color)}')"
+                  data-color="${escapeHtml(color)}"
+                >
+                  <span class="color-dot">
+                    <span class="dot" style="background:${colorCss(color)}"></span>
+                    ${escapeHtml(color)}
+                  </span>
+                </button>
+              `).join("")}
+            </div>
+          </div>
+
+          <div class="option-group">
+            <div class="option-title">
+              <span>2. Type / Style</span>
+              <span id="selectedStyleText"></span>
+            </div>
+
+            <div class="options" id="styleOptions">
+              ${styles.map(style => `
+                <button
+                  class="option"
+                  onclick="chooseStyle('${escapeHtml(style)}')"
+                  data-style="${escapeHtml(style)}"
+                >
+                  ${escapeHtml(style)}
+                </button>
+              `).join("")}
+            </div>
+          </div>
+
+          <div class="option-group">
+            <div class="option-title">
+              <span>3. Size</span>
+              <span id="selectedSizeText"></span>
+            </div>
+
+            <div class="options" id="sizeOptions">
+              ${sizes.map(size => `
+                <button
+                  class="option"
+                  onclick="chooseSize('${escapeHtml(size)}')"
+                  data-size="${escapeHtml(size)}"
+                >
+                  ${escapeHtml(size)}
+                </button>
+              `).join("")}
+            </div>
+          </div>
+
+          <div class="option-group">
+            <div class="option-title">
+              <span>4. Quantity</span>
+            </div>
+
+            <div class="quantity">
+              <button onclick="changeDetailQuantity(-1)">−</button>
+              <span id="detailQuantity">1</span>
+              <button onclick="changeDetailQuantity(1)">+</button>
+            </div>
+          </div>
+
+          <div id="variantMessage" style="color:var(--rose-dark);font-weight:800;"></div>
+
+          <div class="sticky-actions">
+
+            <button
+              class="btn btn-soft"
+              onclick="addCurrentToBag()"
+            >
+              🎒 Add to Bag
+            </button>
+
+            <button
+              class="btn btn-primary"
+              onclick="buyCurrentNow()"
+            >
+              ⚡ Order Now
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
   `;
 
+  refreshVariantSelection();
 }
 
+function colorCss(color){
+  const c = String(color || "").toLowerCase();
 
-function updateDetailPrice() {
+  if(c.includes("black")) return "#151315";
+  if(c.includes("white")) return "#f8f7f4";
+  if(c.includes("cream")) return "#ead9bb";
+  if(c.includes("rose")) return "#d994a5";
+  if(c.includes("mocha")) return "#8b6755";
+  if(c.includes("blue")) return "#536fba";
+  if(c.includes("purple")) return "#8d6aa8";
+  if(c.includes("orange")) return "#d77a42";
 
-  if (!selectedProduct) {
-    return;
+  return "#c28b96";
+}
+
+function chooseColor(value){
+  selected.color = value;
+  refreshVariantSelection();
+}
+
+function chooseStyle(value){
+  selected.style = value;
+  refreshVariantSelection();
+}
+
+function chooseSize(value){
+  selected.size = value;
+  refreshVariantSelection();
+}
+
+function changeDetailQuantity(amount){
+  let max = 99;
+
+  const variant = currentSelectedVariant();
+
+  if(variant){
+    max = Number(variant.stock || 0);
   }
 
-  const select =
-    document.getElementById("variantSelect");
+  selected.quantity = Math.max(
+    1,
+    Math.min(max || 1,selected.quantity + amount)
+  );
 
-  const priceElement =
-    document.getElementById("detailPrice");
-
-  if (!select || !priceElement) {
-    return;
+  if($("detailQuantity")){
+    $("detailQuantity").textContent = selected.quantity;
   }
+}
 
-  if (
-    select.value === "" ||
-    !selectedProduct.variants?.length
-  ) {
+function currentSelectedVariant(){
+  if(!currentProduct) return null;
 
-    priceElement.textContent =
-      formatPrice(
-        productPrice(selectedProduct)
-      );
+  return findVariant(
+    currentProduct,
+    selected.color,
+    selected.style,
+    selected.size
+  );
+}
 
-    return;
-  }
+function refreshVariantSelection(){
+  if(!currentProduct) return;
 
-  const variant =
-    selectedProduct.variants[
-      Number(select.value)
-    ];
-
-  priceElement.textContent =
-    formatPrice(
-      variantPrice(
-        variant,
-        productPrice(selectedProduct)
-      )
+  document.querySelectorAll("[data-color]").forEach(btn=>{
+    btn.classList.toggle(
+      "selected",
+      btn.dataset.color === String(selected.color)
     );
+  });
 
+  document.querySelectorAll("[data-style]").forEach(btn=>{
+    btn.classList.toggle(
+      "selected",
+      btn.dataset.style === String(selected.style)
+    );
+  });
+
+  document.querySelectorAll("[data-size]").forEach(btn=>{
+    btn.classList.toggle(
+      "selected",
+      btn.dataset.size === String(selected.size)
+    );
+  });
+
+  if($("selectedColorText")){
+    $("selectedColorText").textContent =
+      selected.color ? selected.color : "";
+  }
+
+  if($("selectedStyleText")){
+    $("selectedStyleText").textContent =
+      selected.style ? selected.style : "";
+  }
+
+  if($("selectedSizeText")){
+    $("selectedSizeText").textContent =
+      selected.size ? selected.size : "";
+  }
+
+  const variant = currentSelectedVariant();
+
+  if(variant){
+    $("detailPrice").textContent = money(variant.price);
+
+    const available = Number(variant.stock || 0);
+
+    if(selected.quantity > available){
+      selected.quantity = Math.max(1,available);
+      $("detailQuantity").textContent = selected.quantity;
+    }
+
+    $("variantMessage").innerHTML =
+      available > 0
+        ? `<span style="color:#487b5c;">✓ ${available} available</span>`
+        : `<span style="color:#a44f5f;">Out of stock</span>`;
+  }else{
+    const pv = productVariants(currentProduct.id);
+
+    const base =
+      pv.length
+        ? Math.min(...pv.map(v=>Number(v.price || 0)))
+        : Number(currentProduct.base_price || 0);
+
+    $("detailPrice").textContent = money(base);
+
+    $("variantMessage").textContent =
+      "Please choose Color, Style and Size.";
+  }
 }
 
-
-/* ============================================================
-   ADD TO BAG
-   ============================================================ */
-
-function addSelectedToBag() {
-
-  if (!selectedProduct) {
+function validateCurrentSelection(){
+  if(!currentProduct){
+    toast("Please choose a product.");
     return false;
   }
 
-  const product =
-    selectedProduct;
-
-  const select =
-    document.getElementById("variantSelect");
-
-  const quantityInput =
-    document.getElementById("detailQuantity");
-
-  const quantity =
-    Math.max(
-      1,
-      Number(quantityInput?.value || 1)
-    );
-
-  let variant = null;
-
-  if (
-    product.variants?.length &&
-    select
-  ) {
-
-    if (select.value === "") {
-
-      showModal(
-        "Choose an option",
-        "Please select the available style before adding this item to your bag.",
-        "🌸",
-        [
-          {
-            text: "OK",
-            className: "btn-primary",
-            action: closeModal
-          }
-        ]
-      );
-
-      return false;
-    }
-
-    variant =
-      product.variants[
-        Number(select.value)
-      ];
-
+  if(!selected.color){
+    toast("Please choose a color.");
+    return false;
   }
 
-  const price =
-    variant
-      ? variantPrice(
-          variant,
-          productPrice(product)
-        )
-      : productPrice(product);
+  if(!selected.style){
+    toast("Please choose a style.");
+    return false;
+  }
 
-  const variantId =
-    variant?.id || null;
+  if(!selected.size){
+    toast("Please choose a size.");
+    return false;
+  }
 
-  const existing =
-    cart.find(item =>
-      String(item.product_id) === String(product.id) &&
-      String(item.variant_id || "") === String(variantId || "")
-    );
+  const variant = currentSelectedVariant();
 
-  if (existing) {
+  if(!variant){
+    toast("That combination is not available.");
+    return false;
+  }
 
-    existing.quantity += quantity;
+  if(Number(variant.stock || 0) < selected.quantity){
+    toast("There is not enough stock for that quantity.");
+    return false;
+  }
 
-  } else {
+  return true;
+}
 
+
+/* =========================================================
+   CART
+========================================================= */
+
+function addCurrentToBag(){
+  if(!validateCurrentSelection()) return;
+
+  const variant = currentSelectedVariant();
+
+  const existing = cart.find(item =>
+    String(item.productId) === String(currentProduct.id) &&
+    String(item.variantId) === String(variant.id)
+  );
+
+  if(existing){
+    const newQty =
+      Number(existing.quantity) + Number(selected.quantity);
+
+    if(newQty > Number(variant.stock || 0)){
+      toast("You cannot add more than the available stock.");
+      return;
+    }
+
+    existing.quantity = newQty;
+  }else{
     cart.push({
-      product_id: product.id,
-      variant_id: variantId,
-      name: productName(product),
-      price: price,
-      quantity: quantity,
-      image: getImageUrl(product),
-      variant_name:
-        variant
-          ? (
-              variant.name ||
-              [
-                variant.color,
-                variant.size,
-                variant.style
-              ].filter(Boolean).join(" / ")
-            )
-          : ""
+      productId:currentProduct.id,
+      variantId:variant.id,
+      name:currentProduct.name,
+      color:variant.color,
+      style:variant.style,
+      size:variant.size,
+      price:Number(variant.price || currentProduct.base_price || 0),
+      quantity:selected.quantity,
+      image:productImage(currentProduct)
     });
-
   }
 
   saveCart();
 
-  updateBagCount();
-
-  showModal(
-    "Added to your bag",
-    `${productName(product)} has been added successfully.`,
-    "🛍️",
-    [
-      {
-        text: "Continue Shopping",
-        className: "btn-soft",
-        action: closeModal
-      },
-      {
-        text: "View Bag",
-        className: "btn-primary",
-        action: () => {
-          closeModal();
-          showPage("bag");
-        }
-      }
-    ]
-  );
-
-  return true;
-
+  toast("Added to your bag 🎒");
 }
 
+function quickOrder(id){
+  const product = getProductById(id);
 
-/* ============================================================
-   CART
-   ============================================================ */
+  if(!product) return;
 
-function loadCart() {
+  const pv = productVariants(id);
 
-  try {
-
-    const saved =
-      localStorage.getItem(CART_KEY);
-
-    cart =
-      saved
-        ? JSON.parse(saved)
-        : [];
-
-    if (!Array.isArray(cart)) {
-      cart = [];
-    }
-
-  } catch {
-
-    cart = [];
-
-  }
-
-}
-
-
-function saveCart() {
-
-  localStorage.setItem(
-    CART_KEY,
-    JSON.stringify(cart)
-  );
-
-}
-
-
-function updateBagCount() {
-
-  const count =
-    cart.reduce(
-      (sum, item) =>
-        sum + Number(item.quantity || 0),
-      0
-    );
-
-  const desktop =
-    document.getElementById("bagCount");
-
-  const mobile =
-    document.getElementById("mobileBagCount");
-
-  if (desktop) {
-    desktop.textContent = count;
-  }
-
-  if (mobile) {
-    mobile.textContent = count;
-  }
-
-}
-
-
-function cartSubtotal() {
-
-  return cart.reduce(
-    (sum, item) =>
-      sum +
-      Number(item.price || 0) *
-      Number(item.quantity || 0),
-    0
-  );
-
-}
-
-
-function renderBag() {
-
-  const container =
-    document.getElementById("bagContainer");
-
-  if (!container) {
+  if(!pv.length){
+    toast("This product has no available variant.");
     return;
   }
 
-  if (!cart.length) {
+  currentProduct = product;
 
-    container.innerHTML = `
-      <div class="empty">
+  selected = {
+    color:pv[0].color,
+    style:pv[0].style,
+    size:pv[0].size,
+    quantity:1
+  };
 
-        <div style="font-size:50px;">🛍️</div>
+  buyCurrentNow();
+}
 
-        <h3>Your bag is empty</h3>
+function buyCurrentNow(){
+  if(!validateCurrentSelection()) return;
 
-        <p>Find something beautiful from our collection.</p>
+  const variant = currentSelectedVariant();
 
-        <button
-          class="btn btn-primary"
-          onclick="showPage('shop')"
-        >
-          Shop Now
-        </button>
+  cart = [{
+    productId:currentProduct.id,
+    variantId:variant.id,
+    name:currentProduct.name,
+    color:variant.color,
+    style:variant.style,
+    size:variant.size,
+    price:Number(variant.price || 0),
+    quantity:selected.quantity,
+    image:productImage(currentProduct)
+  }];
 
+  saveCart();
+  renderCheckout();
+}
+
+function updateCartQuantity(index,amount){
+  const item = cart[index];
+
+  if(!item) return;
+
+  const product = getProductById(item.productId);
+  const variant = product
+    ? variants.find(v=>String(v.id) === String(item.variantId))
+    : null;
+
+  const max = variant
+    ? Number(variant.stock || 0)
+    : 99;
+
+  item.quantity = Math.max(
+    1,
+    Math.min(max || 1,item.quantity + amount)
+  );
+
+  saveCart();
+  renderBag();
+}
+
+function removeCartItem(index){
+  cart.splice(index,1);
+  saveCart();
+  renderBag();
+}
+
+function renderBag(){
+  if(!cart.length){
+    $("app").innerHTML = `
+      <div class="container" style="padding:45px 0;">
+        <div class="empty">
+          <div style="font-size:50px;">🎒</div>
+          <h2>Your bag is empty</h2>
+          <p>Choose a beautiful hijab and add it to your bag.</p>
+          <button class="btn btn-primary" onclick="showShop()">
+            Start Shopping
+          </button>
+        </div>
       </div>
     `;
-
     return;
   }
 
-  container.innerHTML = `
+  const subtotal = getCartTotal();
 
-    <div class="bag-list">
+  $("app").innerHTML = `
+    <div class="container">
 
-      ${cart.map((item, index) => `
+      <div class="section-head">
+        <div>
+          <h2>Your Shopping Bag 🎒</h2>
+          <p>Review your selected products before checkout.</p>
+        </div>
+      </div>
 
-        <div class="bag-item">
+      <div class="bag-layout">
 
-          ${
-            item.image
-              ? `<img
-                   class="bag-thumb"
-                   src="${escapeHtml(item.image)}"
-                   alt="${escapeHtml(item.name)}"
-                 >`
-              : `<div class="bag-thumb"
-                     style="display:grid;place-items:center;font-size:30px;">
-                   🌸
-                 </div>`
-          }
+        <div class="bag-list">
+          ${cart.map((item,index)=>`
+            <div class="bag-item">
 
-          <div class="bag-item-main">
+              <img
+                src="${item.image}"
+                alt="${escapeHtml(item.name)}"
+              >
 
-            <div class="bag-item-name">
-              ${escapeHtml(item.name)}
+              <div>
+                <h3>${escapeHtml(item.name)}</h3>
+
+                <div class="bag-meta">
+                  Color: ${escapeHtml(item.color)}<br>
+                  Style: ${escapeHtml(item.style)}<br>
+                  Size: ${escapeHtml(item.size)}<br>
+                  ${money(item.price)} × ${item.quantity}
+                </div>
+
+                <div style="margin-top:12px;" class="quantity">
+                  <button onclick="updateCartQuantity(${index},-1)">−</button>
+                  <span>${item.quantity}</span>
+                  <button onclick="updateCartQuantity(${index},1)">+</button>
+                </div>
+              </div>
+
+              <div style="text-align:right;">
+                <strong>${money(item.price * item.quantity)}</strong>
+                <br><br>
+                <button
+                  class="btn btn-soft"
+                  onclick="removeCartItem(${index})"
+                >
+                  Remove
+                </button>
+              </div>
+
             </div>
+          `).join("")}
 
-            ${
-              item.variant_name
-                ? `<div class="bag-meta">
-                     ${escapeHtml(item.variant_name)}
-                   </div>`
-                : ""
-            }
+          <div style="margin-top:20px;">
+            <button class="btn btn-soft" onclick="showShop()">
+              ← Continue Shopping
+            </button>
+          </div>
+        </div>
 
-            <div class="bag-meta">
-              ${formatPrice(item.price)}
+        <aside class="summary">
+
+          <h3>Order Summary</h3>
+
+          ${cart.map(item=>`
+            <div class="summary-row">
+              <span>
+                ${escapeHtml(item.name)}
+                × ${item.quantity}
+              </span>
+              <strong>
+                ${money(item.price * item.quantity)}
+              </strong>
             </div>
+          `).join("")}
 
+          <div class="summary-row summary-total">
+            <span>Total</span>
+            <span>${money(subtotal)}</span>
           </div>
 
-          <input
-            class="bag-quantity"
-            type="number"
-            min="1"
-            value="${Number(item.quantity) || 1}"
-            onchange="changeCartQuantity(${index}, this.value)"
-          >
+          <p style="font-size:12px;color:var(--muted);">
+            Delivery fee is not included in this checkout total.
+          </p>
 
           <button
-            class="btn btn-danger"
-            onclick="removeCartItem(${index})"
+            class="btn btn-primary"
+            style="width:100%;margin-top:12px;"
+            onclick="renderCheckout()"
           >
-            Remove
+            Checkout →
+          </button>
+
+        </aside>
+
+      </div>
+    </div>
+  `;
+}
+
+
+/* =========================================================
+   CHECKOUT
+========================================================= */
+
+function renderCheckout(){
+  if(!cart.length){
+    showBag();
+    return;
+  }
+
+  const total = getCartTotal();
+
+  $("app").innerHTML = `
+    <div class="container">
+      <div class="checkout-layout">
+
+        <div class="section-head">
+          <div>
+            <h2>Checkout</h2>
+            <p>Please enter your delivery information.</p>
+          </div>
+        </div>
+
+        <div class="checkout-summary">
+
+          <h3>Order Summary</h3>
+
+          ${cart.map(item=>`
+            <div class="summary-row">
+              <span>
+                ${escapeHtml(item.name)}
+                — ${escapeHtml(item.color)}
+                — ${escapeHtml(item.style)}
+                — ${escapeHtml(item.size)}
+                × ${item.quantity}
+              </span>
+
+              <strong>
+                ${money(item.price * item.quantity)}
+              </strong>
+            </div>
+          `).join("")}
+
+          <div class="summary-row summary-total">
+            <span>Total</span>
+            <span>${money(total)}</span>
+          </div>
+
+        </div>
+
+        <div class="checkout-card">
+
+          <form id="checkoutForm" onsubmit="submitOrder(event)">
+
+            <div class="form-grid">
+
+              <div class="field">
+                <label>Full Name *</label>
+                <input
+                  id="customerName"
+                  required
+                  placeholder="Your full name"
+                >
+              </div>
+
+              <div class="field">
+                <label>Phone Number *</label>
+                <input
+                  id="customerPhone"
+                  required
+                  type="tel"
+                  placeholder="+251..."
+                >
+              </div>
+
+              <div class="field">
+                <label>City *</label>
+                <input
+                  id="customerCity"
+                  required
+                  placeholder="Your city"
+                >
+              </div>
+
+              <div class="field">
+                <label>Address *</label>
+                <input
+                  id="customerAddress"
+                  required
+                  placeholder="Street / area / house information"
+                >
+              </div>
+
+              <div class="field full">
+                <label>Additional Delivery Information</label>
+                <textarea
+                  id="additionalInfo"
+                  placeholder="Landmark, neighborhood, building information..."
+                ></textarea>
+              </div>
+
+              <div class="field full">
+                <label>Optional Note</label>
+                <textarea
+                  id="customerNote"
+                  placeholder="Any additional note about your order..."
+                ></textarea>
+              </div>
+
+            </div>
+
+            <div style="margin-top:15px;display:flex;gap:10px;flex-wrap:wrap;">
+              <button
+                type="button"
+                class="btn btn-soft"
+                onclick="showBag()"
+              >
+                ← Back to Bag
+              </button>
+
+              <button
+                type="submit"
+                id="submitOrderButton"
+                class="btn btn-primary"
+              >
+                Confirm Order — ${money(total)}
+              </button>
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+    </div>
+  `;
+}
+
+async function submitOrder(event){
+  event.preventDefault();
+
+  if(submittingOrder) return;
+
+  if(!cart.length){
+    toast("Your bag is empty.");
+    return;
+  }
+
+  submittingOrder = true;
+
+  const button = $("submitOrderButton");
+
+  if(button){
+    button.disabled = true;
+    button.textContent = "Creating order...";
+  }
+
+  try{
+
+    const name = $("customerName").value.trim();
+    const phone = $("customerPhone").value.trim();
+    const city = $("customerCity").value.trim();
+    const address = $("customerAddress").value.trim();
+    const additionalInfo = $("additionalInfo").value.trim();
+    const note = $("customerNote").value.trim();
+
+    const finalNote =
+      [
+        additionalInfo ? `Additional delivery information: ${additionalInfo}` : "",
+        note ? `Customer note: ${note}` : ""
+      ]
+      .filter(Boolean)
+      .join("\n");
+
+    const signature = JSON.stringify({
+      name,
+      phone,
+      city,
+      address,
+      items:cart.map(x=>[
+        x.productId,
+        x.variantId,
+        x.quantity
+      ])
+    });
+
+    const previousSignature =
+      localStorage.getItem("luqmanii_last_order_signature");
+
+    if(previousSignature === signature){
+
+      const again = confirm(
+        "You already made this order. Do you want to order it again?"
+      );
+
+      if(!again){
+        submittingOrder = false;
+
+        if(button){
+          button.disabled = false;
+          button.textContent =
+            `Confirm Order — ${money(getCartTotal())}`;
+        }
+
+        return;
+      }
+    }
+
+    const rpcItems = cart.map(item=>({
+      product_id:item.productId,
+      variant_id:item.variantId,
+      quantity:Number(item.quantity)
+    }));
+
+    const {data,error} = await supabaseClient.rpc(
+      "create_public_order",
+      {
+        p_business_slug:BUSINESS_SLUG,
+        p_customer_name:name,
+        p_customer_phone:phone,
+        p_customer_city:city,
+        p_customer_address:address,
+        p_customer_note:finalNote,
+        p_items:rpcItems
+      }
+    );
+
+    if(error){
+      throw new Error(error.message);
+    }
+
+    /*
+      The existing secure RPC is the source of truth for
+      product prices and stock.
+    */
+
+    let result = data;
+
+    if(Array.isArray(data)){
+      result = data[0] || {};
+    }
+
+    const orderId =
+      result?.order_id ||
+      result?.id ||
+      result?.orderId ||
+      null;
+
+    const orderNumber =
+      result?.order_number ||
+      result?.order_no ||
+      result?.number ||
+      (orderId ? String(orderId).slice(0,8).toUpperCase() : "NEW");
+
+    const message = buildWhatsAppMessage({
+      orderNumber,
+      name,
+      phone,
+      city,
+      address,
+      total:getCartTotal()
+    });
+
+    localStorage.setItem(
+      "luqmanii_last_order_signature",
+      signature
+    );
+
+    localStorage.setItem(
+      "luqmanii_last_order",
+      JSON.stringify({
+        orderNumber,
+        orderId,
+        message,
+        name,
+        total:getCartTotal()
+      })
+    );
+
+    cart = [];
+    saveCart();
+
+    showConfirmation({
+      orderNumber,
+      orderId,
+      message,
+      total:getCartTotal()
+    });
+
+  }catch(error){
+
+    console.error(error);
+
+    toast(
+      "Order could not be completed: " +
+      error.message
+    );
+
+    submittingOrder = false;
+
+    if(button){
+      button.disabled = false;
+      button.textContent =
+        `Confirm Order — ${money(getCartTotal())}`;
+    }
+  }
+}
+
+
+/* =========================================================
+   WHATSAPP MESSAGE
+========================================================= */
+
+function buildWhatsAppMessage(info){
+
+  const lines = [];
+
+  lines.push("🌸 *LUQMANII TURBAN HIJABS*");
+  lines.push("");
+  lines.push(`*New Order:* #${info.orderNumber}`);
+  lines.push("");
+
+  cart.forEach((item,index)=>{
+
+    const lineTotal =
+      Number(item.price) * Number(item.quantity);
+
+    lines.push(
+      `${index + 1}. ${item.name}`
+    );
+
+    lines.push(
+      `Color: ${item.color}`
+    );
+
+    lines.push(
+      `Style: ${item.style}`
+    );
+
+    lines.push(
+      `Size: ${item.size}`
+    );
+
+    lines.push(
+      `${money(item.price)} × ${item.quantity} = ${money(lineTotal)}`
+    );
+
+    lines.push("");
+  });
+
+  lines.push(`*TOTAL: ${money(info.total)}*`);
+  lines.push("");
+  lines.push("*Customer Information*");
+  lines.push(`Name: ${info.name}`);
+  lines.push(`Phone: ${info.phone}`);
+  lines.push(`City: ${info.city}`);
+  lines.push(`Address: ${info.address}`);
+  lines.push("");
+  lines.push("Delivery fee: Not included.");
+  lines.push("");
+  lines.push("Thank you for ordering from Luqmanii 🌸");
+
+  return lines.join("\n");
+}
+
+
+/* =========================================================
+   CONFIRMATION
+========================================================= */
+
+function showConfirmation(info){
+
+  const encoded = encodeURIComponent(info.message);
+
+  const whatsappUrl =
+    `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+
+  $("app").innerHTML = `
+    <div class="container">
+
+      <div class="order-success">
+
+        <div class="success-icon">✓</div>
+
+        <h1>Order received successfully</h1>
+
+        <p>
+          Thank you for ordering from Luqmanii Turban Hijabs.
+        </p>
+
+        <p>
+          Your order number is:
+          <strong>#${escapeHtml(info.orderNumber)}</strong>
+        </p>
+
+        <h2 style="color:var(--rose-dark);">
+          ${money(info.total)}
+        </h2>
+
+        <p style="color:var(--muted);">
+          Your order has been recorded. You can now send
+          the order details to Luqmanii through WhatsApp.
+        </p>
+
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:25px;">
+
+          <a
+            class="btn btn-primary"
+            href="${whatsappUrl}"
+            target="_blank"
+            rel="noopener"
+          >
+            📱 Send Order to WhatsApp
+          </a>
+
+          <button
+            class="btn btn-soft"
+            onclick="goHome()"
+          >
+            Back to Home
           </button>
 
         </div>
 
-      `).join("")}
-
-    </div>
-
-    <div class="bag-summary">
-
-      <div class="summary-row">
-        <span>Subtotal</span>
-        <strong>${formatPrice(cartSubtotal())}</strong>
       </div>
 
-      <div class="summary-row summary-total">
-        <span>Total</span>
-        <strong>${formatPrice(cartSubtotal())}</strong>
-      </div>
-
-      <button
-        class="btn btn-primary"
-        onclick="goCheckout()"
-        style="width:100%;margin-top:18px;"
-      >
-        Continue to Checkout
-      </button>
-
     </div>
-
   `;
-
 }
 
 
-function changeCartQuantity(index, value) {
+/* =========================================================
+   WISHLIST
+========================================================= */
 
-  const quantity =
-    Math.max(
-      1,
-      Number(value) || 1
-    );
+function toggleWishlist(productId){
+  const id = String(productId);
 
-  if (cart[index]) {
-
-    cart[index].quantity =
-      quantity;
-
-    saveCart();
-    updateBagCount();
-    renderBag();
-
+  if(wishlist.includes(id)){
+    wishlist = wishlist.filter(x=>x !== id);
+    toast("Removed from wishlist.");
+  }else{
+    wishlist.push(id);
+    toast("Added to wishlist ❤️");
   }
 
-}
-
-
-function removeCartItem(index) {
-
-  cart.splice(index, 1);
-
-  saveCart();
-
-  updateBagCount();
-
-  renderBag();
-
-}
-
-
-/* ============================================================
-   CHECKOUT
-   ============================================================ */
-
-function goCheckout() {
-
-  if (!cart.length) {
-
-    showModal(
-      "Your bag is empty",
-      "Please add at least one product before checkout.",
-      "🛍️",
-      [
-        {
-          text: "Shop Now",
-          className: "btn-primary",
-          action: () => {
-            closeModal();
-            showPage("shop");
-          }
-        }
-      ]
-    );
-
-    return;
-  }
-
-  showPage("checkout");
-
-  renderCheckoutSummary();
-
-}
-
-
-function renderCheckoutSummary() {
-
-  const container =
-    document.getElementById("checkoutSummary");
-
-  if (!container) {
-    return;
-  }
-
-  container.innerHTML = `
-
-    ${cart.map(item => `
-
-      <div class="summary-row">
-
-        <span>
-          ${escapeHtml(item.name)}
-          × ${item.quantity}
-
-          ${
-            item.variant_name
-              ? `<small style="display:block;color:var(--muted);">
-                   ${escapeHtml(item.variant_name)}
-                 </small>`
-              : ""
-          }
-
-        </span>
-
-        <strong>
-          ${formatPrice(
-            Number(item.price) *
-            Number(item.quantity)
-          )}
-        </strong>
-
-      </div>
-
-    `).join("")}
-
-    <div class="summary-row summary-total">
-      <span>Total</span>
-      <strong>${formatPrice(cartSubtotal())}</strong>
-    </div>
-
-  `;
-
-}
-
-
-/* ============================================================
-   ORDER SIGNATURE
-   ============================================================ */
-
-function createOrderSignature() {
-
-  return JSON.stringify(
-    cart.map(item => ({
-      product_id: item.product_id,
-      variant_id: item.variant_id,
-      quantity: item.quantity
-    }))
-  );
-
-}
-
-
-/* ============================================================
-   SUBMIT ORDER
-   ============================================================ */
-
-async function submitOrder(event) {
-
-  event.preventDefault();
-
-  if (isSubmittingOrder) {
-    return;
-  }
-
-  if (!cart.length) {
-    return;
-  }
-
-  const name =
-    document.getElementById("customerName")
-      .value.trim();
-
-  const phone =
-    document.getElementById("customerPhone")
-      .value.trim();
-
-  const city =
-    document.getElementById("customerCity")
-      .value.trim();
-
-  const address =
-    document.getElementById("customerAddress")
-      .value.trim();
-
-  const note =
-    document.getElementById("customerNote")
-      .value.trim();
-
-  if (!name || !phone || !city || !address) {
-
-    showModal(
-      "Missing information",
-      "Please complete all required fields.",
-      "🌸",
-      [
-        {
-          text: "OK",
-          className: "btn-primary",
-          action: closeModal
-        }
-      ]
-    );
-
-    return;
-  }
-
-
-  /* DUPLICATE CONSECUTIVE ORDER CHECK */
-
-  const signature =
-    createOrderSignature();
-
-  const previousSignature =
-    localStorage.getItem(
-      LAST_ORDER_KEY
-    );
-
-  if (previousSignature === signature) {
-
-    showModal(
-      "You already made this order",
-      "You already made this order. Do you want to order it again?",
-      "🛍️",
-      [
-        {
-          text: "No",
-          className: "btn-soft",
-          action: closeModal
-        },
-        {
-          text: "Yes, Order Again",
-          className: "btn-primary",
-          action: () => {
-
-            closeModal();
-
-            actuallySubmitOrder({
-              name,
-              phone,
-              city,
-              address,
-              note,
-              signature
-            });
-
-          }
-        }
-      ]
-    );
-
-    return;
-  }
-
-
-  await actuallySubmitOrder({
-    name,
-    phone,
-    city,
-    address,
-    note,
-    signature
-  });
-
-}
-
-
-/* ============================================================
-   ACTUAL ORDER SUBMISSION
-   ============================================================ */
-
-async function actuallySubmitOrder({
-  name,
-  phone,
-  city,
-  address,
-  note,
-  signature
-}) {
-
-  if (isSubmittingOrder) {
-    return;
-  }
-
-  isSubmittingOrder = true;
-
-  const button =
-    document.getElementById(
-      "submitOrderButton"
-    );
-
-  if (button) {
-
-    button.disabled = true;
-
-    button.textContent =
-      "Sending Order...";
-
-  }
-
-
-  try {
-
-    /*
-      The database RPC calculates the real prices,
-      delivery fee and stock on the server.
-
-      We send product/variant IDs rather than trusting
-      browser prices.
-    */
-
-    const items =
-      cart.map(item => ({
-        product_id: item.product_id,
-        variant_id: item.variant_id,
-        quantity: Number(item.quantity)
-      }));
-
-
-    const { data, error } =
-      await supabaseClient.rpc(
-        "create_public_order",
-        {
-          p_business_slug: BUSINESS_SLUG,
-
-          p_customer_name: name,
-
-          p_customer_phone: phone,
-
-          p_customer_city: city,
-
-          p_customer_address: address,
-
-          p_customer_note: note,
-
-          p_items: items
-        }
-      );
-
-
-    if (error) {
-
-      console.error(
-        "Order creation error:",
-        error
-      );
-
-      throw error;
-
+  saveWishlist();
+
+  if($("shopProducts")){
+    const q = $("shopSearch")?.value || "";
+
+    if(q){
+      filterShop(q);
+    }else{
+      renderProductGrid(products,"shopProducts");
     }
-
-
-    localStorage.setItem(
-      LAST_ORDER_KEY,
-      signature
-    );
-
-
-    const orderId =
-      extractOrderId(data);
-
-
-    const whatsappMessage =
-      buildWhatsAppMessage({
-        name,
-        phone,
-        city,
-        address,
-        note,
-        orderId
-      });
-
-
-    /* Clear cart only after successful database order */
-
-    cart = [];
-
-    saveCart();
-
-    updateBagCount();
-
-
-    /* Successful order popup */
-
-    showModal(
-      "Order received successfully",
-      "Thank you for choosing Luqmanii Turban Hijabs. Your order has been received successfully.",
-      "✓",
-      [
-        {
-          text: "OK",
-          className: "btn-soft",
-          action: closeModal
-        },
-        {
-          text: "Back to Home",
-          className: "btn-primary",
-          action: () => {
-            closeModal();
-            goHome();
-          }
-        }
-      ]
-    );
-
-
-    /*
-      Open WhatsApp after the order has been saved.
-    */
-
-    setTimeout(() => {
-
-      const url =
-        "https://wa.me/" +
-        WHATSAPP_NUMBER +
-        "?text=" +
-        encodeURIComponent(
-          whatsappMessage
-        );
-
-      window.open(
-        url,
-        "_blank"
-      );
-
-    }, 700);
-
-
-  } catch (error) {
-
-    console.error(error);
-
-    showModal(
-      "Order could not be completed",
-      error.message ||
-      "Please try again or contact us on WhatsApp.",
-      "!",
-      [
-        {
-          text: "OK",
-          className: "btn-primary",
-          action: closeModal
-        }
-      ]
-    );
-
-  } finally {
-
-    isSubmittingOrder = false;
-
-    if (button) {
-
-      button.disabled = false;
-
-      button.textContent =
-        "Place Order";
-
-    }
-
   }
 
+  if($("homeProducts")){
+    renderProductGrid(products.slice(0,8),"homeProducts");
+  }
 }
 
+function renderWishlist(){
 
-/* ============================================================
-   ORDER HELPERS
-   ============================================================ */
-
-function extractOrderId(data) {
-
-  if (!data) {
-    return "";
-  }
-
-  if (typeof data === "string") {
-    return data;
-  }
-
-  if (Array.isArray(data)) {
-
-    const first =
-      data[0];
-
-    if (typeof first === "string") {
-      return first;
-    }
-
-    return (
-      first?.id ||
-      first?.order_id ||
-      ""
-    );
-
-  }
-
-  return (
-    data.id ||
-    data.order_id ||
-    ""
+  const items = products.filter(
+    p => wishlist.includes(String(p.id))
   );
 
-}
+  $("app").innerHTML = `
+    <div class="container" style="padding-top:30px;">
 
-
-function buildWhatsAppMessage({
-  name,
-  phone,
-  city,
-  address,
-  note,
-  orderId
-}) {
-
-  const lines = [];
-
-  lines.push(
-    "Hello Luqmanii Turban Hijabs 🌸"
-  );
-
-  lines.push("");
-
-  lines.push(
-    "I have placed an order."
-  );
-
-  if (orderId) {
-
-    lines.push(
-      "Order ID: " + orderId
-    );
-
-  }
-
-  lines.push("");
-
-  lines.push(
-    "Customer: " + name
-  );
-
-  lines.push(
-    "Phone: " + phone
-  );
-
-  lines.push(
-    "City: " + city
-  );
-
-  lines.push(
-    "Address: " + address
-  );
-
-  if (note) {
-
-    lines.push(
-      "Note: " + note
-    );
-
-  }
-
-  lines.push("");
-
-  lines.push(
-    "Items:"
-  );
-
-  cart.forEach(item => {
-
-    lines.push(
-      "- " +
-      item.name +
-      " × " +
-      item.quantity +
-      (
-        item.variant_name
-          ? " (" + item.variant_name + ")"
-          : ""
-      )
-    );
-
-  });
-
-  return lines.join("\n");
-
-}
-
-
-/* ============================================================
-   PAGE NAVIGATION
-   ============================================================ */
-
-function showPage(page) {
-
-  const pageIds = [
-    "home",
-    "shop",
-    "product",
-    "bag",
-    "checkout",
-    "confirmation",
-    "howto",
-    "help",
-    "owner"
-  ];
-
-  pageIds.forEach(id => {
-
-    const element =
-      document.getElementById(
-        id + "Page"
-      );
-
-    if (element) {
-
-      element.classList.toggle(
-        "active",
-        id === page
-      );
-
-    }
-
-  });
-
-
-  if (currentPage !== page) {
-
-    lastPage =
-      currentPage;
-
-  }
-
-  currentPage =
-    page;
-
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-
-
-  if (page === "shop") {
-    renderProducts();
-  }
-
-  if (page === "home") {
-    renderHomeProducts();
-  }
-
-  if (page === "bag") {
-    renderBag();
-  }
-
-  if (page === "checkout") {
-    renderCheckoutSummary();
-  }
-
-  if (page === "owner") {
-    loadOwnerData();
-  }
-
-}
-
-
-function goHome() {
-
-  showPage("home");
-
-}
-
-
-function goBack() {
-
-  if (
-    lastPage &&
-    lastPage !== currentPage
-  ) {
-
-    const page =
-      lastPage;
-
-    lastPage =
-      "home";
-
-    showPage(page);
-
-  } else {
-
-    goHome();
-
-  }
-
-}
-
-
-/* ============================================================
-   MOBILE MENU
-   ============================================================ */
-
-function toggleMobileMenu() {
-
-  const menu =
-    document.getElementById(
-      "mobileMenu"
-    );
-
-  menu.classList.toggle(
-    "open"
-  );
-
-}
-
-
-function closeMobileMenu() {
-
-  const menu =
-    document.getElementById(
-      "mobileMenu"
-    );
-
-  menu.classList.remove(
-    "open"
-  );
-
-}
-
-
-/* ============================================================
-   MODALS
-   ============================================================ */
-
-function showModal(
-  title,
-  message,
-  icon = "🌸",
-  actions = []
-) {
-
-  const modal =
-    document.getElementById("modal");
-
-  document.getElementById(
-    "modalIcon"
-  ).textContent = icon;
-
-  document.getElementById(
-    "modalTitle"
-  ).textContent = title;
-
-  document.getElementById(
-    "modalMessage"
-  ).textContent = message;
-
-  const actionContainer =
-    document.getElementById(
-      "modalActions"
-    );
-
-  actionContainer.innerHTML =
-    actions.map((action, index) => `
-      <button
-        id="modalAction${index}"
-        class="btn ${action.className || "btn-primary"}"
-      >
-        ${escapeHtml(action.text)}
-      </button>
-    `).join("");
-
-
-  actions.forEach((action, index) => {
-
-    const button =
-      document.getElementById(
-        "modalAction" + index
-      );
-
-    if (button) {
-
-      button.onclick =
-        action.action;
-
-    }
-
-  });
-
-
-  modal.classList.add("show");
-
-}
-
-
-function closeModal() {
-
-  document
-    .getElementById("modal")
-    .classList.remove("show");
-
-}
-
-
-function showStoreError(message) {
-
-  showModal(
-    "Store Not Found",
-    message,
-    "!",
-    [
-      {
-        text: "OK",
-        className: "btn-primary",
-        action: closeModal
-      }
-    ]
-  );
-
-}
-
-
-/* ============================================================
-   OWNER
-   ============================================================ */
-
-async function loadOwnerData() {
-
-  renderOwnerProducts();
-
-  const ordersContainer =
-    document.getElementById(
-      "ownerOrders"
-    );
-
-  if (!ordersContainer) {
-    return;
-  }
-
-  try {
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("orders")
-        .select("*")
-        .eq("business_id", business.id)
-        .order("created_at", {
-          ascending: false
-        })
-        .limit(30);
-
-    if (error) {
-
-      ordersContainer.innerHTML = `
-        <div class="error-box">
-          Unable to load orders.
-          <br><br>
-          ${escapeHtml(error.message)}
-        </div>
-      `;
-
-      return;
-    }
-
-    if (!data?.length) {
-
-      ordersContainer.innerHTML = `
-        <div class="empty">
-          No orders yet.
-        </div>
-      `;
-
-      return;
-    }
-
-    ordersContainer.innerHTML =
-      data.map(order => `
-
-        <div class="owner-product">
-
-          <div>
-
-            <strong>
-              Order #${escapeHtml(
-                String(
-                  order.order_number ||
-                  order.id ||
-                  ""
-                ).slice(0, 12)
-              )}
-            </strong>
-
-            <div style="color:var(--muted);font-size:13px;margin-top:5px;">
-              ${escapeHtml(
-                order.customer_name ||
-                order.name ||
-                "Customer"
-              )}
-            </div>
-
-          </div>
-
-          <div>
-
-            <span style="
-              background:var(--rose-light);
-              color:var(--rose-dark);
-              border-radius:20px;
-              padding:7px 10px;
-              font-size:12px;
-              font-weight:700;
-            ">
-              ${escapeHtml(
-                order.status ||
-                order.order_status ||
-                "new"
-              )}
-            </span>
-
-          </div>
-
-        </div>
-
-      `).join("");
-
-  } catch (error) {
-
-    ordersContainer.innerHTML = `
-      <div class="error-box">
-        ${escapeHtml(error.message)}
-      </div>
-    `;
-
-  }
-
-}
-
-
-function renderOwnerProducts() {
-
-  const container =
-    document.getElementById(
-      "ownerProducts"
-    );
-
-  if (!container) {
-    return;
-  }
-
-  if (!products.length) {
-
-    container.innerHTML = `
-      <div class="empty">
-        No products found.
-      </div>
-    `;
-
-    return;
-  }
-
-  container.innerHTML =
-    products.map(product => `
-
-      <div class="owner-product">
-
+      <div class="section-head">
         <div>
+          <h2>❤️ My Wishlist</h2>
+          <p>Your saved Luqmanii styles.</p>
+        </div>
+      </div>
 
-          <strong>
-            ${escapeHtml(
-              productName(product)
-            )}
-          </strong>
+      <div id="wishlistProducts"></div>
 
-          <div style="color:var(--muted);font-size:13px;margin-top:5px;">
-            ${formatPrice(
-              productPrice(product)
-            )}
+    </div>
+  `;
+
+  renderProductGrid(items,"wishlistProducts");
+}
+
+
+/* =========================================================
+   RECENTLY VIEWED
+========================================================= */
+
+function addRecentlyViewed(id){
+
+  const value = String(id);
+
+  recentlyViewed =
+    recentlyViewed.filter(x=>String(x) !== value);
+
+  recentlyViewed.unshift(value);
+
+  recentlyViewed =
+    recentlyViewed.slice(0,8);
+
+  saveRecent();
+}
+
+function renderRecentMini(targetId){
+
+  const target = $(targetId);
+
+  if(!target) return;
+
+  const items = recentlyViewed
+    .map(id=>getProductById(id))
+    .filter(Boolean);
+
+  if(!items.length){
+    target.innerHTML = `
+      <div class="empty">
+        You haven't viewed any products yet.
+      </div>
+    `;
+    return;
+  }
+
+  target.innerHTML = `
+    <div class="recent-row">
+      ${items.map(p=>`
+        <button
+          class="recent-card"
+          style="border:1px solid var(--line);padding:0;text-align:left;"
+          onclick="openProduct('${p.id}')"
+        >
+          <img src="${productImage(p)}" alt="">
+          <div>${escapeHtml(p.name)}</div>
+        </button>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderRecent(){
+
+  $("app").innerHTML = `
+    <div class="container" style="padding-top:30px;">
+
+      <div class="section-head">
+        <div>
+          <h2>👀 Recently Viewed</h2>
+          <p>Products you've recently opened.</p>
+        </div>
+      </div>
+
+      <div id="recentPage"></div>
+
+    </div>
+  `;
+
+  renderRecentMini("recentPage");
+}
+
+
+/* =========================================================
+   OWNER PAGE
+========================================================= */
+
+function renderOwner(){
+
+  $("app").innerHTML = `
+    <div class="container" style="padding:30px 0 60px;">
+
+      <div class="section-head">
+        <div>
+          <h2>👑 Owner Area</h2>
+          <p>Manage Luqmanii products and orders.</p>
+        </div>
+      </div>
+
+      <div class="owner-card">
+
+        <h3>Owner Login</h3>
+
+        <p style="color:var(--muted);">
+          Sign in with the Supabase owner account.
+        </p>
+
+        <div class="form-grid">
+
+          <div class="field">
+            <label>Email</label>
+            <input id="ownerEmail" type="email">
+          </div>
+
+          <div class="field">
+            <label>Password</label>
+            <input id="ownerPassword" type="password">
           </div>
 
         </div>
 
-        <span style="
-          background:var(--rose-light);
-          color:var(--rose-dark);
-          border-radius:20px;
-          padding:7px 10px;
-          font-size:12px;
-        ">
-          Active
-        </span>
+        <button
+          class="btn btn-primary"
+          onclick="ownerLogin()"
+        >
+          Sign In
+        </button>
+
+        <div id="ownerStatus" style="margin-top:20px;"></div>
 
       </div>
 
-    `).join("");
+    </div>
+  `;
+}
 
+async function ownerLogin(){
+
+  const email = $("ownerEmail").value.trim();
+  const password = $("ownerPassword").value;
+
+  if(!email || !password){
+    toast("Enter your email and password.");
+    return;
+  }
+
+  const {data,error} =
+    await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+  if(error){
+    $("ownerStatus").innerHTML =
+      `<p style="color:#a44f5f;">${escapeHtml(error.message)}</p>`;
+    return;
+  }
+
+  renderOwnerDashboard(data.user);
+}
+
+async function renderOwnerDashboard(user){
+
+  $("app").innerHTML = `
+    <div class="container" style="padding:30px 0 60px;">
+
+      <div class="section-head">
+        <div>
+          <h2>👑 Luqmanii Owner Dashboard</h2>
+          <p>${escapeHtml(user.email || "")}</p>
+        </div>
+
+        <button class="btn btn-soft" onclick="ownerLogout()">
+          Sign Out
+        </button>
+      </div>
+
+      <div class="owner-card">
+
+        <h3>Temporary Sample Products</h3>
+
+        <p style="color:var(--muted);">
+          The 10 products currently shown are temporary sample products.
+          Their photos are controlled by the SAMPLE_IMAGES section in
+          this HTML file. Replace those URLs when the real product photos
+          are ready.
+        </p>
+
+        <div class="products-grid">
+          ${products.map(product=>`
+            <div class="product-card">
+              <div class="product-image-wrap">
+                <img
+                  class="product-image"
+                  src="${productImage(product)}"
+                  alt=""
+                >
+              </div>
+
+              <div class="product-body">
+                <h3>${escapeHtml(product.name)}</h3>
+
+                <p style="font-size:13px;color:var(--muted);">
+                  Base price: ${money(product.base_price)}
+                </p>
+
+                <button
+                  class="btn btn-soft"
+                  style="width:100%;"
+                  onclick="openProduct('${product.id}')"
+                >
+                  View Product
+                </button>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+
+      </div>
+
+      <div class="owner-card" style="margin-top:20px;">
+
+        <h3>Recent Orders</h3>
+
+        <div id="ownerOrders">
+          Loading orders...
+        </div>
+
+      </div>
+
+    </div>
+  `;
+
+  await loadOwnerOrders();
+}
+
+async function loadOwnerOrders(){
+
+  const target = $("ownerOrders");
+
+  if(!target) return;
+
+  const {data,error} =
+    await supabaseClient
+      .from("orders")
+      .select("*")
+      .eq("business_id",business.id)
+      .order("created_at",{ascending:false})
+      .limit(30);
+
+  if(error){
+    target.innerHTML =
+      `<p style="color:#a44f5f;">${escapeHtml(error.message)}</p>`;
+    return;
+  }
+
+  if(!data || !data.length){
+    target.innerHTML =
+      `<div class="empty">No orders yet.</div>`;
+    return;
+  }
+
+  target.innerHTML = `
+    <div style="overflow:auto;">
+      <table style="width:100%;border-collapse:collapse;min-width:650px;">
+        <thead>
+          <tr style="text-align:left;border-bottom:1px solid var(--line);">
+            <th style="padding:10px;">Order</th>
+            <th style="padding:10px;">Customer</th>
+            <th style="padding:10px;">Phone</th>
+            <th style="padding:10px;">Total</th>
+            <th style="padding:10px;">Status</th>
+            <th style="padding:10px;">Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          ${data.map(order=>`
+            <tr style="border-bottom:1px solid var(--line);">
+              <td style="padding:10px;">
+                #${escapeHtml(
+                  order.order_number ||
+                  order.order_no ||
+                  String(order.id).slice(0,8)
+                )}
+              </td>
+
+              <td style="padding:10px;">
+                ${escapeHtml(order.customer_name || "")}
+              </td>
+
+              <td style="padding:10px;">
+                ${escapeHtml(order.customer_phone || "")}
+              </td>
+
+              <td style="padding:10px;">
+                ${money(
+                  order.total ||
+                  order.grand_total ||
+                  order.subtotal ||
+                  0
+                )}
+              </td>
+
+              <td style="padding:10px;">
+                ${escapeHtml(order.status || "pending")}
+              </td>
+
+              <td style="padding:10px;">
+                ${order.created_at
+                  ? new Date(order.created_at).toLocaleString()
+                  : ""}
+              </td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+async function ownerLogout(){
+
+  await supabaseClient.auth.signOut();
+  toast("Signed out.");
+  goHome();
 }
 
 
-/* ============================================================
-   ESCAPING
-   ============================================================ */
+/* =========================================================
+   INITIALIZE
+========================================================= */
 
-function escapeHtml(value) {
-
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-
-}
-
-
-function escapeJs(value) {
-
-  return String(value ?? "")
-    .replace(/\\/g, "\\\\")
-    .replace(/'/g, "\\'");
-
-}
-
-
-/* ============================================================
-   INITIAL PAGE RENDER
-   ============================================================ */
-
-setTimeout(() => {
-
-  renderProducts();
-  renderHomeProducts();
-  updateBagCount();
-
-}, 300);
+updateBagCount();
+start();
 
 </script>
 
