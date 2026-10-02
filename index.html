@@ -2063,17 +2063,90 @@ images:[
    STORAGE
    ========================================================= */
 
-function getProducts(){
+async function getProducts(){
 
-  const saved =
-    localStorage.getItem("luqmanii_products");
+  const { data, error } = await supabaseClient
+    .from("products")
+    .select(`
+      id,
+      name,
+      description,
+      base_price,
+      category_id,
+      categories (
+        name,
+        slug
+      ),
+      product_variants (
+        id,
+        color,
+        size,
+        sku,
+        price,
+        stock,
+        active
+      ),
+      product_images (
+        storage_path,
+        alt_text,
+        sort_order
+      )
+    `)
+    .eq("active", true)
+    .order("created_at", { ascending: false });
 
-  if(saved){
+  if(error){
+    console.error("Supabase products error:", error);
 
-    try{
-      return JSON.parse(saved);
-    }catch(error){}
+    return DEFAULT_PRODUCTS;
   }
+
+  return data.map(product => ({
+
+    id: product.id,
+
+    name: product.name,
+
+    category:
+      product.categories?.name || "Everyday",
+
+    price:
+      product.base_price || 0,
+
+    stock:
+      product.product_variants?.reduce(
+        (total, variant) =>
+          total + (variant.stock || 0),
+        0
+      ) || 0,
+
+    colors:
+      [...new Set(
+        (product.product_variants || [])
+          .map(v => v.color)
+          .filter(Boolean)
+      )],
+
+    sizes:
+      [...new Set(
+        (product.product_variants || [])
+          .map(v => v.size)
+          .filter(Boolean)
+      )],
+
+    description:
+      product.description || "",
+
+    images:
+      (product.product_images || [])
+        .sort((a,b) =>
+          (a.sort_order || 0) -
+          (b.sort_order || 0)
+        )
+        .map(image => image.storage_path)
+
+  }));
+}
 
   localStorage.setItem(
     "luqmanii_products",
@@ -2100,7 +2173,16 @@ function saveProducts(list){
    STATE
    ========================================================= */
 
-let products = getProducts();
+let products = [];
+
+async function loadProducts(){
+
+  products = await getProducts();
+
+  renderProducts();
+  renderFeatured();
+  renderAdmin();
+}
   
 console.log("Supabase connected:", !!supabaseClient);
 let cart =
@@ -4379,6 +4461,7 @@ function initialize(){
 /* START */
 
 initialize();
+loadProducts();
 
 </script>
 
