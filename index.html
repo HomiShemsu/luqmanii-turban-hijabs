@@ -1844,13 +1844,13 @@ async function loadProductImages() {
   }
   }
 
-async function loadVariants() {
+  async function loadVariants() {
   if (!products.length) {
     currentVariants = [];
     return;
   }
 
-  const ids = products.map(p => p.id);
+  const ids = products.map(product => product.id);
 
   const {
     data,
@@ -1862,13 +1862,21 @@ async function loadVariants() {
     .eq("active", true);
 
   if (error) {
-    console.error(error);
+    console.error("Variant loading error:", error);
+
+    showToast(
+      "Product stock could not be loaded."
+    );
+
     currentVariants = [];
     return;
   }
 
-  currentVariants = data || [];
-}
+  currentVariants = (data || []).map(variant => ({
+    ...variant,
+    stock: Number(variant.stock || 0)
+  }));
+  }
 
 async function loadCategories() {
   const ids = [
