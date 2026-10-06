@@ -1744,8 +1744,56 @@ function goBack() {
 /* =========================================================
    DATABASE
 ========================================================= */
+async function loadProductImages() {
+  if (!products.length) return;
 
-async function loadStore() {
+  const ids = products.map(product => product.id);
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("product_images")
+    .select("product_id, storage_path, sort_order")
+    .in("product_id", ids)
+    .order("sort_order", {
+      ascending: true
+    });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  const firstImageByProduct = new Map();
+
+  (data || []).forEach(image => {
+    if (!firstImageByProduct.has(image.product_id)) {
+      const {
+        data: publicUrlData
+      } = supabaseClient.storage
+        .from(PRODUCT_IMAGE_BUCKET)
+        .getPublicUrl(image.storage_path);
+
+      if (publicUrlData?.publicUrl) {
+        firstImageByProduct.set(
+          image.product_id,
+          publicUrlData.publicUrl
+        );
+      }
+    }
+  });
+
+  products = products.map(product => ({
+    ...product,
+    image_url:
+      firstImageByProduct.get(product.id) ||
+      product.image_url ||
+      null
+  }));
+}
+
+  async function loadStore() {
   try {
     const {
       data: business,
@@ -1785,6 +1833,7 @@ async function loadStore() {
 
     products = data || [];
 
+    await loadProductImages();
     await loadVariants();
     await loadCategories();
 
@@ -1793,7 +1842,7 @@ async function loadStore() {
     console.error(error);
     showToast("Unable to connect to the store.");
   }
-}
+  }
 
 async function loadVariants() {
   if (!products.length) {
@@ -3354,9 +3403,11 @@ async function uploadProductImage(file, businessId) {
     .from(PRODUCT_IMAGE_BUCKET)
     .getPublicUrl(fileName);
 
-  return data.publicUrl;
+  return {
+    storagePath: fileName,
+    publicUrl: data.publicUrl
+  };
 }
-
 /* =========================================================
    VARIANT BUILDER
 ========================================================= */
@@ -3448,7 +3499,7 @@ function getVariantBuilderRows() {
    CREATE PRODUCT
 ========================================================= */
 
-async function createProduct() {
+  async function createProduct() {
   if (!ownerUser) {
     showToast("Please login first.");
     return;
@@ -3490,10 +3541,10 @@ async function createProduct() {
       return;
     }
 
-    let imageUrl = null;
+    let uploadedImage = null;
 
     if (imageFile) {
-      imageUrl =
+      uploadedImage =
         await uploadProductImage(
           imageFile,
           business.id
@@ -3508,12 +3559,6 @@ async function createProduct() {
       active: true
     };
 
-    /*
-      Only add image_url if the database supports it.
-      The current confirmed products schema may not contain
-      image_url, so the product insert is kept compatible.
-    */
-
     const {
       data: product,
       error
@@ -3527,6 +3572,26 @@ async function createProduct() {
       console.error(error);
       showToast(error.message);
       return;
+    }
+
+    if (uploadedImage) {
+      const {
+        error: imageError
+      } = await supabaseClient
+        .from("product_images")
+        .insert({
+          product_id: product.id,
+          storage_path: uploadedImage.storagePath,
+          alt_text: name,
+          sort_order: 0
+        });
+
+      if (imageError) {
+        console.error(imageError);
+        showToast(
+          "Product saved, but its image could not be linked."
+        );
+      }
     }
 
     if (variants.length) {
@@ -3557,12 +3622,6 @@ async function createProduct() {
       }
     }
 
-    /*
-      Image URL is stored separately only if an image_url column
-      exists. If it doesn't, the upload remains in the bucket.
-      The existing schema is therefore not broken.
-    */
-
     showToast("Product created successfully.");
 
     document.getElementById("adminProductName").value = "";
@@ -3583,7 +3642,7 @@ async function createProduct() {
     console.error(error);
     showToast("Could not create product.");
   }
-}
+  }
 
 /* =========================================================
    EDIT PRODUCT
