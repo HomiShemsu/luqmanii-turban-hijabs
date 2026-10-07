@@ -3549,7 +3549,7 @@ function addVariantBuilderRow(values = {}) {
     `
       display:grid;
       grid-template-columns:
-        repeat(4,1fr) auto;
+        repeat(5,1fr) auto;
       gap:8px;
       margin-bottom:8px;
     `;
@@ -3581,6 +3581,15 @@ function addVariantBuilderRow(values = {}) {
       value="${values.price ?? ""}"
     />
 
+    <input
+      class="form-input variant-stock"
+      type="number"
+      min="0"
+      step="1"
+      placeholder="Stock"
+      value="${values.stock ?? 10}"
+    />
+
     <button
       class="btn btn-danger"
       onclick="this.parentElement.remove()"
@@ -3591,7 +3600,7 @@ function addVariantBuilderRow(values = {}) {
 
   container.appendChild(row);
 }
-
+  
 function getVariantBuilderRows() {
   return [
     ...document.querySelectorAll(
@@ -3610,15 +3619,21 @@ function getVariantBuilderRows() {
     price:
       Number(
         row.querySelector(".variant-price").value
+      ),
+
+    stock:
+      Number(
+        row.querySelector(".variant-stock").value
       )
   })).filter(v =>
     v.color &&
     v.style &&
     v.size &&
-    v.price >= 0
+    v.price >= 0 &&
+    Number.isInteger(v.stock) &&
+    v.stock >= 0
   );
 }
-
 /* =========================================================
    CREATE PRODUCT
 ========================================================= */
@@ -3876,6 +3891,10 @@ async function updateProduct(productId) {
     Number(
       document.getElementById("adminProductPrice").value
     );
+  if (!Number.isFinite(basePrice) || basePrice < 0) {
+  showToast("Enter a valid price.");
+  return;
+  }
 
   const variants =
     getVariantBuilderRows();
@@ -3930,12 +3949,13 @@ async function updateProduct(productId) {
       await supabaseClient
         .from("product_variants")
         .update({
-          color: v.color,
-          style: v.style,
-          size: v.size,
-          price: v.price,
-          updated_at: new Date().toISOString()
-        })
+  color: v.color,
+  style: v.style,
+  size: v.size,
+  price: v.price,
+  stock: v.stock,
+  updated_at: new Date().toISOString()
+})
         .eq("id", existing.id);
 
     } else {
@@ -3950,7 +3970,7 @@ async function updateProduct(productId) {
           sku:
             `LUQ-${Date.now()}-${i + 1}`,
           price: v.price,
-          stock: 10,
+          stock: v.stock,
           active: true
         });
     }
