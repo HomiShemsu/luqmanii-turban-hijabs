@@ -4206,32 +4206,81 @@ async function loadOwnerOrders() {
 async function updateOrderStatus(orderId, status) {
   if (!ownerUser) return;
 
+  const statusMap = {
+    pending: "NEW",
+    confirmed: "CONFIRMED",
+    processing: "PREPARING",
+    shipped: "READY",
+    delivered: "DELIVERED",
+    cancelled: "CANCELLED",
+
+    // Also allow the database values directly
+    NEW: "NEW",
+    CONFIRMED: "CONFIRMED",
+    PREPARING: "PREPARING",
+    READY: "READY",
+    DELIVERED: "DELIVERED",
+    CANCELLED: "CANCELLED"
+  };
+
+  const databaseStatus =
+    statusMap[String(status).toLowerCase()] ||
+    statusMap[status];
+
+  if (!databaseStatus) {
+    console.error(
+      "Invalid order status:",
+      status
+    );
+
+    showToast(
+      "Invalid order status."
+    );
+
+    return;
+  }
+
   const business =
     await loadBusinessForOwner();
 
-  if (!business) return;
+  if (!business) {
+    showToast(
+      "Business could not be loaded."
+    );
+
+    return;
+  }
 
   const {
     error
   } = await supabaseClient
     .from("orders")
     .update({
-      status
+      status: databaseStatus
     })
     .eq("id", orderId)
     .eq("business_id", business.id);
 
   if (error) {
-    console.error(error);
-    showToast("Could not update order status.");
+    console.error(
+      "ORDER STATUS UPDATE ERROR:",
+      error
+    );
+
+    showToast(
+      "Could not update order status."
+    );
+
     return;
   }
 
-  showToast("Order status updated.");
+  showToast(
+    "Order status updated."
+  );
 
   await loadOwnerOrders();
-}
-
+      }
+  
 /* =========================================================
    MODAL
 ========================================================= */
