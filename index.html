@@ -3112,7 +3112,7 @@ async function confirmOrder() {
    SUPABASE ORDER SAVE
 ========================================================= */
 
-async function saveOrderToSupabase(orderId) {
+  async function saveOrderToSupabase(orderId) {
   try {
     const customerName =
       document.getElementById("customerName").value.trim();
@@ -3135,24 +3135,9 @@ async function saveOrderToSupabase(orderId) {
       quantity: Number(item.quantity)
     }));
 
-    /*
-      The Supabase function does not have a separate
-      customer_city parameter.
-
-      Keep the city by including it in the saved address.
-    */
     const fullAddress =
       `${customerCity}${customerAddress ? `, ${customerAddress}` : ""}`;
 
-    /*
-      The database function is authoritative for:
-      - product price
-      - stock validation
-      - subtotal
-      - delivery fee
-      - total
-      - inventory deduction
-    */
     const {
       data,
       error
@@ -3170,11 +3155,19 @@ async function saveOrderToSupabase(orderId) {
     );
 
     if (error) {
+      console.error("ORDER SAVE ERROR:", error);
+
+      showToast(
+        `Order save failed: ${error.message || "Unknown error"}`
+      );
+
       return {
         success: false,
         error
       };
     }
+
+    console.log("ORDER SAVED:", data);
 
     return {
       success: true,
@@ -3182,6 +3175,12 @@ async function saveOrderToSupabase(orderId) {
     };
 
   } catch (error) {
+    console.error("ORDER SAVE EXCEPTION:", error);
+
+    showToast(
+      `Order save failed: ${error.message || "Unknown error"}`
+    );
+
     return {
       success: false,
       error
