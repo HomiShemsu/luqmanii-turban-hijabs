@@ -3112,6 +3112,7 @@ async function confirmOrder() {
    SUPABASE ORDER SAVE
 ========================================================= */
 
+  
   async function saveOrderToSupabase(orderId) {
   try {
     const customerName =
@@ -3135,6 +3136,51 @@ async function confirmOrder() {
       quantity: Number(item.quantity)
     }));
 
+    // Basic validation before contacting Supabase
+    if (!items.length) {
+      const error = new Error("Cart is empty.");
+
+      console.error("ORDER SAVE VALIDATION ERROR:", error);
+
+      showToast(
+        "Your cart is empty. Please add a product before ordering."
+      );
+
+      return {
+        success: false,
+        error
+      };
+    }
+
+    const invalidItem = items.find(
+      item =>
+        !item.product_id ||
+        !item.variant_id ||
+        !Number.isInteger(item.quantity) ||
+        item.quantity < 1
+    );
+
+    if (invalidItem) {
+      const error = new Error(
+        "One or more cart items are invalid."
+      );
+
+      console.error(
+        "ORDER SAVE VALIDATION ERROR:",
+        error,
+        invalidItem
+      );
+
+      showToast(
+        "One of your cart items is invalid. Please remove it and try again."
+      );
+
+      return {
+        success: false,
+        error
+      };
+    }
+
     const fullAddress =
       `${customerCity}${customerAddress ? `, ${customerAddress}` : ""}`;
 
@@ -3154,11 +3200,61 @@ async function confirmOrder() {
       }
     );
 
+    // Supabase/database error
     if (error) {
-      console.error("ORDER SAVE ERROR:", error);
+      console.error("ORDER SAVE SUPABASE ERROR:", {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code,
+        orderId
+      });
+
+      let customerMessage =
+        "We could not save your order online.";
+
+      const errorMessage =
+        String(error.message || "").toLowerCase();
+
+      if (error.code === "23505") {
+        customerMessage =
+          "This order may already have been submitted. Please check WhatsApp before trying again.";
+      } else if (error.code === "23503") {
+        customerMessage =
+          "One of the products in your order is no longer available.";
+      } else if (errorMessage.includes("stock")) {
+        customerMessage =
+          "Sorry, there is not enough stock for one of the products.";
+      } else if (errorMessage.includes("phone")) {
+        customerMessage =
+          "Please check your phone number and try again.";
+      } else if (errorMessage.includes("address")) {
+        customerMessage =
+          "Please check your delivery address and try again.";
+      }
+
+      showToast(customerMessage);
+
+      return {
+        success: false,
+        error
+      };
+    }
+
+    // Unexpected empty response
+    if (!data) {
+      const error = new Error(
+        "Order request completed but no order data was returned."
+      );
+
+      console.error(
+        "ORDER SAVE EMPTY RESPONSE:",
+        error,
+        { orderId }
+      );
 
       showToast(
-        `Order save failed: ${error.message || "Unknown error"}`
+        "We could not confirm the online order. Please keep the WhatsApp message."
       );
 
       return {
@@ -3167,7 +3263,11 @@ async function confirmOrder() {
       };
     }
 
-    console.log("ORDER SAVED:", data);
+    // Success
+    console.log("ORDER SAVED SUCCESSFULLY:", {
+      orderId,
+      data
+    });
 
     return {
       success: true,
@@ -3175,10 +3275,15 @@ async function confirmOrder() {
     };
 
   } catch (error) {
-    console.error("ORDER SAVE EXCEPTION:", error);
+    console.error("ORDER SAVE EXCEPTION:", {
+      message: error?.message,
+      stack: error?.stack,
+      orderId,
+      error
+    });
 
     showToast(
-      `Order save failed: ${error.message || "Unknown error"}`
+      "Something went wrong while saving your order. Please keep the WhatsApp message and contact us if needed."
     );
 
     return {
