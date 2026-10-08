@@ -2931,7 +2931,7 @@ function buildWhatsAppItems() {
   }).join("\n\n");
 }
 
-function openWhatsAppOrder(orderId) {
+function openWhatsAppOrder(orderNumber, targetWindow = null) {
   const customerName =
     document.getElementById("customerName").value.trim();
 
@@ -2948,25 +2948,25 @@ function openWhatsAppOrder(orderId) {
     document.getElementById("customerNote").value.trim();
 
   const subtotal =
-  getCartSubtotal();
+    getCartSubtotal();
 
-const total =
-  subtotal + Number(deliveryFee || 0);
+  const total =
+    subtotal + Number(deliveryFee || 0);
 
   const itemsText =
     buildWhatsAppItems();
 
   const whatsappMessage =
     `New Luqmanii Turban Hijabs Order\n\n` +
-    `Order ID: ${orderId}\n` +
+    `Order Number: ${orderNumber}\n` +
     `Customer: ${customerName}\n` +
     `Phone: ${customerPhone}\n` +
     `City: ${customerCity}\n` +
     `Address: ${customerAddress}\n\n` +
     `${itemsText}\n\n` +
     `Subtotal: ETB ${subtotal.toFixed(2)}\n` +
-`Delivery: ETB ${Number(deliveryFee || 0).toFixed(2)}\n` +
-`Total: ETB ${total.toFixed(2)}`+
+    `Delivery: ETB ${Number(deliveryFee || 0).toFixed(2)}\n` +
+    `Total: ETB ${total.toFixed(2)}` +
     (customerNote
       ? `\n\nNote: ${customerNote}`
       : "");
@@ -2976,18 +2976,16 @@ const total =
       encodeURIComponent(whatsappMessage)
     }`;
 
-  /*
-    IMPORTANT:
-    This opens WhatsApp directly from the user's click.
-    It does NOT wait for SQL.
-  */
-  window.open(
-    whatsappUrl,
-    "_blank",
-    "noopener,noreferrer"
-  );
+  if (targetWindow && !targetWindow.closed) {
+    targetWindow.location.href = whatsappUrl;
+  } else {
+    window.open(
+      whatsappUrl,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  }
 }
-
 /* =========================================================
    DUPLICATE ORDER PROTECTION
 ========================================================= */
