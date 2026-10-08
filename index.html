@@ -4164,7 +4164,7 @@ async function loadOwnerOrders() {
           <div class="order-card">
 
             <h3>
-              Order #${escapeHtml(order.id)}
+              Order #${escapeHtml(order.order_number || order.id)}
             </h3>
 
             <p>
