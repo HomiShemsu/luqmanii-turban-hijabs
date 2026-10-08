@@ -3058,82 +3058,133 @@ async function confirmOrder() {
   }
 
   /*
-    Open WhatsApp FIRST.
-    This is intentional so popup blockers are less likely
-    to prevent the WhatsApp page from opening.
+    Open a blank window immediately from the user's click.
+    This preserves the existing popup-blocker protection.
   */
-  const orderId =
-    generateOrderId();
+  const whatsappWindow =
+    window.open(
+      "",
+      "_blank"
+    );
 
-  openWhatsAppOrder(orderId);
+  if (!whatsappWindow) {
+    showToast(
+      "Please allow pop-ups to continue with WhatsApp."
+    );
+    return;
+  }
 
-  /*
-    SQL is completely separate.
-    It does not control WhatsApp.
-  */
   orderSubmitting = true;
 
   const button =
-    document.getElementById("confirmOrderButton");
-
-  button.disabled = true;
-  button.textContent = "Saving Order...";
-
-  saveOrderToSupabase(
-    orderId
-  ).then(result => {
-
-    if (result.success) {
-      saveOrderSignature();
-
-      document.getElementById(
-        "confirmationText"
-      ).innerHTML =
-        `
-          Your order <strong>${escapeHtml(orderId)}</strong>
-          has been received successfully.
-          <br><br>
-          Your WhatsApp message has been prepared separately.
-        `;
-
-      cart = [];
-      saveCart();
-
-      showPage("confirmation");
-    } else {
-
-      /*
-        Do NOT claim the SQL order was saved.
-        WhatsApp was already opened separately.
-      */
-      showToast(
-        "WhatsApp was opened, but the online order save failed. Please keep the WhatsApp message."
-      );
-
-      console.error(
-        "Supabase order save failed:",
-        result.error
-      );
-    }
-
-  }).catch(error => {
-
-    console.error(error);
-
-    showToast(
-      "WhatsApp was opened, but the online order save failed."
+    document.getElementById(
+      "confirmOrderButton"
     );
 
-  }).finally(() => {
+  button.disabled = true;
+  button.textContent =
+    "Saving Order...";
+
+  /*
+    Supabase creates the official order number.
+  */
+  const temporaryOrderId =
+    generateOrderId();
+
+  try {
+    const result =
+      await saveOrderToSupabase(
+        temporaryOrderId
+      );
+
+    if (!result.success) {
+      whatsappWindow.close();
+
+      showToast(
+        "We could not save your order online. Please try again."
+      );
+
+      return;
+    }
+
+    const savedOrder =
+      Array.isArray(result.data)
+        ? result.data[0]
+        : result.data;
+
+    const officialOrderNumber =
+      savedOrder?.order_number;
+
+    if (!officialOrderNumber) {
+      whatsappWindow.close();
+
+      console.error(
+        "ORDER NUMBER MISSING:",
+        result.data
+      );
+
+      showToast(
+        "The order was saved, but no order number was returned."
+      );
+
+      return;
+    }
+
+    /*
+      Now send the official Supabase order number
+      to WhatsApp.
+    */
+    openWhatsAppOrder(
+      officialOrderNumber,
+      whatsappWindow
+    );
+
+    saveOrderSignature();
+
+    document.getElementById(
+      "confirmationText"
+    ).innerHTML =
+      `
+        Your order
+        <strong>
+          ${escapeHtml(officialOrderNumber)}
+        </strong>
+        has been received successfully.
+        <br><br>
+        Your WhatsApp message has also been prepared.
+      `;
+
+    cart = [];
+    saveCart();
+
+    showPage(
+      "confirmation"
+    );
+
+  } catch (error) {
+
+    console.error(
+      "CONFIRM ORDER ERROR:",
+      error
+    );
+
+    whatsappWindow.close();
+
+    showToast(
+      "Something went wrong while saving your order."
+    );
+
+  } finally {
 
     orderSubmitting = false;
 
     button.disabled = false;
+
     button.textContent =
       "Confirm Order & WhatsApp";
-  });
-}
-
+  }
+    }
+  
 /* =========================================================
    SUPABASE ORDER SAVE
 ========================================================= */
