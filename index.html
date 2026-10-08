@@ -3495,13 +3495,18 @@ async function loadBusinessForOwner() {
   return data;
 }
 
-async function loadOwnerProducts() {
+  async function loadOwnerOrders() {
   if (!ownerUser) return;
 
-  const business =
-    await loadBusinessForOwner();
+  try {
+    const business =
+      await loadBusinessForOwner();
 
-  if (!business) return;
+    if (!business) {
+      document.getElementById("ownerOrders").innerHTML =
+        `<div class="empty">Business could not be loaded.</div>`;
+      return;
+    }
 
   const {
     data,
@@ -3567,8 +3572,18 @@ async function loadOwnerProducts() {
         </div>
       `).join("")}
     </div>
-  `;
-}
+  
+        `;
+  } catch (error) {
+    console.error("OWNER ORDERS ERROR:", error);
+
+    document.getElementById("ownerOrders").innerHTML =
+      `<div class="empty">
+        Orders could not be loaded.<br><br>
+        Please check the browser console.
+      </div>`;
+  }
+  }
 
 /* =========================================================
    PRODUCT IMAGE UPLOAD
