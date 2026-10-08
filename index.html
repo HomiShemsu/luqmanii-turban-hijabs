@@ -1810,10 +1810,19 @@ async function loadProductImages() {
     }
 
     if (!business) {
-      showToast("Store information could not be loaded.");
-      return;
-    }
+  console.error("STORE LOAD ERROR:", {
+    business,
+    businessError,
+    slug: BUSINESS_SLUG
+  });
 
+  showToast(
+    businessError?.message ||
+    "Store information could not be loaded."
+  );
+
+  return;
+}
     const {
       data,
       error
