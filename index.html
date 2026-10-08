@@ -1541,6 +1541,7 @@ let recentlyViewed = JSON.parse(localStorage.getItem("luqmanii_recent") || "[]")
 
 let currentProduct = null;
 let currentVariants = [];
+let deliveryFee = 0;
 let lastPage = "home";
 let currentPage = "home";
 
@@ -1830,14 +1831,34 @@ async function loadProductImages() {
       showToast("Products could not be loaded.");
       return;
     }
-
+    
     products = data || [];
 
-    await loadProductImages();
-    await loadVariants();
-    await loadCategories();
+// Load store settings
+const {
+  data: settings,
+  error: settingsError
+} = await supabaseClient
+  .from("business_settings")
+  .select("delivery_fee, currency")
+  .eq("business_id", business.id)
+  .maybeSingle();
 
-    renderAll();
+if (settingsError) {
+  console.error(
+    "Business settings loading error:",
+    settingsError
+  );
+} else if (settings) {
+  deliveryFee =
+    Number(settings.delivery_fee || 0);
+}
+
+await loadProductImages();
+await loadVariants();
+await loadCategories();
+
+renderAll();
   } catch (error) {
     console.error(error);
     showToast("Unable to connect to the store.");
@@ -2787,6 +2808,8 @@ function renderCheckout() {
 
   const subtotal =
     getCartSubtotal();
+  const total =
+  subtotal + Number(deliveryFee || 0);
 
   container.innerHTML = `
     <h3 style="font-family:Georgia,serif;color:var(--rose)">
@@ -2811,20 +2834,20 @@ function renderCheckout() {
       `).join("")}
     </div>
 
-    <div class="summary-row summary-total">
-      <span>Total</span>
-      <strong>${money(subtotal)}</strong>
-    </div>
+    <div class="summary-row">
+  <span>Subtotal</span>
+  <strong>${money(subtotal)}</strong>
+</div>
 
-    <p
-      style="
-        font-size:12px;
-        color:var(--muted);
-        margin-top:10px;
-      "
-    >
-      Delivery fee is not included in this total.
-    </p>
+<div class="summary-row">
+  <span>Delivery</span>
+  <strong>${money(Number(deliveryFee || 0))}</strong>
+</div>
+
+<div class="summary-row summary-total">
+  <span>Total</span>
+  <strong>${money(total)}</strong>
+</div>
   `;
 }
 
@@ -2924,8 +2947,11 @@ function openWhatsAppOrder(orderId) {
   const customerNote =
     document.getElementById("customerNote").value.trim();
 
-  const total =
-    getCartSubtotal();
+  const subtotal =
+  getCartSubtotal();
+
+const total =
+  subtotal + Number(deliveryFee || 0);
 
   const itemsText =
     buildWhatsAppItems();
@@ -2938,7 +2964,9 @@ function openWhatsAppOrder(orderId) {
     `City: ${customerCity}\n` +
     `Address: ${customerAddress}\n\n` +
     `${itemsText}\n\n` +
-    `Total: ETB ${total.toFixed(2)}` +
+    `Subtotal: ETB ${subtotal.toFixed(2)}\n` +
+`Delivery: ETB ${Number(deliveryFee || 0).toFixed(2)}\n` +
+`Total: ETB ${total.toFixed(2)}`+
     (customerNote
       ? `\n\nNote: ${customerNote}`
       : "");
