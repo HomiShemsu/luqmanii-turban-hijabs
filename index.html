@@ -4231,11 +4231,11 @@ async function loadOwnerOrders() {
                   <option
                     value="${status}"
                     ${
-                      order.status === status
-                        ? "selected"
-                        : ""
-                    }
-                  >
+                       String(order.status || "").toLowerCase() === status
+                         ? "selected"
+                         : ""
+                     }
+                   >
                     ${status}
                   </option>
                 `).join("")}
