@@ -4251,7 +4251,7 @@ async function loadOwnerOrders() {
   `;
 }
 
-async function updateOrderStatus(orderId, status) {
+  async function updateOrderStatus(orderId, status) {
   if (!ownerUser) return;
 
   const statusMap = {
@@ -4262,7 +4262,6 @@ async function updateOrderStatus(orderId, status) {
     delivered: "DELIVERED",
     cancelled: "CANCELLED",
 
-    // Also allow the database values directly
     NEW: "NEW",
     CONFIRMED: "CONFIRMED",
     PREPARING: "PREPARING",
@@ -4281,10 +4280,7 @@ async function updateOrderStatus(orderId, status) {
       status
     );
 
-    showToast(
-      "Invalid order status."
-    );
-
+    showToast("Invalid order status.");
     return;
   }
 
@@ -4299,8 +4295,45 @@ async function updateOrderStatus(orderId, status) {
     return;
   }
 
+  // Get the current order status first
   const {
-    error
+    data: currentOrder,
+    error: orderError
+  } = await supabaseClient
+    .from("orders")
+    .select("status")
+    .eq("id", orderId)
+    .eq("business_id", business.id)
+    .single();
+
+  if (orderError) {
+    console.error(
+      "ORDER LOAD ERROR:",
+      orderError
+    );
+
+    showToast(
+      "Could not load the current order status."
+    );
+
+    return;
+  }
+
+  const fromStatus =
+    currentOrder.status;
+
+  // Do not create duplicate history
+  if (fromStatus === databaseStatus) {
+    showToast(
+      "Order is already in this status."
+    );
+
+    return;
+  }
+
+  // Update the order
+  const {
+    error: updateError
   } = await supabaseClient
     .from("orders")
     .update({
@@ -4309,14 +4342,38 @@ async function updateOrderStatus(orderId, status) {
     .eq("id", orderId)
     .eq("business_id", business.id);
 
-  if (error) {
+  if (updateError) {
     console.error(
       "ORDER STATUS UPDATE ERROR:",
-      error
+      updateError
     );
 
     showToast(
       "Could not update order status."
+    );
+
+    return;
+  }
+
+  // Record the status change
+  const {
+    error: historyError
+  } = await supabaseClient
+    .from("order_status_history")
+    .insert({
+      order_id: orderId,
+      from_status: fromStatus,
+      to_status: databaseStatus
+    });
+
+  if (historyError) {
+    console.error(
+      "ORDER STATUS HISTORY ERROR:",
+      historyError
+    );
+
+    showToast(
+      "Order status changed, but the history could not be recorded."
     );
 
     return;
@@ -4327,7 +4384,7 @@ async function updateOrderStatus(orderId, status) {
   );
 
   await loadOwnerOrders();
-      }
+    }
   
 /* =========================================================
    MODAL
