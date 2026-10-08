@@ -3271,8 +3271,7 @@ async function confirmOrder() {
         p_customer_name: customerName,
         p_customer_phone: customerPhone,
         p_customer_address: fullAddress,
-        p_customer_note:
-          `${customerNote}${customerNote ? "\n" : ""}Website Order ID: ${orderId}`,
+        p_customer_note: customerNote,
         p_items: items
       }
     );
