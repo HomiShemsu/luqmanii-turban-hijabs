@@ -1274,6 +1274,55 @@ font-size: 13px;
     min-height: 48px;
   }
 }
+/* ===================================
+   LUQMANII COLOUR SWATCHES
+=================================== */
+
+.color-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+  margin: 12px 0 16px;
+}
+
+.color-swatch {
+  width: 27px;
+  height: 27px;
+  min-width: 27px;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  outline: 1px solid #d8c8c8;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.color-swatch:hover {
+  transform: scale(1.12);
+}
+
+.color-swatch.selected {
+  outline: 2px solid #a65d72;
+  outline-offset: 3px;
+}
+
+.product-color-swatches {
+  margin: 10px 0 14px;
+}
+
+.product-color-swatches .color-swatch {
+  width: 21px;
+  height: 21px;
+  min-width: 21px;
+}
+
+.color-swatch:focus-visible {
+  outline: 2px solid #a65d72;
+  outline-offset: 3px;
+}
+    
   </style>
 </head>
 
@@ -2487,7 +2536,7 @@ function productCardHtml(product) {
         <p class="product-description">
           ${escapeHtml(getProductDescription(product))}
         </p>
-
+       ${renderColorSwatches(product.id)}
         <div class="price">
           ${money(getProductPrice(product))}
         </div>
@@ -2539,7 +2588,108 @@ function getVariants(productId) {
     v => v.product_id === productId
   );
 }
+/* ===================================
+   COLOUR SWATCH HELPERS
+=================================== */
 
+function getVariantStock(variant) {
+  return Number(
+    variant.stock ??
+    variant.quantity ??
+    0
+  );
+}
+
+function getAvailableColors(productId) {
+  const variants = getVariants(productId);
+
+  return [
+    ...new Set(
+      variants
+        .filter(v => getVariantStock(v) > 0)
+        .map(v => v.color)
+        .filter(Boolean)
+    )
+  ].slice(0, 10);
+}
+
+function colorSwatchValue(color) {
+  const colors = {
+    "black": "#171717",
+    "white": "#ffffff",
+    "cream": "#f5ead6",
+    "beige": "#d8c1a3",
+    "brown": "#795548",
+    "pink": "#f2a6bd",
+    "dusty pink": "#c98798",
+    "grey": "#9e9e9e",
+    "gray": "#9e9e9e",
+    "navy blue": "#17294d",
+    "royal blue": "#4169e1",
+    "burgundy": "#800020",
+    "red": "#d62828",
+    "green": "#27845b",
+    "olive green": "#808000",
+    "purple": "#8051a8",
+    "gold": "#d4af37",
+    "silver": "#c0c0c0",
+    "multicolor": "linear-gradient(135deg, #e84a5f, #f9c74f, #43aa8b, #577590)"
+  };
+
+  const key = String(color || "")
+    .trim()
+    .toLowerCase();
+
+  return colors[key] || "#d8c1a3";
+}
+
+function renderColorSwatches(
+  productId,
+  selectedColor = "",
+  interactive = false
+) {
+  const colors = getAvailableColors(productId);
+
+  if (!colors.length) {
+    return "";
+  }
+
+  return `
+    <div class="color-swatches ${
+      interactive ? "detail-color-swatches" : "product-color-swatches"
+    }">
+
+      ${colors.map(color => `
+        <button
+          type="button"
+          class="color-swatch ${
+            selectedColor === color ? "selected" : ""
+          }"
+          style="background: ${colorSwatchValue(color)};"
+          title="${escapeHtml(color)}"
+          aria-label="${escapeHtml(color)}"
+          ${interactive
+            ? `onclick="chooseVariantColor(this.dataset.color)"`
+            : `onclick="event.stopPropagation(); openProduct('${productId}')"`
+          }
+          data-color="${escapeHtml(color)}"
+        ></button>
+      `).join("")}
+
+    </div>
+  `;
+}
+
+function chooseVariantColor(color) {
+  const select = document.getElementById("variantColor");
+
+  if (!select) return;
+
+  select.value = color;
+
+  updateVariantSelection();
+}
+  
 function openProduct(productId) {
   const product =
     products.find(p => p.id === productId);
@@ -2566,10 +2716,7 @@ function renderProductDetail() {
   const product = currentProduct;
   const variants = getVariants(product.id);
 
-  const colors =
-    [...new Set(
-      variants.map(v => v.color).filter(Boolean)
-    )];
+  const colors = getAvailableColors(product.id);
 
   const styles =
     [...new Set(
@@ -2608,21 +2755,37 @@ function renderProductDetail() {
         <div class="price" id="detailPrice">
           ${money(getProductPrice(product))}
         </div>
-
+          
         ${
-          colors.length
-          ? `
-            <div class="option-group">
-              <label>Color</label>
-              <select id="variantColor" onchange="updateVariantSelection()">
-                <option value="">Select color</option>
-                ${colors.map(
-                  c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`
-                ).join("")}
-              </select>
-            </div>
+  colors.length
+  ? `
+    <div class="option-group">
+      <label>Choose Your Colour</label>
+
+      ${renderColorSwatches(
+        product.id,
+        "",
+        true
+      )}
+
+      <select
+        id="variantColor"
+        onchange="updateVariantSelection()"
+        style="display:none;"
+      >
+        <option value="">Select color</option>
+
+        ${colors.map(
+          c => `
+            <option value="${escapeHtml(c)}">
+              ${escapeHtml(c)}
+            </option>
           `
-          : ""
+        ).join("")}
+      </select>
+    </div>
+  `
+  : ""
         }
 
         ${
@@ -2679,7 +2842,7 @@ function renderProductDetail() {
             class="btn btn-primary"
             onclick="addCurrentProductToBag()"
           >
-            Add to Bag 🎒
+            Add to Cart 🛒
           </button>
 
           <button
@@ -2738,6 +2901,17 @@ function updateVariantSelection() {
 
   const variant =
     getSelectedVariant();
+  const selectedColor =
+  document.getElementById("variantColor")?.value || "";
+
+document
+  .querySelectorAll(".detail-color-swatches .color-swatch")
+  .forEach(button => {
+    button.classList.toggle(
+      "selected",
+      button.dataset.color === selectedColor
+    );
+  });
 
   const price =
     variant?.price ??
@@ -4597,41 +4771,95 @@ async function updateProduct(productId) {
 async function deleteProduct(productId) {
   if (!ownerUser) return;
 
-  const confirmed =
-    confirm(
-      "Delete this product? It will be deactivated."
-    );
+  const confirmed = confirm(
+    "Permanently delete this product, all its variants, and uploaded product images? This cannot be undone."
+  );
 
   if (!confirmed) return;
 
-  const business =
-    await loadBusinessForOwner();
+  try {
+    const business = await loadBusinessForOwner();
 
-  if (!business) return;
+    if (!business) return;
 
-  const {
-    error
-  } = await supabaseClient
-    .from("products")
-    .update({
-      active: false,
-      updated_at: new Date().toISOString()
-    })
-    .eq("id", productId)
-    .eq("business_id", business.id);
+    /*
+      1. Get image paths before deleting the product.
+    */
 
-  if (error) {
-    console.error(error);
-    showToast(error.message);
-    return;
+    const {
+      data: imageRows,
+      error: imageError
+    } = await supabaseClient
+      .from("product_images")
+      .select("storage_path")
+      .eq("product_id", productId);
+
+    if (imageError) {
+      throw imageError;
+    }
+
+    /*
+      2. Permanently delete the product record.
+      Related records follow the database's
+      configured foreign-key rules.
+    */
+
+    const {
+      error: deleteError
+    } = await supabaseClient
+      .from("products")
+      .delete()
+      .eq("id", productId)
+      .eq("business_id", business.id);
+
+    if (deleteError) {
+      throw deleteError;
+    }
+
+    /*
+      3. Delete uploaded files from Storage.
+    */
+
+    const imagePaths = (imageRows || [])
+      .map(row => row.storage_path)
+      .filter(Boolean);
+
+    if (imagePaths.length) {
+      const {
+        error: storageError
+      } = await supabaseClient
+        .storage
+        .from("product-images")
+        .remove(imagePaths);
+
+      if (storageError) {
+        console.error(
+          "Product was deleted, but some image files remain:",
+          storageError
+        );
+
+        showToast(
+          "Product deleted. Some image files may need manual cleanup."
+        );
+      } else {
+        showToast("Product and uploaded images deleted.");
+      }
+    } else {
+      showToast("Product permanently deleted.");
+    }
+
+    /*
+      4. Refresh the store and owner dashboard.
+    */
+
+    await loadStore();
+    await loadOwnerProducts();
+
+  } catch (error) {
+    console.error("Product deletion failed:", error);
+    showToast(error.message || "Could not delete product.");
   }
-
-  showToast("Product removed.");
-
-  await loadStore();
-  await loadOwnerProducts();
 }
-
 /* =========================================================
    OWNER ORDERS
 ========================================================= */
