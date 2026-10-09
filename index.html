@@ -4031,12 +4031,58 @@ function addVariantBuilderRow(values = {}) {
 
   row.className = "variant-builder-row";
 
+  const commonColors = [
+    "Black",
+    "White",
+    "Cream",
+    "Beige",
+    "Brown",
+    "Pink",
+    "Dusty Pink",
+    "Grey",
+    "Navy Blue",
+    "Royal Blue",
+    "Burgundy",
+    "Red",
+    "Green",
+    "Olive Green",
+    "Purple",
+    "Gold",
+    "Silver",
+    "Multicolor",
+    "Other"
+  ];
+
+  const savedColor = values.color || "";
+  const isCustomColor =
+    savedColor &&
+    !commonColors.includes(savedColor);
+
+  const selectedColor =
+    isCustomColor ? "Other" : savedColor;
+
+  const colorOptions = commonColors
+    .map(color => `
+      <option
+        value="${escapeHtml(color)}"
+        ${selectedColor === color ? "selected" : ""}
+      >
+        ${escapeHtml(color)}
+      </option>
+    `)
+    .join("");
 
   row.innerHTML = `
+    <select class="form-input variant-color">
+      <option value="">Choose Color</option>
+      ${colorOptions}
+    </select>
+
     <input
-      class="form-input variant-color"
-      placeholder="Color"
-      value="${escapeHtml(values.color || "")}"
+      class="form-input variant-custom-color"
+      placeholder="Enter custom color"
+      value="${isCustomColor ? escapeHtml(savedColor) : ""}"
+      style="display: ${isCustomColor ? "block" : "none"};"
     />
 
     <input
@@ -4045,11 +4091,27 @@ function addVariantBuilderRow(values = {}) {
       value="${escapeHtml(values.style || "")}"
     />
 
-    <input
-      class="form-input variant-size"
-      placeholder="Size"
-      value="${escapeHtml(values.size || "One Size")}"
-    />
+    <select class="form-input variant-size">
+      <option value="Medium"
+        ${(values.size || "Medium") === "Medium" ? "selected" : ""}>
+        Medium
+      </option>
+
+      <option value="Standard"
+        ${values.size === "Standard" ? "selected" : ""}>
+        Standard
+      </option>
+
+      <option value="Regular"
+        ${values.size === "Regular" ? "selected" : ""}>
+        Regular
+      </option>
+
+      <option value="Kids"
+        ${values.size === "Kids" ? "selected" : ""}>
+        Kids
+      </option>
+    </select>
 
     <input
       class="form-input variant-price"
@@ -4069,12 +4131,36 @@ function addVariantBuilderRow(values = {}) {
     />
 
     <button
+      type="button"
       class="btn btn-danger"
-      onclick="this.parentElement.remove()"
     >
-      ×
+      Remove
     </button>
   `;
+
+  const colorSelect =
+    row.querySelector(".variant-color");
+
+  const customColorInput =
+    row.querySelector(".variant-custom-color");
+
+  colorSelect.addEventListener("change", function () {
+    const isOther = this.value === "Other";
+
+    customColorInput.style.display =
+      isOther ? "block" : "none";
+
+    if (!isOther) {
+      customColorInput.value = "";
+    } else {
+      customColorInput.focus();
+    }
+  });
+
+  row.querySelector(".btn-danger")
+    .addEventListener("click", function () {
+      row.remove();
+    });
 
   container.appendChild(row);
 }
@@ -4085,9 +4171,11 @@ function getVariantBuilderRows() {
       ".variant-builder-row"
     )
   ].map(row => ({
-    color:
-      row.querySelector(".variant-color").value.trim(),
-
+color:
+  row.querySelector(".variant-color").value === "Other"
+    ? row.querySelector(".variant-custom-color").value.trim()
+    : row.querySelector(".variant-color").value,
+    
     style:
       row.querySelector(".variant-style").value.trim(),
 
