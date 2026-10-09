@@ -915,6 +915,94 @@
         padding: 9px 10px;
       }
     }
+        /* LUQMANII LUXURY FEMININE DESIGN */
+
+    .section-title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(28px, 4vw, 38px);
+      font-weight: 500;
+      letter-spacing: 0.4px;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+      font-size: 15px;
+      line-height: 1.8;
+      max-width: 650px;
+    }
+
+    .product-card {
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      box-shadow: 0 5px 22px rgba(100, 55, 75, 0.07);
+      transition: transform 0.25s ease,
+                  box-shadow 0.25s ease;
+    }
+
+    .product-image {
+      aspect-ratio: 4 / 5;
+      background: var(--soft);
+      overflow: hidden;
+    }
+
+    .product-image img {
+      transition: transform 0.4s ease;
+    }
+
+    .product-info {
+      padding: 16px;
+    }
+
+    .product-info h3 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .price {
+      font-size: 18px;
+      letter-spacing: 0.2px;
+    }
+
+    .card-actions .btn {
+      border-radius: 10px;
+      padding: 11px 10px;
+      font-size: 13px;
+      transition: opacity 0.2s ease;
+    }
+
+    @media (hover: hover) {
+      .product-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(100, 55, 75, 0.12);
+      }
+
+      .product-card:hover .product-image img {
+        transform: scale(1.04);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .product-info {
+        padding: 12px;
+      }
+
+      .product-info h3 {
+        font-size: 17px;
+      }
+
+      .price {
+        font-size: 16px;
+      }
+
+      .card-actions .btn {
+        font-size: 12px;
+        padding: 10px 8px;
+      }
+    }
   </style>
 </head>
 
