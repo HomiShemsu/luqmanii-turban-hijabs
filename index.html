@@ -1344,7 +1344,6 @@ font-size: 13px;
       <button onclick="showPage('wishlist'); closeMenu()">Wishlist</button>
       <button onclick="showPage('how'); closeMenu()">How to Order</button>
       <button onclick="showPage('help'); closeMenu()">Help</button>
-      <button onclick="showPage('owner'); closeMenu()">Owner</button>
     </div>
 
     <button class="bag-button" onclick="showPage('bag')">
@@ -5171,6 +5170,12 @@ supabaseClient.auth.onAuthStateChange(
 );
 
 loadStore();
+
+// Owner access is available through ?owner=1; this is a convenience,
+// not a security boundary. Authentication and database permissions protect the dashboard.
+if (new URLSearchParams(window.location.search).get("owner") === "1") {
+  showPage("owner");
+}
 
 </script>
 
